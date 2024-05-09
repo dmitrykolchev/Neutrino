@@ -13,4 +13,14 @@ public class EventHandlerHub : Hub
     {
         await Clients.All.SendAsync("RaiseEventCompleted", message);
     }
+
+    public override Task OnConnectedAsync()
+    {
+        return base.OnConnectedAsync();
+    }
+
+    public override Task OnDisconnectedAsync(Exception? exception)
+    {
+        return base.OnDisconnectedAsync(exception);
+    }
 }

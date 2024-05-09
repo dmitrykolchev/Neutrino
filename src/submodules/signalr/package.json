@@ -10,7 +10,7 @@
   "type": "module",
 
   "scripts": {
-    "build": "tsc --build && rollup -c && copyfiles -f ./dist/signalr* ../MyFramework/wwwroot/lib/signalr",
+    "build": "tsc --build && rollup -c && copyfiles -f ./dist/signalr* ../../WebApp/wwwroot/lib/signalr",
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
