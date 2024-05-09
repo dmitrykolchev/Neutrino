@@ -1,0 +1,6 @@
+[submodule "src/submodules/MessagePack-CSharp"]
+	path = src/submodules/MessagePack-CSharp
+	url = https://github.com/MessagePack-CSharp/MessagePack-CSharp
+[submodule "src/submodules/msgpack-javascript"]
+	path = src/submodules/msgpack-javascript
+	url = https://github.com/msgpack/msgpack-javascript
