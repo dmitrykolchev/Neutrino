@@ -1,0 +1,234 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>signalr</Name>
+    <RootNamespace>signalr</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>ecad209c-44de-4711-8903-9ce4ef7369ef</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>app.ts</StartupFile>
+    <StartWebBrowser>False</StartWebBrowser>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <EnableTypeScript>true</EnableTypeScript>
+    <StartWebBrowser>false</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="app.ts" />
+    <Content Include="dist\esm\AbortController.js" />
+    <Content Include="dist\esm\AbortController.js.map" />
+    <Content Include="dist\esm\AccessTokenHttpClient.js" />
+    <Content Include="dist\esm\AccessTokenHttpClient.js.map" />
+    <Content Include="dist\esm\browser-index.js" />
+    <Content Include="dist\esm\browser-index.js.map" />
+    <Content Include="dist\esm\DefaultHttpClient.js" />
+    <Content Include="dist\esm\DefaultHttpClient.js.map" />
+    <Content Include="dist\esm\DefaultReconnectPolicy.js" />
+    <Content Include="dist\esm\DefaultReconnectPolicy.js.map" />
+    <Content Include="dist\esm\DynamicImports.browser.js" />
+    <Content Include="dist\esm\DynamicImports.browser.js.map" />
+    <Content Include="dist\esm\DynamicImports.js" />
+    <Content Include="dist\esm\DynamicImports.js.map" />
+    <Content Include="dist\esm\Errors.js" />
+    <Content Include="dist\esm\Errors.js.map" />
+    <Content Include="dist\esm\FetchHttpClient.js" />
+    <Content Include="dist\esm\FetchHttpClient.js.map" />
+    <Content Include="dist\esm\HandshakeProtocol.js" />
+    <Content Include="dist\esm\HandshakeProtocol.js.map" />
+    <Content Include="dist\esm\HeaderNames.js" />
+    <Content Include="dist\esm\HeaderNames.js.map" />
+    <Content Include="dist\esm\HttpClient.js" />
+    <Content Include="dist\esm\HttpClient.js.map" />
+    <Content Include="dist\esm\HttpConnection.js" />
+    <Content Include="dist\esm\HttpConnection.js.map" />
+    <Content Include="dist\esm\HubConnection.js" />
+    <Content Include="dist\esm\HubConnection.js.map" />
+    <Content Include="dist\esm\HubConnectionBuilder.js" />
+    <Content Include="dist\esm\HubConnectionBuilder.js.map" />
+    <Content Include="dist\esm\IConnection.js" />
+    <Content Include="dist\esm\IConnection.js.map" />
+    <Content Include="dist\esm\IHttpConnectionOptions.js" />
+    <Content Include="dist\esm\IHttpConnectionOptions.js.map" />
+    <Content Include="dist\esm\IHubProtocol.js" />
+    <Content Include="dist\esm\IHubProtocol.js.map" />
+    <Content Include="dist\esm\ILogger.js" />
+    <Content Include="dist\esm\ILogger.js.map" />
+    <Content Include="dist\esm\index.js" />
+    <Content Include="dist\esm\index.js.map" />
+    <Content Include="dist\esm\IRetryPolicy.js" />
+    <Content Include="dist\esm\IRetryPolicy.js.map" />
+    <Content Include="dist\esm\IStatefulReconnectOptions.js" />
+    <Content Include="dist\esm\IStatefulReconnectOptions.js.map" />
+    <Content Include="dist\esm\ITransport.js" />
+    <Content Include="dist\esm\ITransport.js.map" />
+    <Content Include="dist\esm\JsonHubProtocol.js" />
+    <Content Include="dist\esm\JsonHubProtocol.js.map" />
+    <Content Include="dist\esm\Loggers.js" />
+    <Content Include="dist\esm\Loggers.js.map" />
+    <Content Include="dist\esm\LongPollingTransport.js" />
+    <Content Include="dist\esm\LongPollingTransport.js.map" />
+    <Content Include="dist\esm\MessageBuffer.js" />
+    <Content Include="dist\esm\MessageBuffer.js.map" />
+    <Content Include="dist\esm\Polyfills.js" />
+    <Content Include="dist\esm\Polyfills.js.map" />
+    <Content Include="dist\esm\ServerSentEventsTransport.js" />
+    <Content Include="dist\esm\ServerSentEventsTransport.js.map" />
+    <Content Include="dist\esm\Stream.js" />
+    <Content Include="dist\esm\Stream.js.map" />
+    <Content Include="dist\esm\Subject.js" />
+    <Content Include="dist\esm\Subject.js.map" />
+    <Content Include="dist\esm\TextMessageFormat.js" />
+    <Content Include="dist\esm\TextMessageFormat.js.map" />
+    <Content Include="dist\esm\Utils.js" />
+    <Content Include="dist\esm\Utils.js.map" />
+    <Content Include="dist\esm\WebSocketTransport.js" />
+    <Content Include="dist\esm\WebSocketTransport.js.map" />
+    <Content Include="dist\esm\XhrHttpClient.js" />
+    <Content Include="dist\esm\XhrHttpClient.js.map" />
+    <Content Include="dist\signalr.d.ts.map" />
+    <Content Include="dist\signalr.js" />
+    <Content Include="dist\signalr.js.map" />
+    <Content Include="dist\signalr.min.js" />
+    <Content Include="dist\signalr.min.js.map" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="rollup.config.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\third-party-notices.txt" />
+    <Content Include="tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="dist\" />
+    <Folder Include="dist\dts\" />
+    <Folder Include="dist\esm\" />
+    <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="dist\dts\AbortController.d.ts" />
+    <TypeScriptCompile Include="dist\dts\AccessTokenHttpClient.d.ts" />
+    <TypeScriptCompile Include="dist\dts\browser-index.d.ts" />
+    <TypeScriptCompile Include="dist\dts\DefaultHttpClient.d.ts" />
+    <TypeScriptCompile Include="dist\dts\DefaultReconnectPolicy.d.ts" />
+    <TypeScriptCompile Include="dist\dts\DynamicImports.browser.d.ts" />
+    <TypeScriptCompile Include="dist\dts\DynamicImports.d.ts" />
+    <TypeScriptCompile Include="dist\dts\Errors.d.ts" />
+    <TypeScriptCompile Include="dist\dts\FetchHttpClient.d.ts" />
+    <TypeScriptCompile Include="dist\dts\HandshakeProtocol.d.ts" />
+    <TypeScriptCompile Include="dist\dts\HeaderNames.d.ts" />
+    <TypeScriptCompile Include="dist\dts\HttpClient.d.ts" />
+    <TypeScriptCompile Include="dist\dts\HttpConnection.d.ts" />
+    <TypeScriptCompile Include="dist\dts\HubConnection.d.ts" />
+    <TypeScriptCompile Include="dist\dts\HubConnectionBuilder.d.ts" />
+    <TypeScriptCompile Include="dist\dts\IConnection.d.ts" />
+    <TypeScriptCompile Include="dist\dts\IHttpConnectionOptions.d.ts" />
+    <TypeScriptCompile Include="dist\dts\IHubProtocol.d.ts" />
+    <TypeScriptCompile Include="dist\dts\ILogger.d.ts" />
+    <TypeScriptCompile Include="dist\dts\index.d.ts" />
+    <TypeScriptCompile Include="dist\dts\IRetryPolicy.d.ts" />
+    <TypeScriptCompile Include="dist\dts\IStatefulReconnectOptions.d.ts" />
+    <TypeScriptCompile Include="dist\dts\ITransport.d.ts" />
+    <TypeScriptCompile Include="dist\dts\JsonHubProtocol.d.ts" />
+    <TypeScriptCompile Include="dist\dts\Loggers.d.ts" />
+    <TypeScriptCompile Include="dist\dts\LongPollingTransport.d.ts" />
+    <TypeScriptCompile Include="dist\dts\MessageBuffer.d.ts" />
+    <TypeScriptCompile Include="dist\dts\Polyfills.d.ts" />
+    <TypeScriptCompile Include="dist\dts\ServerSentEventsTransport.d.ts" />
+    <TypeScriptCompile Include="dist\dts\Stream.d.ts" />
+    <TypeScriptCompile Include="dist\dts\Subject.d.ts" />
+    <TypeScriptCompile Include="dist\dts\TextMessageFormat.d.ts" />
+    <TypeScriptCompile Include="dist\dts\Utils.d.ts" />
+    <TypeScriptCompile Include="dist\dts\WebSocketTransport.d.ts" />
+    <TypeScriptCompile Include="dist\dts\XhrHttpClient.d.ts" />
+    <TypeScriptCompile Include="dist\signalr.d.ts" />
+    <TypeScriptCompile Include="src\AbortController.ts" />
+    <TypeScriptCompile Include="src\AccessTokenHttpClient.ts" />
+    <TypeScriptCompile Include="src\browser-index.ts" />
+    <TypeScriptCompile Include="src\DefaultHttpClient.ts" />
+    <TypeScriptCompile Include="src\DefaultReconnectPolicy.ts" />
+    <TypeScriptCompile Include="src\DynamicImports.browser.ts" />
+    <TypeScriptCompile Include="src\DynamicImports.ts" />
+    <TypeScriptCompile Include="src\Errors.ts" />
+    <TypeScriptCompile Include="src\FetchHttpClient.ts" />
+    <TypeScriptCompile Include="src\HandshakeProtocol.ts" />
+    <TypeScriptCompile Include="src\HeaderNames.ts" />
+    <TypeScriptCompile Include="src\HttpClient.ts" />
+    <TypeScriptCompile Include="src\HttpConnection.ts" />
+    <TypeScriptCompile Include="src\HubConnection.ts" />
+    <TypeScriptCompile Include="src\HubConnectionBuilder.ts" />
+    <TypeScriptCompile Include="src\IConnection.ts" />
+    <TypeScriptCompile Include="src\IHttpConnectionOptions.ts" />
+    <TypeScriptCompile Include="src\IHubProtocol.ts" />
+    <TypeScriptCompile Include="src\ILogger.ts" />
+    <TypeScriptCompile Include="src\index.ts" />
+    <TypeScriptCompile Include="src\IRetryPolicy.ts" />
+    <TypeScriptCompile Include="src\IStatefulReconnectOptions.ts" />
+    <TypeScriptCompile Include="src\ITransport.ts" />
+    <TypeScriptCompile Include="src\JsonHubProtocol.ts" />
+    <TypeScriptCompile Include="src\Loggers.ts" />
+    <TypeScriptCompile Include="src\LongPollingTransport.ts" />
+    <TypeScriptCompile Include="src\MessageBuffer.ts" />
+    <TypeScriptCompile Include="src\Polyfills.ts" />
+    <TypeScriptCompile Include="src\ServerSentEventsTransport.ts" />
+    <TypeScriptCompile Include="src\Stream.ts" />
+    <TypeScriptCompile Include="src\Subject.ts" />
+    <TypeScriptCompile Include="src\TextMessageFormat.ts" />
+    <TypeScriptCompile Include="src\Utils.ts" />
+    <TypeScriptCompile Include="src\WebSocketTransport.ts" />
+    <TypeScriptCompile Include="src\XhrHttpClient.ts" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

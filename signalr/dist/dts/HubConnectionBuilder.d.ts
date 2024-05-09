@@ -1,0 +1,32 @@
+import { HubConnection } from "./HubConnection";
+import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
+import { IHubProtocol } from "./IHubProtocol";
+import { ILogger, LogLevel } from "./ILogger";
+import { IRetryPolicy } from "./IRetryPolicy";
+import { IStatefulReconnectOptions } from "./IStatefulReconnectOptions";
+import { HttpTransportType } from "./ITransport";
+export declare class HubConnectionBuilder {
+    private _serverTimeoutInMilliseconds?;
+    private _keepAliveIntervalInMilliseconds?;
+    protocol?: IHubProtocol;
+    httpConnectionOptions?: IHttpConnectionOptions;
+    url?: string;
+    logger?: ILogger;
+    reconnectPolicy?: IRetryPolicy;
+    private _statefulReconnectBufferSize?;
+    configureLogging(logLevel: LogLevel): HubConnectionBuilder;
+    configureLogging(logger: ILogger): HubConnectionBuilder;
+    configureLogging(logLevel: string): HubConnectionBuilder;
+    configureLogging(logging: LogLevel | string | ILogger): HubConnectionBuilder;
+    withUrl(url: string): HubConnectionBuilder;
+    withUrl(url: string, transportType: HttpTransportType): HubConnectionBuilder;
+    withUrl(url: string, options: IHttpConnectionOptions): HubConnectionBuilder;
+    withHubProtocol(protocol: IHubProtocol): HubConnectionBuilder;
+    withAutomaticReconnect(): HubConnectionBuilder;
+    withAutomaticReconnect(retryDelays: number[]): HubConnectionBuilder;
+    withAutomaticReconnect(reconnectPolicy: IRetryPolicy): HubConnectionBuilder;
+    withServerTimeout(milliseconds: number): HubConnectionBuilder;
+    withKeepAliveInterval(milliseconds: number): HubConnectionBuilder;
+    withStatefulReconnect(options?: IStatefulReconnectOptions): HubConnectionBuilder;
+    build(): HubConnection;
+}

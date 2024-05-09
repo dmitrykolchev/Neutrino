@@ -1,0 +1,34 @@
+{
+  "name": "signalr",
+  "version": "8.0.0",
+  "description": "custom signalr build",
+  "author": {
+    "name": "Dmitry Kolchev"
+  },
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+
+  "scripts": {
+    "build": "tsc --build && rollup -c && copyfiles -f ./dist/signalr* ../MyFramework/wwwroot/lib/signalr",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "undici-types": "6.0.1",
+    "@types/node": "20.8.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.50.0",
+    "typescript": "^5.2.2",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "copyfiles": "^2.4.1",
+    "rollup": "^3.28.0",
+    "rollup-plugin-dts": "^5.3.1",
+    "rollup-plugin-filesize": "^10.0.0",
+    "source-map": "^0.7.4",
+    "source-map-loader": "^4.0.1",
+    "ts-loader": "^9.4.4",
+    "tslib": "^2.6.1"
+  }
+}
