@@ -18,7 +18,7 @@ const plugins = [
 
 export default [
     {
-        input: "./src/index.ts",
+        input: "./src/browser-index.ts",
         output: [
             {
                 file: "./dist/signalr.js",

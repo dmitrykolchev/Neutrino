@@ -1,7 +1,14 @@
-﻿import { DefaultHttpClient, NullLogger, HttpRequest, HubConnectionBuilder, HubConnection } from "/lib/signalr/signalr.js"
+﻿import { DefaultHttpClient, NullLogger, HttpRequest, HubConnectionBuilder, HubConnection } from "/lib/signalr/signalr.js";
+import { Encoder, Decoder } from "/lib/msgpack/msgpack.js";
 
 
 let connection: HubConnection = null;
+
+const encoder: Encoder<undefined> = new Encoder<undefined>({});
+const decoder: Decoder<undefined> = new Decoder<undefined>({});
+
+const message = encoder.encode({ id: 1, name: "Dmitry Kolchev", is_active: true, created: new Date() });
+const decoded = decoder.decode(message);
 
 initialize().then(() => { console.log("initialization successfully completed") });
 
@@ -32,13 +39,13 @@ async function handleClick() {
 
     console.time("RaiseEvent");
     for (let index = 0; index < 1000; ++index) {
-        await connection.send("RaiseEvent", JSON.stringify({ "Controller": "Home", "Action": "Index" }));
+        await connection.send("RaiseEvent", message);
     }
     console.timeEnd("RaiseEvent");
 
     console.time("RaiseEventWithResponse");
     for (let index = 0; index < 1000; ++index) {
-        await connection.invoke("RaiseEventWithResponse", JSON.stringify({ "Controller": "Home", "Action": "Index" }));
+        await connection.invoke("RaiseEventWithResponse", message);
     }
     console.log(`RaiseEventWithResponse, count: ${count}`)
     console.timeEnd("RaiseEventWithResponse");
