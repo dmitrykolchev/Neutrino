@@ -9,26 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\BufferWriter.cs" Link="MessagePack\BufferWriter.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\ExtensionHeader.cs" Link="MessagePack\ExtensionHeader.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\ExtensionResult.cs" Link="MessagePack\ExtensionResult.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\Internal\DateTimeConstants.cs" Link="MessagePack\DateTimeConstants.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\MessagePackCode.cs" Link="MessagePack\MessagePackCode.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\MessagePackReader.cs" Link="MessagePack\MessagePackReader.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\MessagePackSerializationException.cs" Link="MessagePack\MessagePackSerializationException.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\MessagePackWriter.cs" Link="MessagePack\MessagePackWriter.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\Nil.cs" Link="MessagePack\Nil.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\SequencePool.cs" Link="MessagePack\SequencePool.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\SequenceReader.cs" Link="MessagePack\SequenceReader.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\SequenceReaderExtensions.cs" Link="MessagePack\SequenceReaderExtensions.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\StringEncoding.cs" Link="MessagePack\StringEncoding.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\T4\MessagePackReader.Integers.cs" Link="MessagePack\MessagePackReader.Integers.cs" />
-    <Compile Include="..\submodules\MessagePack-CSharp\src\MessagePack.UnityClient\Assets\Scripts\MessagePack\Utilities.cs" Link="MessagePack\Utilities.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Components\Server\" />
-    <Folder Include="MessagePack\" />
   </ItemGroup>
 
 </Project>
