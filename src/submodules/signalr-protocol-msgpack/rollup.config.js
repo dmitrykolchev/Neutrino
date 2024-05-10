@@ -35,7 +35,7 @@ export default [
                 plugins: [terser()],
             },
         ],
-        external: ['/lib/msgpack/msgpack.js', 'signalr.js'],
+        external: ['/lib/msgpack/msgpack.js', '/lib/signalr/signalr.js'],
         plugins: [
             resolve(),
             typescript({
@@ -46,7 +46,7 @@ export default [
             alias({
                 entries: [
                     { find: '@msgpack/msgpack', replacement: '/lib/msgpack/msgpack.js' },
-                    { find: '@microsoft/signalr', replacement: 'signalr.js' }
+                    { find: '@microsoft/signalr', replacement: '/lib/signalr/signalr.js' }
                 ]
             })
         ],
@@ -61,13 +61,13 @@ export default [
                 sourcemap: true
             }
         ],
-        external: ['/lib/msgpack/msgpack.js', 'signalr.js'],
+        external: ['/lib/msgpack/msgpack.js', '/lib/signalr/signalr.js'],
         plugins: [
             resolve(),
             alias({
                 entries: [
                     { find: '@msgpack/msgpack', replacement: '/lib/msgpack/msgpack.js' },
-                    { find: '@microsoft/signalr', replacement: 'signalr.js' }
+                    { find: '@microsoft/signalr', replacement: '/lib/signalr/signalr.js' }
                 ]
             }),
             dts()

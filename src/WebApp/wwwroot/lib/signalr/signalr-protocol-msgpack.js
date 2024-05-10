@@ -1,5 +1,5 @@
 import { Encoder, Decoder } from '/lib/msgpack/msgpack.js';
-import { MessageType, TransferFormat, NullLogger, LogLevel } from 'signalr.js';
+import { MessageType, TransferFormat, NullLogger, LogLevel } from '/lib/signalr/signalr.js';
 
 const VERSION = '5.0.0-dev';
 

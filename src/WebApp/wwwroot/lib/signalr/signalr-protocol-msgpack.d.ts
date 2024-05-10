@@ -1,4 +1,4 @@
-import { IHubProtocol, TransferFormat, ILogger, HubMessage } from 'signalr.js';
+import { IHubProtocol, TransferFormat, ILogger, HubMessage } from '/lib/signalr/signalr.js';
 
 declare const VERSION = "5.0.0-dev";
 

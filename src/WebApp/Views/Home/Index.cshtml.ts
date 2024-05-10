@@ -1,6 +1,6 @@
 ﻿import { DefaultHttpClient, NullLogger, HttpRequest, HubConnectionBuilder, HubConnection } from "/lib/signalr/signalr.js";
 import { MessagePackHubProtocol } from '/lib/signalr/signalr-protocol-msgpack.js';
-import { Encoder, Decoder } from "/lib/msgpack/msgpack.js";
+import { Encoder, Decoder, encode } from "/lib/msgpack/msgpack.js";
 
 
 let connection: HubConnection = null;
@@ -8,11 +8,22 @@ let connection: HubConnection = null;
 const encoder: Encoder<undefined> = new Encoder<undefined>();
 const decoder: Decoder<undefined> = new Decoder<undefined>();
 
-const encoded = encoder.encode({ id: 1, name: "Dmitry Kolchev", is_active: true, created: new Date() });
+const encoded = encoder.encode({ Id: 1, Name: "Dmitry Kolchev", Active: true, Created: new Date() });
 const decoded = decoder.decode(encoded);
 
-const message = { Id: 1, Name: "Dmitry Kolchev", Active: true, CreatedDate: new Date() }
+interface EventMessage {
+    Id: number;
+    Name: string;
+    Active: boolean;
+    CreatedDate: Date;
+}
 
+const message: EventMessage = {
+    Id: 1,
+    Name: "Dmitry Kolchev",
+    Active: true,
+    CreatedDate: new Date()
+}
 
 initialize().then(() => { console.log("initialization successfully completed") });
 
@@ -50,9 +61,13 @@ async function handleClick() {
     console.timeEnd("RaiseEvent");
 
     console.time("RaiseEventWithResponse");
+
+    let messageResponse: EventMessage;
+
     for (let index = 0; index < 1000; ++index) {
-        await connection.invoke("RaiseEventWithResponse", message);
+        messageResponse = await connection.invoke("RaiseEventWithResponse", message);
     }
+    console.debug(messageResponse);
     console.log(`RaiseEventWithResponse, count: ${count}`)
     console.timeEnd("RaiseEventWithResponse");
 }

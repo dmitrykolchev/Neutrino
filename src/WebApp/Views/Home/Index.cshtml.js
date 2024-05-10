@@ -4,9 +4,14 @@ import { Encoder, Decoder } from "/lib/msgpack/msgpack.js";
 let connection = null;
 const encoder = new Encoder();
 const decoder = new Decoder();
-const encoded = encoder.encode({ id: 1, name: "Dmitry Kolchev", is_active: true, created: new Date() });
+const encoded = encoder.encode({ Id: 1, Name: "Dmitry Kolchev", Active: true, Created: new Date() });
 const decoded = decoder.decode(encoded);
-const message = { Id: 1, Name: "Dmitry Kolchev", Active: true, CreatedDate: new Date() };
+const message = {
+    Id: 1,
+    Name: "Dmitry Kolchev",
+    Active: true,
+    CreatedDate: new Date()
+};
 initialize().then(() => { console.log("initialization successfully completed"); });
 async function initialize() {
     const button = document.getElementById("button1");
@@ -37,9 +42,11 @@ async function handleClick() {
     }
     console.timeEnd("RaiseEvent");
     console.time("RaiseEventWithResponse");
+    let messageResponse;
     for (let index = 0; index < 1000; ++index) {
-        await connection.invoke("RaiseEventWithResponse", message);
+        messageResponse = await connection.invoke("RaiseEventWithResponse", message);
     }
+    console.debug(messageResponse);
     console.log(`RaiseEventWithResponse, count: ${count}`);
     console.timeEnd("RaiseEventWithResponse");
 }
