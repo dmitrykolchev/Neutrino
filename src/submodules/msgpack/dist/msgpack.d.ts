@@ -34,9 +34,8 @@ type ContextOf<ContextType> = ContextType extends undefined ? {} : {
     context: ContextType;
 };
 
-type EncoderOptions<ContextType = undefined> = Partial<Readonly<{
+type EncodeOptions<ContextType = undefined> = Partial<Readonly<{
     extensionCodec: ExtensionCodecType<ContextType>;
-    useBigInt64: boolean;
     maxDepth: number;
     initialBufferSize: number;
     sortKeys: boolean;
@@ -44,77 +43,35 @@ type EncoderOptions<ContextType = undefined> = Partial<Readonly<{
     ignoreUndefined: boolean;
     forceIntegerToFloat: boolean;
 }>> & ContextOf<ContextType>;
-declare class Encoder<ContextType = undefined> {
-    private readonly extensionCodec;
-    private readonly context;
-    private readonly useBigInt64;
-    private readonly maxDepth;
-    private readonly initialBufferSize;
-    private readonly sortKeys;
-    private readonly forceFloat32;
-    private readonly ignoreUndefined;
-    private readonly forceIntegerToFloat;
-    private pos;
-    private view;
-    private bytes;
-    constructor(options?: EncoderOptions<ContextType>);
-    private reinitializeState;
-    encodeSharedRef(object: unknown): Uint8Array;
-    encode(object: unknown): Uint8Array;
-    private doEncode;
-    private ensureBufferSizeToWrite;
-    private resizeBuffer;
-    private encodeNil;
-    private encodeBoolean;
-    private encodeNumber;
-    private encodeNumberAsFloat;
-    private encodeBigInt64;
-    private writeStringHeader;
-    private encodeString;
-    private encodeObject;
-    private encodeBinary;
-    private encodeArray;
-    private countWithoutUndefined;
-    private encodeMap;
-    private encodeExtension;
-    private writeU8;
-    private writeU8a;
-    private writeI8;
-    private writeU16;
-    private writeI16;
-    private writeU32;
-    private writeI32;
-    private writeF32;
-    private writeF64;
-    private writeU64;
-    private writeI64;
-    private writeBigUint64;
-    private writeBigInt64;
-}
+declare function encode<ContextType = undefined>(value: unknown, options?: EncodeOptions<SplitUndefined<ContextType>>): Uint8Array;
 
-type EncodeOptions = never;
-declare function encode<ContextType = undefined>(value: unknown, options?: EncoderOptions<SplitUndefined<ContextType>>): Uint8Array;
+type DecodeOptions<ContextType = undefined> = Readonly<Partial<{
+    extensionCodec: ExtensionCodecType<ContextType>;
+    maxStrLength: number;
+    maxBinLength: number;
+    maxArrayLength: number;
+    maxMapLength: number;
+    maxExtLength: number;
+}>> & ContextOf<ContextType>;
+declare function decode<ContextType = undefined>(buffer: ArrayLike<number> | BufferSource, options?: DecodeOptions<SplitUndefined<ContextType>>): unknown;
+declare function decodeMulti<ContextType = undefined>(buffer: ArrayLike<number> | BufferSource, options?: DecodeOptions<SplitUndefined<ContextType>>): Generator<unknown, void, unknown>;
+
+type ReadableStreamLike<T> = AsyncIterable<T> | ReadableStream<T>;
+
+declare function decodeAsync<ContextType>(streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>, options?: DecodeOptions<SplitUndefined<ContextType>>): Promise<unknown>;
+declare function decodeArrayStream<ContextType>(streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>, options?: DecodeOptions<SplitUndefined<ContextType>>): AsyncGenerator<unknown, void, unknown>;
+declare function decodeMultiStream<ContextType>(streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>, options?: DecodeOptions<SplitUndefined<ContextType>>): AsyncGenerator<unknown, void, unknown>;
+declare function decodeStream<ContextType>(streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>, options?: DecodeOptions<SplitUndefined<ContextType>>): AsyncGenerator<unknown, void, unknown>;
 
 interface KeyDecoder {
     canBeCached(byteLength: number): boolean;
     decode(bytes: Uint8Array, inputOffset: number, byteLength: number): string;
 }
 
-type DecoderOptions<ContextType = undefined> = Readonly<Partial<{
-    extensionCodec: ExtensionCodecType<ContextType>;
-    useBigInt64: boolean;
-    maxStrLength: number;
-    maxBinLength: number;
-    maxArrayLength: number;
-    maxMapLength: number;
-    maxExtLength: number;
-    keyDecoder: KeyDecoder | null;
-}>> & ContextOf<ContextType>;
-declare const DataViewIndexOutOfBoundsError: RangeErrorConstructor;
+declare const DataViewIndexOutOfBoundsError: typeof Error;
 declare class Decoder<ContextType = undefined> {
     private readonly extensionCodec;
     private readonly context;
-    private readonly useBigInt64;
     private readonly maxStrLength;
     private readonly maxBinLength;
     private readonly maxArrayLength;
@@ -127,7 +84,7 @@ declare class Decoder<ContextType = undefined> {
     private bytes;
     private headByte;
     private readonly stack;
-    constructor(options?: DecoderOptions<ContextType>);
+    constructor(extensionCodec?: ExtensionCodecType<ContextType>, context?: ContextType, maxStrLength?: number, maxBinLength?: number, maxArrayLength?: number, maxMapLength?: number, maxExtLength?: number, keyDecoder?: KeyDecoder | null);
     private reinitializeState;
     private setBuffer;
     private appendBuffer;
@@ -160,25 +117,55 @@ declare class Decoder<ContextType = undefined> {
     private readI32;
     private readU64;
     private readI64;
-    private readU64AsBigInt;
-    private readI64AsBigInt;
     private readF32;
     private readF64;
 }
 
-type DecodeOptions = never;
-declare function decode<ContextType = undefined>(buffer: ArrayLike<number> | BufferSource, options?: DecoderOptions<SplitUndefined<ContextType>>): unknown;
-declare function decodeMulti<ContextType = undefined>(buffer: ArrayLike<number> | BufferSource, options?: DecoderOptions<SplitUndefined<ContextType>>): Generator<unknown, void, unknown>;
-
-type ReadableStreamLike<T> = AsyncIterable<T> | ReadableStream<T>;
-
-declare function decodeAsync<ContextType = undefined>(streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>, options?: DecoderOptions<SplitUndefined<ContextType>>): Promise<unknown>;
-declare function decodeArrayStream<ContextType>(streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>, options?: DecoderOptions<SplitUndefined<ContextType>>): AsyncGenerator<unknown, void, unknown>;
-declare function decodeMultiStream<ContextType>(streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>, options?: DecoderOptions<SplitUndefined<ContextType>>): AsyncGenerator<unknown, void, unknown>;
-declare const decodeStream: never;
-
 declare class DecodeError extends Error {
     constructor(message: string);
+}
+
+declare class Encoder<ContextType = undefined> {
+    private readonly extensionCodec;
+    private readonly context;
+    private readonly maxDepth;
+    private readonly initialBufferSize;
+    private readonly sortKeys;
+    private readonly forceFloat32;
+    private readonly ignoreUndefined;
+    private readonly forceIntegerToFloat;
+    private pos;
+    private view;
+    private bytes;
+    constructor(extensionCodec?: ExtensionCodecType<ContextType>, context?: ContextType, maxDepth?: number, initialBufferSize?: number, sortKeys?: boolean, forceFloat32?: boolean, ignoreUndefined?: boolean, forceIntegerToFloat?: boolean);
+    private reinitializeState;
+    encodeSharedRef(object: unknown): Uint8Array;
+    encode(object: unknown): Uint8Array;
+    private doEncode;
+    private ensureBufferSizeToWrite;
+    private resizeBuffer;
+    private encodeNil;
+    private encodeBoolean;
+    private encodeNumber;
+    private writeStringHeader;
+    private encodeString;
+    private encodeObject;
+    private encodeBinary;
+    private encodeArray;
+    private countWithoutUndefined;
+    private encodeMap;
+    private encodeExtension;
+    private writeU8;
+    private writeU8a;
+    private writeI8;
+    private writeU16;
+    private writeI16;
+    private writeU32;
+    private writeI32;
+    private writeF32;
+    private writeF64;
+    private writeU64;
+    private writeI64;
 }
 
 declare const EXT_TIMESTAMP = -1;
@@ -192,5 +179,5 @@ declare function encodeTimestampExtension(object: unknown): Uint8Array | null;
 declare function decodeTimestampToTimeSpec(data: Uint8Array): TimeSpec;
 declare function decodeTimestampExtension(data: Uint8Array): Date;
 
-export { DataViewIndexOutOfBoundsError, DecodeError, DecodeOptions, Decoder, DecoderOptions, EXT_TIMESTAMP, EncodeOptions, Encoder, EncoderOptions, ExtData, ExtensionCodec, ExtensionCodecType, ExtensionDecoderType, ExtensionEncoderType, decode, decodeArrayStream, decodeAsync, decodeMulti, decodeMultiStream, decodeStream, decodeTimestampExtension, decodeTimestampToTimeSpec, encode, encodeDateToTimeSpec, encodeTimeSpecToTimestamp, encodeTimestampExtension };
+export { DataViewIndexOutOfBoundsError, DecodeError, DecodeOptions, Decoder, EXT_TIMESTAMP, EncodeOptions, Encoder, ExtData, ExtensionCodec, ExtensionCodecType, ExtensionDecoderType, ExtensionEncoderType, decode, decodeArrayStream, decodeAsync, decodeMulti, decodeMultiStream, decodeStream, decodeTimestampExtension, decodeTimestampToTimeSpec, encode, encodeDateToTimeSpec, encodeTimeSpecToTimestamp, encodeTimestampExtension };
 //# sourceMappingURL=msgpack.d.ts.map

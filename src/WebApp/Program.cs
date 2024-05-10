@@ -1,18 +1,35 @@
-using MyFramework.Hubs;
+using WebApp.Hubs;
+using Serilog;
 
-namespace MyFramework;
+namespace WebApp;
 
 public class Program
 {
     public static void Main(string[] args)
     {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateLogger();
+
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddLogging((configure) =>
+        {
+            configure.ClearProviders();
+        });
+
+        builder.Services.AddSerilog((services, configuration) => configuration
+            .ReadFrom.Configuration(builder.Configuration)
+            .ReadFrom.Services(services));
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-        builder.Services.AddSignalR();
+        builder.Services.AddSignalR().AddMessagePackProtocol(options =>
+        {
+            options.SerializerOptions = MessagePack.MessagePackSerializerOptions.Standard;
+        });
 
-        var app = builder.Build();
+        WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -21,6 +38,8 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+        app.UseSerilogRequestLogging();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();

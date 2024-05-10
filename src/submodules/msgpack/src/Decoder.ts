@@ -1,77 +1,27 @@
 import { prettyByte } from "./utils/prettyByte";
 import { ExtensionCodec, ExtensionCodecType } from "./ExtensionCodec";
 import { getInt64, getUint64, UINT32_MAX } from "./utils/int";
-import { utf8Decode } from "./utils/utf8";
+import { utf8DecodeJs, TEXT_DECODER_THRESHOLD, utf8DecodeTD } from "./utils/utf8";
 import { createDataView, ensureUint8Array } from "./utils/typedArrays";
 import { CachedKeyDecoder, KeyDecoder } from "./CachedKeyDecoder";
 import { DecodeError } from "./DecodeError";
-import type { ContextOf } from "./context";
 
-export type DecoderOptions<ContextType = undefined> = Readonly<
-  Partial<{
-    extensionCodec: ExtensionCodecType<ContextType>;
-
-    /**
-     * Decodes Int64 and Uint64 as bigint if it's set to true.
-     * Depends on ES2020's {@link DataView#getBigInt64} and
-     * {@link DataView#getBigUint64}.
-     *
-     * Defaults to false.
-     */
-    useBigInt64: boolean;
-
-    /**
-     * Maximum string length.
-     *
-     * Defaults to 4_294_967_295 (UINT32_MAX).
-     */
-    maxStrLength: number;
-    /**
-     * Maximum binary length.
-     *
-     * Defaults to 4_294_967_295 (UINT32_MAX).
-     */
-    maxBinLength: number;
-    /**
-     * Maximum array length.
-     *
-     * Defaults to 4_294_967_295 (UINT32_MAX).
-     */
-    maxArrayLength: number;
-    /**
-     * Maximum map length.
-     *
-     * Defaults to 4_294_967_295 (UINT32_MAX).
-     */
-    maxMapLength: number;
-    /**
-     * Maximum extension length.
-     *
-     * Defaults to 4_294_967_295 (UINT32_MAX).
-     */
-    maxExtLength: number;
-
-    /**
-     * An object key decoder. Defaults to the shared instance of {@link CachedKeyDecoder}.
-     * `null` is a special value to disable the use of the key decoder at all.
-     */
-    keyDecoder: KeyDecoder | null;
-  }>
-> &
-  ContextOf<ContextType>;
-
-const STATE_ARRAY = "array";
-const STATE_MAP_KEY = "map_key";
-const STATE_MAP_VALUE = "map_value";
+const enum State {
+  ARRAY,
+  MAP_KEY,
+  MAP_VALUE,
+}
 
 type MapKeyType = string | number;
 
 const isValidMapKeyType = (key: unknown): key is MapKeyType => {
-  return typeof key === "string" || typeof key === "number";
+  const keyType = typeof key;
+
+  return keyType === "string" || keyType === "number";
 };
 
 type StackMapState = {
-  type: typeof STATE_MAP_KEY | typeof STATE_MAP_VALUE;
+  type: State.MAP_KEY | State.MAP_VALUE;
   size: number;
   key: MapKeyType | null;
   readCount: number;
@@ -79,93 +29,11 @@ type StackMapState = {
 };
 
 type StackArrayState = {
-  type: typeof STATE_ARRAY;
+  type: State.ARRAY;
   size: number;
   array: Array<unknown>;
   position: number;
 };
-
-class StackPool {
-  private readonly stack: Array<StackState> = [];
-  private stackHeadPosition = -1;
-
-  public get length(): number {
-    return this.stackHeadPosition + 1;
-  }
-
-  public top(): StackState | undefined {
-    return this.stack[this.stackHeadPosition];
-  }
-
-  public pushArrayState(size: number) {
-    const state = this.getUninitializedStateFromPool() as StackArrayState;
-
-    state.type = STATE_ARRAY;
-    state.position = 0;
-    state.size = size;
-    state.array = new Array(size);
-  }
-
-  public pushMapState(size: number) {
-    const state = this.getUninitializedStateFromPool() as StackMapState;
-
-    state.type = STATE_MAP_KEY;
-    state.readCount = 0;
-    state.size = size;
-    state.map = {};
-  }
-
-  private getUninitializedStateFromPool() {
-    this.stackHeadPosition++;
-
-    if (this.stackHeadPosition === this.stack.length) {
-      const partialState: Partial<StackState> = {
-        type: undefined,
-        size: 0,
-        array: undefined,
-        position: 0,
-        readCount: 0,
-        map: undefined,
-        key: null,
-      };
-
-      this.stack.push(partialState as StackState);
-    }
-
-    return this.stack[this.stackHeadPosition];
-  }
-
-  public release(state: StackState): void {
-    const topStackState = this.stack[this.stackHeadPosition];
-
-    if (topStackState !== state) {
-      throw new Error("Invalid stack state. Released state is not on top of the stack.");
-    }
-
-    if (state.type === STATE_ARRAY) {
-      const partialState = state as Partial<StackArrayState>;
-      partialState.size = 0;
-      partialState.array = undefined;
-      partialState.position = 0;
-      partialState.type = undefined;
-    }
-
-    if (state.type === STATE_MAP_KEY || state.type === STATE_MAP_VALUE) {
-      const partialState = state as Partial<StackMapState>;
-      partialState.size = 0;
-      partialState.map = undefined;
-      partialState.readCount = 0;
-      partialState.type = undefined;
-    }
-
-    this.stackHeadPosition--;
-  }
-
-  public reset(): void {
-    this.stack.length = 0;
-    this.stackHeadPosition = -1;
-  }
-}
 
 type StackState = StackArrayState | StackMapState;
 
@@ -174,59 +42,47 @@ const HEAD_BYTE_REQUIRED = -1;
 const EMPTY_VIEW = new DataView(new ArrayBuffer(0));
 const EMPTY_BYTES = new Uint8Array(EMPTY_VIEW.buffer);
 
-try {
-  // IE11: The spec says it should throw RangeError,
-  // IE11: but in IE11 it throws TypeError.
-  EMPTY_VIEW.getInt8(0);
-} catch (e) {
-  if (!(e instanceof RangeError)) {
-    throw new Error(
-      "This module is not supported in the current JavaScript engine because DataView does not throw RangeError on out-of-bounds access",
-    );
+// IE11: Hack to support IE11.
+// IE11: Drop this hack and just use RangeError when IE11 is obsolete.
+export const DataViewIndexOutOfBoundsError: typeof Error = (() => {
+  try {
+    // IE11: The spec says it should throw RangeError,
+    // IE11: but in IE11 it throws TypeError.
+    EMPTY_VIEW.getInt8(0);
+  } catch (e: any) {
+    return e.constructor;
   }
-}
-export const DataViewIndexOutOfBoundsError = RangeError;
+  throw new Error("never reached");
+})();
 
 const MORE_DATA = new DataViewIndexOutOfBoundsError("Insufficient data");
 
 const sharedCachedKeyDecoder = new CachedKeyDecoder();
 
 export class Decoder<ContextType = undefined> {
-  private readonly extensionCodec: ExtensionCodecType<ContextType>;
-  private readonly context: ContextType;
-  private readonly useBigInt64: boolean;
-  private readonly maxStrLength: number;
-  private readonly maxBinLength: number;
-  private readonly maxArrayLength: number;
-  private readonly maxMapLength: number;
-  private readonly maxExtLength: number;
-  private readonly keyDecoder: KeyDecoder | null;
-
   private totalPos = 0;
   private pos = 0;
 
   private view = EMPTY_VIEW;
   private bytes = EMPTY_BYTES;
   private headByte = HEAD_BYTE_REQUIRED;
-  private readonly stack = new StackPool();
+  private readonly stack: Array<StackState> = [];
 
-  public constructor(options?: DecoderOptions<ContextType>) {
-    this.extensionCodec = options?.extensionCodec ?? (ExtensionCodec.defaultCodec as ExtensionCodecType<ContextType>);
-    this.context = (options as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
-
-    this.useBigInt64 = options?.useBigInt64 ?? false;
-    this.maxStrLength = options?.maxStrLength ?? UINT32_MAX;
-    this.maxBinLength = options?.maxBinLength ?? UINT32_MAX;
-    this.maxArrayLength = options?.maxArrayLength ?? UINT32_MAX;
-    this.maxMapLength = options?.maxMapLength ?? UINT32_MAX;
-    this.maxExtLength = options?.maxExtLength ?? UINT32_MAX;
-    this.keyDecoder = options?.keyDecoder !== undefined ? options.keyDecoder : sharedCachedKeyDecoder;
-  }
+  public constructor(
+    private readonly extensionCodec: ExtensionCodecType<ContextType> = ExtensionCodec.defaultCodec as any,
+    private readonly context: ContextType = undefined as any,
+    private readonly maxStrLength = UINT32_MAX,
+    private readonly maxBinLength = UINT32_MAX,
+    private readonly maxArrayLength = UINT32_MAX,
+    private readonly maxMapLength = UINT32_MAX,
+    private readonly maxExtLength = UINT32_MAX,
+    private readonly keyDecoder: KeyDecoder | null = sharedCachedKeyDecoder,
+  ) {}
 
   private reinitializeState() {
     this.totalPos = 0;
     this.headByte = HEAD_BYTE_REQUIRED;
-    this.stack.reset();
+    this.stack.length = 0;
 
     // view, bytes, and pos will be re-initialized in setBuffer()
   }
@@ -427,11 +283,7 @@ export class Decoder<ContextType = undefined> {
         object = this.readU32();
       } else if (headByte === 0xcf) {
         // uint 64
-        if (this.useBigInt64) {
-          object = this.readU64AsBigInt();
-        } else {
-          object = this.readU64();
-        }
+        object = this.readU64();
       } else if (headByte === 0xd0) {
         // int 8
         object = this.readI8();
@@ -443,11 +295,7 @@ export class Decoder<ContextType = undefined> {
         object = this.readI32();
       } else if (headByte === 0xd3) {
         // int 64
-        if (this.useBigInt64) {
-          object = this.readI64AsBigInt();
-        } else {
-          object = this.readI64();
-        }
+        object = this.readI64();
       } else if (headByte === 0xd9) {
         // str 8
         const byteLength = this.lookU8();
@@ -548,17 +396,17 @@ export class Decoder<ContextType = undefined> {
       const stack = this.stack;
       while (stack.length > 0) {
         // arrays and maps
-        const state = stack.top()!;
-        if (state.type === STATE_ARRAY) {
+        const state = stack[stack.length - 1]!;
+        if (state.type === State.ARRAY) {
           state.array[state.position] = object;
           state.position++;
           if (state.position === state.size) {
+            stack.pop();
             object = state.array;
-            stack.release(state);
           } else {
             continue DECODE;
           }
-        } else if (state.type === STATE_MAP_KEY) {
+        } else if (state.type === State.MAP_KEY) {
           if (!isValidMapKeyType(object)) {
             throw new DecodeError("The type of key must be string or number but " + typeof object);
           }
@@ -567,7 +415,7 @@ export class Decoder<ContextType = undefined> {
           }
 
           state.key = object;
-          state.type = STATE_MAP_VALUE;
+          state.type = State.MAP_VALUE;
           continue DECODE;
         } else {
           // it must be `state.type === State.MAP_VALUE` here
@@ -576,11 +424,11 @@ export class Decoder<ContextType = undefined> {
           state.readCount++;
 
           if (state.readCount === state.size) {
+            stack.pop();
             object = state.map;
-            stack.release(state);
           } else {
             state.key = null;
-            state.type = STATE_MAP_KEY;
+            state.type = State.MAP_KEY;
             continue DECODE;
           }
         }
@@ -626,7 +474,13 @@ export class Decoder<ContextType = undefined> {
       throw new DecodeError(`Max length exceeded: map length (${size}) > maxMapLengthLength (${this.maxMapLength})`);
     }
 
-    this.stack.pushMapState(size);
+    this.stack.push({
+      type: State.MAP_KEY,
+      size,
+      key: null,
+      readCount: 0,
+      map: {},
+    });
   }
 
   private pushArrayState(size: number) {
@@ -634,7 +488,12 @@ export class Decoder<ContextType = undefined> {
       throw new DecodeError(`Max length exceeded: array length (${size}) > maxArrayLength (${this.maxArrayLength})`);
     }
 
-    this.stack.pushArrayState(size);
+    this.stack.push({
+      type: State.ARRAY,
+      size,
+      array: new Array<unknown>(size),
+      position: 0,
+    });
   }
 
   private decodeUtf8String(byteLength: number, headerOffset: number): string {
@@ -652,8 +511,10 @@ export class Decoder<ContextType = undefined> {
     let object: string;
     if (this.stateIsMapKey() && this.keyDecoder?.canBeCached(byteLength)) {
       object = this.keyDecoder.decode(this.bytes, offset, byteLength);
+    } else if (byteLength > TEXT_DECODER_THRESHOLD) {
+      object = utf8DecodeTD(this.bytes, offset, byteLength);
     } else {
-      object = utf8Decode(this.bytes, offset, byteLength);
+      object = utf8DecodeJs(this.bytes, offset, byteLength);
     }
     this.pos += headerOffset + byteLength;
     return object;
@@ -661,8 +522,8 @@ export class Decoder<ContextType = undefined> {
 
   private stateIsMapKey(): boolean {
     if (this.stack.length > 0) {
-      const state = this.stack.top()!;
-      return state.type === STATE_MAP_KEY;
+      const state = this.stack[this.stack.length - 1]!;
+      return state.type === State.MAP_KEY;
     }
     return false;
   }
@@ -748,18 +609,6 @@ export class Decoder<ContextType = undefined> {
 
   private readI64(): number {
     const value = getInt64(this.view, this.pos);
-    this.pos += 8;
-    return value;
-  }
-
-  private readU64AsBigInt(): bigint {
-    const value = this.view.getBigUint64(this.pos);
-    this.pos += 8;
-    return value;
-  }
-
-  private readI64AsBigInt(): bigint {
-    const value = this.view.getBigInt64(this.pos);
     this.pos += 8;
     return value;
   }

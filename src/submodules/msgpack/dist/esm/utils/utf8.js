@@ -1,3 +1,7 @@
+import { UINT32_MAX } from "./int";
+const TEXT_ENCODING_AVAILABLE = (typeof process === "undefined" || process?.env?.["TEXT_ENCODING"] !== "never") &&
+    typeof TextEncoder !== "undefined" &&
+    typeof TextDecoder !== "undefined";
 export function utf8Count(str) {
     const strLength = str.length;
     let byteLength = 0;
@@ -67,19 +71,19 @@ export function utf8EncodeJs(str, output, outputOffset) {
         output[offset++] = (value & 0x3f) | 0x80;
     }
 }
-const sharedTextEncoder = new TextEncoder();
-const TEXT_ENCODER_THRESHOLD = 50;
-export function utf8EncodeTE(str, output, outputOffset) {
+const sharedTextEncoder = TEXT_ENCODING_AVAILABLE ? new TextEncoder() : undefined;
+export const TEXT_ENCODER_THRESHOLD = !TEXT_ENCODING_AVAILABLE
+    ? UINT32_MAX
+    : typeof process !== "undefined" && process?.env?.["TEXT_ENCODING"] !== "force"
+        ? 200
+        : 0;
+function utf8EncodeTEencode(str, output, outputOffset) {
+    output.set(sharedTextEncoder.encode(str), outputOffset);
+}
+function utf8EncodeTEencodeInto(str, output, outputOffset) {
     sharedTextEncoder.encodeInto(str, output.subarray(outputOffset));
 }
-export function utf8Encode(str, output, outputOffset) {
-    if (str.length > TEXT_ENCODER_THRESHOLD) {
-        utf8EncodeTE(str, output, outputOffset);
-    }
-    else {
-        utf8EncodeJs(str, output, outputOffset);
-    }
-}
+export const utf8EncodeTE = sharedTextEncoder?.encodeInto ? utf8EncodeTEencodeInto : utf8EncodeTEencode;
 const CHUNK_SIZE = 4096;
 export function utf8DecodeJs(bytes, inputOffset, byteLength) {
     let offset = inputOffset;
@@ -125,18 +129,14 @@ export function utf8DecodeJs(bytes, inputOffset, byteLength) {
     }
     return result;
 }
-const sharedTextDecoder = new TextDecoder();
-const TEXT_DECODER_THRESHOLD = 200;
+const sharedTextDecoder = TEXT_ENCODING_AVAILABLE ? new TextDecoder() : null;
+export const TEXT_DECODER_THRESHOLD = !TEXT_ENCODING_AVAILABLE
+    ? UINT32_MAX
+    : typeof process !== "undefined" && process?.env?.["TEXT_DECODER"] !== "force"
+        ? 200
+        : 0;
 export function utf8DecodeTD(bytes, inputOffset, byteLength) {
     const stringBytes = bytes.subarray(inputOffset, inputOffset + byteLength);
     return sharedTextDecoder.decode(stringBytes);
-}
-export function utf8Decode(bytes, inputOffset, byteLength) {
-    if (byteLength > TEXT_DECODER_THRESHOLD) {
-        return utf8DecodeTD(bytes, inputOffset, byteLength);
-    }
-    else {
-        return utf8DecodeJs(bytes, inputOffset, byteLength);
-    }
 }
 //# sourceMappingURL=utf8.js.map

@@ -1,3 +1,30 @@
+const UINT32_MAX = 4294967295;
+function setUint64(view, offset, value) {
+    const high = value / 4294967296;
+    const low = value;
+    view.setUint32(offset, high);
+    view.setUint32(offset + 4, low);
+}
+function setInt64(view, offset, value) {
+    const high = Math.floor(value / 4294967296);
+    const low = value;
+    view.setUint32(offset, high);
+    view.setUint32(offset + 4, low);
+}
+function getInt64(view, offset) {
+    const high = view.getInt32(offset);
+    const low = view.getUint32(offset + 4);
+    return high * 4294967296 + low;
+}
+function getUint64(view, offset) {
+    const high = view.getUint32(offset);
+    const low = view.getUint32(offset + 4);
+    return high * 4294967296 + low;
+}
+
+const TEXT_ENCODING_AVAILABLE = (typeof process === "undefined" || process?.env?.["TEXT_ENCODING"] !== "never") &&
+    typeof TextEncoder !== "undefined" &&
+    typeof TextDecoder !== "undefined";
 function utf8Count(str) {
     const strLength = str.length;
     let byteLength = 0;
@@ -67,19 +94,19 @@ function utf8EncodeJs(str, output, outputOffset) {
         output[offset++] = (value & 0x3f) | 0x80;
     }
 }
-const sharedTextEncoder = new TextEncoder();
-const TEXT_ENCODER_THRESHOLD = 50;
-function utf8EncodeTE(str, output, outputOffset) {
+const sharedTextEncoder = TEXT_ENCODING_AVAILABLE ? new TextEncoder() : undefined;
+const TEXT_ENCODER_THRESHOLD = !TEXT_ENCODING_AVAILABLE
+    ? UINT32_MAX
+    : typeof process !== "undefined" && process?.env?.["TEXT_ENCODING"] !== "force"
+        ? 200
+        : 0;
+function utf8EncodeTEencode(str, output, outputOffset) {
+    output.set(sharedTextEncoder.encode(str), outputOffset);
+}
+function utf8EncodeTEencodeInto(str, output, outputOffset) {
     sharedTextEncoder.encodeInto(str, output.subarray(outputOffset));
 }
-function utf8Encode(str, output, outputOffset) {
-    if (str.length > TEXT_ENCODER_THRESHOLD) {
-        utf8EncodeTE(str, output, outputOffset);
-    }
-    else {
-        utf8EncodeJs(str, output, outputOffset);
-    }
-}
+const utf8EncodeTE = sharedTextEncoder?.encodeInto ? utf8EncodeTEencodeInto : utf8EncodeTEencode;
 const CHUNK_SIZE = 4096;
 function utf8DecodeJs(bytes, inputOffset, byteLength) {
     let offset = inputOffset;
@@ -125,19 +152,15 @@ function utf8DecodeJs(bytes, inputOffset, byteLength) {
     }
     return result;
 }
-const sharedTextDecoder = new TextDecoder();
-const TEXT_DECODER_THRESHOLD = 200;
+const sharedTextDecoder = TEXT_ENCODING_AVAILABLE ? new TextDecoder() : null;
+const TEXT_DECODER_THRESHOLD = !TEXT_ENCODING_AVAILABLE
+    ? UINT32_MAX
+    : typeof process !== "undefined" && process?.env?.["TEXT_DECODER"] !== "force"
+        ? 200
+        : 0;
 function utf8DecodeTD(bytes, inputOffset, byteLength) {
     const stringBytes = bytes.subarray(inputOffset, inputOffset + byteLength);
     return sharedTextDecoder.decode(stringBytes);
-}
-function utf8Decode(bytes, inputOffset, byteLength) {
-    if (byteLength > TEXT_DECODER_THRESHOLD) {
-        return utf8DecodeTD(bytes, inputOffset, byteLength);
-    }
-    else {
-        return utf8DecodeJs(bytes, inputOffset, byteLength);
-    }
 }
 
 class ExtData {
@@ -158,30 +181,6 @@ class DecodeError extends Error {
             value: DecodeError.name,
         });
     }
-}
-
-const UINT32_MAX = 4294967295;
-function setUint64(view, offset, value) {
-    const high = value / 4294967296;
-    const low = value;
-    view.setUint32(offset, high);
-    view.setUint32(offset + 4, low);
-}
-function setInt64(view, offset, value) {
-    const high = Math.floor(value / 4294967296);
-    const low = value;
-    view.setUint32(offset, high);
-    view.setUint32(offset + 4, low);
-}
-function getInt64(view, offset) {
-    const high = view.getInt32(offset);
-    const low = view.getUint32(offset + 4);
-    return high * 4294967296 + low;
-}
-function getUint64(view, offset) {
-    const high = view.getUint32(offset);
-    const low = view.getUint32(offset + 4);
-    return high * 4294967296 + low;
 }
 
 const EXT_TIMESTAMP = -1;
@@ -348,16 +347,15 @@ function createDataView(buffer) {
 const DEFAULT_MAX_DEPTH = 100;
 const DEFAULT_INITIAL_BUFFER_SIZE = 2048;
 class Encoder {
-    constructor(options) {
-        this.extensionCodec = options?.extensionCodec ?? ExtensionCodec.defaultCodec;
-        this.context = options?.context;
-        this.useBigInt64 = options?.useBigInt64 ?? false;
-        this.maxDepth = options?.maxDepth ?? DEFAULT_MAX_DEPTH;
-        this.initialBufferSize = options?.initialBufferSize ?? DEFAULT_INITIAL_BUFFER_SIZE;
-        this.sortKeys = options?.sortKeys ?? false;
-        this.forceFloat32 = options?.forceFloat32 ?? false;
-        this.ignoreUndefined = options?.ignoreUndefined ?? false;
-        this.forceIntegerToFloat = options?.forceIntegerToFloat ?? false;
+    constructor(extensionCodec = ExtensionCodec.defaultCodec, context = undefined, maxDepth = DEFAULT_MAX_DEPTH, initialBufferSize = DEFAULT_INITIAL_BUFFER_SIZE, sortKeys = false, forceFloat32 = false, ignoreUndefined = false, forceIntegerToFloat = false) {
+        this.extensionCodec = extensionCodec;
+        this.context = context;
+        this.maxDepth = maxDepth;
+        this.initialBufferSize = initialBufferSize;
+        this.sortKeys = sortKeys;
+        this.forceFloat32 = forceFloat32;
+        this.ignoreUndefined = ignoreUndefined;
+        this.forceIntegerToFloat = forceIntegerToFloat;
         this.pos = 0;
         this.view = new DataView(new ArrayBuffer(this.initialBufferSize));
         this.bytes = new Uint8Array(this.view.buffer);
@@ -386,18 +384,10 @@ class Encoder {
             this.encodeBoolean(object);
         }
         else if (typeof object === "number") {
-            if (!this.forceIntegerToFloat) {
-                this.encodeNumber(object);
-            }
-            else {
-                this.encodeNumberAsFloat(object);
-            }
+            this.encodeNumber(object);
         }
         else if (typeof object === "string") {
             this.encodeString(object);
-        }
-        else if (this.useBigInt64 && typeof object === "bigint") {
-            this.encodeBigInt64(object);
         }
         else {
             this.encodeObject(object, depth);
@@ -429,7 +419,7 @@ class Encoder {
         }
     }
     encodeNumber(object) {
-        if (!this.forceIntegerToFloat && Number.isSafeInteger(object)) {
+        if (Number.isSafeInteger(object) && !this.forceIntegerToFloat) {
             if (object >= 0) {
                 if (object < 0x80) {
                     this.writeU8(object);
@@ -446,12 +436,9 @@ class Encoder {
                     this.writeU8(0xce);
                     this.writeU32(object);
                 }
-                else if (!this.useBigInt64) {
+                else {
                     this.writeU8(0xcf);
                     this.writeU64(object);
-                }
-                else {
-                    this.encodeNumberAsFloat(object);
                 }
             }
             else {
@@ -470,37 +457,21 @@ class Encoder {
                     this.writeU8(0xd2);
                     this.writeI32(object);
                 }
-                else if (!this.useBigInt64) {
+                else {
                     this.writeU8(0xd3);
                     this.writeI64(object);
-                }
-                else {
-                    this.encodeNumberAsFloat(object);
                 }
             }
         }
         else {
-            this.encodeNumberAsFloat(object);
-        }
-    }
-    encodeNumberAsFloat(object) {
-        if (this.forceFloat32) {
-            this.writeU8(0xca);
-            this.writeF32(object);
-        }
-        else {
-            this.writeU8(0xcb);
-            this.writeF64(object);
-        }
-    }
-    encodeBigInt64(object) {
-        if (object >= BigInt(0)) {
-            this.writeU8(0xcf);
-            this.writeBigUint64(object);
-        }
-        else {
-            this.writeU8(0xd3);
-            this.writeBigInt64(object);
+            if (this.forceFloat32) {
+                this.writeU8(0xca);
+                this.writeF32(object);
+            }
+            else {
+                this.writeU8(0xcb);
+                this.writeF64(object);
+            }
         }
     }
     writeStringHeader(byteLength) {
@@ -525,11 +496,21 @@ class Encoder {
     }
     encodeString(object) {
         const maxHeaderSize = 1 + 4;
-        const byteLength = utf8Count(object);
-        this.ensureBufferSizeToWrite(maxHeaderSize + byteLength);
-        this.writeStringHeader(byteLength);
-        utf8Encode(object, this.bytes, this.pos);
-        this.pos += byteLength;
+        const strLength = object.length;
+        if (strLength > TEXT_ENCODER_THRESHOLD) {
+            const byteLength = utf8Count(object);
+            this.ensureBufferSizeToWrite(maxHeaderSize + byteLength);
+            this.writeStringHeader(byteLength);
+            utf8EncodeTE(object, this.bytes, this.pos);
+            this.pos += byteLength;
+        }
+        else {
+            const byteLength = utf8Count(object);
+            this.ensureBufferSizeToWrite(maxHeaderSize + byteLength);
+            this.writeStringHeader(byteLength);
+            utf8EncodeJs(object, this.bytes, this.pos);
+            this.pos += byteLength;
+        }
     }
     encodeObject(object, depth) {
         const ext = this.extensionCodec.tryToEncode(object, this.context);
@@ -717,20 +698,11 @@ class Encoder {
         setInt64(this.view, this.pos, value);
         this.pos += 8;
     }
-    writeBigUint64(value) {
-        this.ensureBufferSizeToWrite(8);
-        this.view.setBigUint64(this.pos, value);
-        this.pos += 8;
-    }
-    writeBigInt64(value) {
-        this.ensureBufferSizeToWrite(8);
-        this.view.setBigInt64(this.pos, value);
-        this.pos += 8;
-    }
 }
 
-function encode(value, options) {
-    const encoder = new Encoder(options);
+const defaultEncodeOptions = {};
+function encode(value, options = defaultEncodeOptions) {
+    const encoder = new Encoder(options.extensionCodec, options.context, options.maxDepth, options.initialBufferSize, options.sortKeys, options.forceFloat32, options.ignoreUndefined, options.forceIntegerToFloat);
     return encoder.encodeSharedRef(value);
 }
 
@@ -791,115 +763,45 @@ class CachedKeyDecoder {
     }
 }
 
-const STATE_ARRAY = "array";
-const STATE_MAP_KEY = "map_key";
-const STATE_MAP_VALUE = "map_value";
 const isValidMapKeyType = (key) => {
-    return typeof key === "string" || typeof key === "number";
+    const keyType = typeof key;
+    return keyType === "string" || keyType === "number";
 };
-class StackPool {
-    constructor() {
-        this.stack = [];
-        this.stackHeadPosition = -1;
-    }
-    get length() {
-        return this.stackHeadPosition + 1;
-    }
-    top() {
-        return this.stack[this.stackHeadPosition];
-    }
-    pushArrayState(size) {
-        const state = this.getUninitializedStateFromPool();
-        state.type = STATE_ARRAY;
-        state.position = 0;
-        state.size = size;
-        state.array = new Array(size);
-    }
-    pushMapState(size) {
-        const state = this.getUninitializedStateFromPool();
-        state.type = STATE_MAP_KEY;
-        state.readCount = 0;
-        state.size = size;
-        state.map = {};
-    }
-    getUninitializedStateFromPool() {
-        this.stackHeadPosition++;
-        if (this.stackHeadPosition === this.stack.length) {
-            const partialState = {
-                type: undefined,
-                size: 0,
-                array: undefined,
-                position: 0,
-                readCount: 0,
-                map: undefined,
-                key: null,
-            };
-            this.stack.push(partialState);
-        }
-        return this.stack[this.stackHeadPosition];
-    }
-    release(state) {
-        const topStackState = this.stack[this.stackHeadPosition];
-        if (topStackState !== state) {
-            throw new Error("Invalid stack state. Released state is not on top of the stack.");
-        }
-        if (state.type === STATE_ARRAY) {
-            const partialState = state;
-            partialState.size = 0;
-            partialState.array = undefined;
-            partialState.position = 0;
-            partialState.type = undefined;
-        }
-        if (state.type === STATE_MAP_KEY || state.type === STATE_MAP_VALUE) {
-            const partialState = state;
-            partialState.size = 0;
-            partialState.map = undefined;
-            partialState.readCount = 0;
-            partialState.type = undefined;
-        }
-        this.stackHeadPosition--;
-    }
-    reset() {
-        this.stack.length = 0;
-        this.stackHeadPosition = -1;
-    }
-}
 const HEAD_BYTE_REQUIRED = -1;
 const EMPTY_VIEW = new DataView(new ArrayBuffer(0));
 const EMPTY_BYTES = new Uint8Array(EMPTY_VIEW.buffer);
-try {
-    EMPTY_VIEW.getInt8(0);
-}
-catch (e) {
-    if (!(e instanceof RangeError)) {
-        throw new Error("This module is not supported in the current JavaScript engine because DataView does not throw RangeError on out-of-bounds access");
+const DataViewIndexOutOfBoundsError = (() => {
+    try {
+        EMPTY_VIEW.getInt8(0);
     }
-}
-const DataViewIndexOutOfBoundsError = RangeError;
+    catch (e) {
+        return e.constructor;
+    }
+    throw new Error("never reached");
+})();
 const MORE_DATA = new DataViewIndexOutOfBoundsError("Insufficient data");
 const sharedCachedKeyDecoder = new CachedKeyDecoder();
 class Decoder {
-    constructor(options) {
+    constructor(extensionCodec = ExtensionCodec.defaultCodec, context = undefined, maxStrLength = UINT32_MAX, maxBinLength = UINT32_MAX, maxArrayLength = UINT32_MAX, maxMapLength = UINT32_MAX, maxExtLength = UINT32_MAX, keyDecoder = sharedCachedKeyDecoder) {
+        this.extensionCodec = extensionCodec;
+        this.context = context;
+        this.maxStrLength = maxStrLength;
+        this.maxBinLength = maxBinLength;
+        this.maxArrayLength = maxArrayLength;
+        this.maxMapLength = maxMapLength;
+        this.maxExtLength = maxExtLength;
+        this.keyDecoder = keyDecoder;
         this.totalPos = 0;
         this.pos = 0;
         this.view = EMPTY_VIEW;
         this.bytes = EMPTY_BYTES;
         this.headByte = HEAD_BYTE_REQUIRED;
-        this.stack = new StackPool();
-        this.extensionCodec = options?.extensionCodec ?? ExtensionCodec.defaultCodec;
-        this.context = options?.context;
-        this.useBigInt64 = options?.useBigInt64 ?? false;
-        this.maxStrLength = options?.maxStrLength ?? UINT32_MAX;
-        this.maxBinLength = options?.maxBinLength ?? UINT32_MAX;
-        this.maxArrayLength = options?.maxArrayLength ?? UINT32_MAX;
-        this.maxMapLength = options?.maxMapLength ?? UINT32_MAX;
-        this.maxExtLength = options?.maxExtLength ?? UINT32_MAX;
-        this.keyDecoder = options?.keyDecoder !== undefined ? options.keyDecoder : sharedCachedKeyDecoder;
+        this.stack = [];
     }
     reinitializeState() {
         this.totalPos = 0;
         this.headByte = HEAD_BYTE_REQUIRED;
-        this.stack.reset();
+        this.stack.length = 0;
     }
     setBuffer(buffer) {
         this.bytes = ensureUint8Array(buffer);
@@ -1068,12 +970,7 @@ class Decoder {
                 object = this.readU32();
             }
             else if (headByte === 0xcf) {
-                if (this.useBigInt64) {
-                    object = this.readU64AsBigInt();
-                }
-                else {
-                    object = this.readU64();
-                }
+                object = this.readU64();
             }
             else if (headByte === 0xd0) {
                 object = this.readI8();
@@ -1085,12 +982,7 @@ class Decoder {
                 object = this.readI32();
             }
             else if (headByte === 0xd3) {
-                if (this.useBigInt64) {
-                    object = this.readI64AsBigInt();
-                }
-                else {
-                    object = this.readI64();
-                }
+                object = this.readI64();
             }
             else if (headByte === 0xd9) {
                 const byteLength = this.lookU8();
@@ -1193,19 +1085,19 @@ class Decoder {
             this.complete();
             const stack = this.stack;
             while (stack.length > 0) {
-                const state = stack.top();
-                if (state.type === STATE_ARRAY) {
+                const state = stack[stack.length - 1];
+                if (state.type === 0) {
                     state.array[state.position] = object;
                     state.position++;
                     if (state.position === state.size) {
+                        stack.pop();
                         object = state.array;
-                        stack.release(state);
                     }
                     else {
                         continue DECODE;
                     }
                 }
-                else if (state.type === STATE_MAP_KEY) {
+                else if (state.type === 1) {
                     if (!isValidMapKeyType(object)) {
                         throw new DecodeError("The type of key must be string or number but " + typeof object);
                     }
@@ -1213,19 +1105,19 @@ class Decoder {
                         throw new DecodeError("The key __proto__ is not allowed");
                     }
                     state.key = object;
-                    state.type = STATE_MAP_VALUE;
+                    state.type = 2;
                     continue DECODE;
                 }
                 else {
                     state.map[state.key] = object;
                     state.readCount++;
                     if (state.readCount === state.size) {
+                        stack.pop();
                         object = state.map;
-                        stack.release(state);
                     }
                     else {
                         state.key = null;
-                        state.type = STATE_MAP_KEY;
+                        state.type = 1;
                         continue DECODE;
                     }
                 }
@@ -1263,13 +1155,24 @@ class Decoder {
         if (size > this.maxMapLength) {
             throw new DecodeError(`Max length exceeded: map length (${size}) > maxMapLengthLength (${this.maxMapLength})`);
         }
-        this.stack.pushMapState(size);
+        this.stack.push({
+            type: 1,
+            size,
+            key: null,
+            readCount: 0,
+            map: {},
+        });
     }
     pushArrayState(size) {
         if (size > this.maxArrayLength) {
             throw new DecodeError(`Max length exceeded: array length (${size}) > maxArrayLength (${this.maxArrayLength})`);
         }
-        this.stack.pushArrayState(size);
+        this.stack.push({
+            type: 0,
+            size,
+            array: new Array(size),
+            position: 0,
+        });
     }
     decodeUtf8String(byteLength, headerOffset) {
         if (byteLength > this.maxStrLength) {
@@ -1283,16 +1186,19 @@ class Decoder {
         if (this.stateIsMapKey() && this.keyDecoder?.canBeCached(byteLength)) {
             object = this.keyDecoder.decode(this.bytes, offset, byteLength);
         }
+        else if (byteLength > TEXT_DECODER_THRESHOLD) {
+            object = utf8DecodeTD(this.bytes, offset, byteLength);
+        }
         else {
-            object = utf8Decode(this.bytes, offset, byteLength);
+            object = utf8DecodeJs(this.bytes, offset, byteLength);
         }
         this.pos += headerOffset + byteLength;
         return object;
     }
     stateIsMapKey() {
         if (this.stack.length > 0) {
-            const state = this.stack.top();
-            return state.type === STATE_MAP_KEY;
+            const state = this.stack[this.stack.length - 1];
+            return state.type === 1;
         }
         return false;
     }
@@ -1365,16 +1271,6 @@ class Decoder {
         this.pos += 8;
         return value;
     }
-    readU64AsBigInt() {
-        const value = this.view.getBigUint64(this.pos);
-        this.pos += 8;
-        return value;
-    }
-    readI64AsBigInt() {
-        const value = this.view.getBigInt64(this.pos);
-        this.pos += 8;
-        return value;
-    }
     readF32() {
         const value = this.view.getFloat32(this.pos);
         this.pos += 4;
@@ -1387,12 +1283,13 @@ class Decoder {
     }
 }
 
-function decode(buffer, options) {
-    const decoder = new Decoder(options);
+const defaultDecodeOptions = {};
+function decode(buffer, options = defaultDecodeOptions) {
+    const decoder = new Decoder(options.extensionCodec, options.context, options.maxStrLength, options.maxBinLength, options.maxArrayLength, options.maxMapLength, options.maxExtLength);
     return decoder.decode(buffer);
 }
-function decodeMulti(buffer, options) {
-    const decoder = new Decoder(options);
+function decodeMulti(buffer, options = defaultDecodeOptions) {
+    const decoder = new Decoder(options.extensionCodec, options.context, options.maxStrLength, options.maxBinLength, options.maxArrayLength, options.maxMapLength, options.maxExtLength);
     return decoder.decodeMulti(buffer);
 }
 
@@ -1429,22 +1326,24 @@ function ensureAsyncIterable(streamLike) {
     }
 }
 
-async function decodeAsync(streamLike, options) {
+async function decodeAsync(streamLike, options = defaultDecodeOptions) {
     const stream = ensureAsyncIterable(streamLike);
-    const decoder = new Decoder(options);
+    const decoder = new Decoder(options.extensionCodec, options.context, options.maxStrLength, options.maxBinLength, options.maxArrayLength, options.maxMapLength, options.maxExtLength);
     return decoder.decodeAsync(stream);
 }
-function decodeArrayStream(streamLike, options) {
+function decodeArrayStream(streamLike, options = defaultDecodeOptions) {
     const stream = ensureAsyncIterable(streamLike);
-    const decoder = new Decoder(options);
+    const decoder = new Decoder(options.extensionCodec, options.context, options.maxStrLength, options.maxBinLength, options.maxArrayLength, options.maxMapLength, options.maxExtLength);
     return decoder.decodeArrayStream(stream);
 }
-function decodeMultiStream(streamLike, options) {
+function decodeMultiStream(streamLike, options = defaultDecodeOptions) {
     const stream = ensureAsyncIterable(streamLike);
-    const decoder = new Decoder(options);
+    const decoder = new Decoder(options.extensionCodec, options.context, options.maxStrLength, options.maxBinLength, options.maxArrayLength, options.maxMapLength, options.maxExtLength);
     return decoder.decodeStream(stream);
 }
-const decodeStream = undefined;
+function decodeStream(streamLike, options = defaultDecodeOptions) {
+    return decodeMultiStream(streamLike, options);
+}
 
 export { DataViewIndexOutOfBoundsError, DecodeError, Decoder, EXT_TIMESTAMP, Encoder, ExtData, ExtensionCodec, decode, decodeArrayStream, decodeAsync, decodeMulti, decodeMultiStream, decodeStream, decodeTimestampExtension, decodeTimestampToTimeSpec, encode, encodeDateToTimeSpec, encodeTimeSpecToTimestamp, encodeTimestampExtension };
 //# sourceMappingURL=msgpack.js.map

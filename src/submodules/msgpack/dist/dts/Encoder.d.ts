@@ -1,21 +1,9 @@
 import { ExtensionCodecType } from "./ExtensionCodec";
-import type { ContextOf } from "./context";
 export declare const DEFAULT_MAX_DEPTH = 100;
 export declare const DEFAULT_INITIAL_BUFFER_SIZE = 2048;
-export type EncoderOptions<ContextType = undefined> = Partial<Readonly<{
-    extensionCodec: ExtensionCodecType<ContextType>;
-    useBigInt64: boolean;
-    maxDepth: number;
-    initialBufferSize: number;
-    sortKeys: boolean;
-    forceFloat32: boolean;
-    ignoreUndefined: boolean;
-    forceIntegerToFloat: boolean;
-}>> & ContextOf<ContextType>;
 export declare class Encoder<ContextType = undefined> {
     private readonly extensionCodec;
     private readonly context;
-    private readonly useBigInt64;
     private readonly maxDepth;
     private readonly initialBufferSize;
     private readonly sortKeys;
@@ -25,7 +13,7 @@ export declare class Encoder<ContextType = undefined> {
     private pos;
     private view;
     private bytes;
-    constructor(options?: EncoderOptions<ContextType>);
+    constructor(extensionCodec?: ExtensionCodecType<ContextType>, context?: ContextType, maxDepth?: number, initialBufferSize?: number, sortKeys?: boolean, forceFloat32?: boolean, ignoreUndefined?: boolean, forceIntegerToFloat?: boolean);
     private reinitializeState;
     encodeSharedRef(object: unknown): Uint8Array;
     encode(object: unknown): Uint8Array;
@@ -35,8 +23,6 @@ export declare class Encoder<ContextType = undefined> {
     private encodeNil;
     private encodeBoolean;
     private encodeNumber;
-    private encodeNumberAsFloat;
-    private encodeBigInt64;
     private writeStringHeader;
     private encodeString;
     private encodeObject;
@@ -56,6 +42,4 @@ export declare class Encoder<ContextType = undefined> {
     private writeF64;
     private writeU64;
     private writeI64;
-    private writeBigUint64;
-    private writeBigInt64;
 }

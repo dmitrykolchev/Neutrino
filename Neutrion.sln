@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xobex.Components.Server", "
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "msgpack", "src\submodules\msgpack\msgpack.esproj", "{A2BCAC64-6EA9-4616-B5B7-58CA2F5627D2}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "signalr-protocol-msgpack", "src\submodules\signalr-protocol-msgpack\signalr-protocol-msgpack.esproj", "{1F652F04-A3EB-45D8-8694-4AD621672B2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,11 @@ Global
 		{A2BCAC64-6EA9-4616-B5B7-58CA2F5627D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2BCAC64-6EA9-4616-B5B7-58CA2F5627D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2BCAC64-6EA9-4616-B5B7-58CA2F5627D2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1F652F04-A3EB-45D8-8694-4AD621672B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F652F04-A3EB-45D8-8694-4AD621672B2C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1F652F04-A3EB-45D8-8694-4AD621672B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F652F04-A3EB-45D8-8694-4AD621672B2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F652F04-A3EB-45D8-8694-4AD621672B2C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +72,7 @@ Global
 		{6CF56872-6F27-48EF-AE9E-DC10CD162288} = {451B49BB-21A4-4184-8801-AA878A1AAAC7}
 		{BEF49751-C023-4891-8D2C-27913543A2A4} = {451B49BB-21A4-4184-8801-AA878A1AAAC7}
 		{A2BCAC64-6EA9-4616-B5B7-58CA2F5627D2} = {D507D5DD-529D-4F06-9008-9402EB163597}
+		{1F652F04-A3EB-45D8-8694-4AD621672B2C} = {D507D5DD-529D-4F06-9008-9402EB163597}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB655AAD-9761-4D41-A290-85A0E5EAA593}

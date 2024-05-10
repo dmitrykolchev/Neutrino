@@ -1,0 +1,40 @@
+{
+    "name": "signalr-protocol-msgpack",
+    "version": "5.0.0",
+    "description": "custom signalr-protocol-msgpack build",
+    "author": {
+        "name": "Dmitry Kolchev"
+    },
+    "license": "MIT",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "tsc --build && rollup -c && copyfiles -f ./dist/signalr-protocol-msgpack* ../../WebApp/wwwroot/lib/signalr",
+        "clean": "tsc --build --clean"
+    },
+    "dependencies": {
+        "@microsoft/signalr": "^8.0.0",
+        "@msgpack/msgpack": "^2.8.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-alias": "^5.1.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-replace": "^5.0.5",
+        "@rollup/plugin-terser": "^0.4.3",
+        "@rollup/plugin-typescript": "^11.1.2",
+        "@types/node": "20.8.2",
+        "@typescript-eslint/eslint-plugin": "^6.7.4",
+        "@typescript-eslint/parser": "^6.7.4",
+        "copyfiles": "^2.4.1",
+        "eslint": "^8.50.0",
+        "rollup": "^3.28.0",
+        "rollup-plugin-dts": "^5.3.1",
+        "rollup-plugin-filesize": "^10.0.0",
+        "source-map": "^0.7.4",
+        "source-map-loader": "^4.0.1",
+        "ts-loader": "^9.4.4",
+        "tslib": "^2.6.1",
+        "typescript": "^5.2.2",
+        "undici-types": "6.0.1"
+    }
+}

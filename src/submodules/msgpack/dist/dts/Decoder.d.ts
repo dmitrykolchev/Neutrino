@@ -1,21 +1,9 @@
 import { ExtensionCodecType } from "./ExtensionCodec";
 import { KeyDecoder } from "./CachedKeyDecoder";
-import type { ContextOf } from "./context";
-export type DecoderOptions<ContextType = undefined> = Readonly<Partial<{
-    extensionCodec: ExtensionCodecType<ContextType>;
-    useBigInt64: boolean;
-    maxStrLength: number;
-    maxBinLength: number;
-    maxArrayLength: number;
-    maxMapLength: number;
-    maxExtLength: number;
-    keyDecoder: KeyDecoder | null;
-}>> & ContextOf<ContextType>;
-export declare const DataViewIndexOutOfBoundsError: RangeErrorConstructor;
+export declare const DataViewIndexOutOfBoundsError: typeof Error;
 export declare class Decoder<ContextType = undefined> {
     private readonly extensionCodec;
     private readonly context;
-    private readonly useBigInt64;
     private readonly maxStrLength;
     private readonly maxBinLength;
     private readonly maxArrayLength;
@@ -28,7 +16,7 @@ export declare class Decoder<ContextType = undefined> {
     private bytes;
     private headByte;
     private readonly stack;
-    constructor(options?: DecoderOptions<ContextType>);
+    constructor(extensionCodec?: ExtensionCodecType<ContextType>, context?: ContextType, maxStrLength?: number, maxBinLength?: number, maxArrayLength?: number, maxMapLength?: number, maxExtLength?: number, keyDecoder?: KeyDecoder | null);
     private reinitializeState;
     private setBuffer;
     private appendBuffer;
@@ -61,8 +49,6 @@ export declare class Decoder<ContextType = undefined> {
     private readI32;
     private readU64;
     private readI64;
-    private readU64AsBigInt;
-    private readI64AsBigInt;
     private readF32;
     private readF64;
 }

@@ -1,119 +1,49 @@
 import { prettyByte } from "./utils/prettyByte";
 import { ExtensionCodec } from "./ExtensionCodec";
 import { getInt64, getUint64, UINT32_MAX } from "./utils/int";
-import { utf8Decode } from "./utils/utf8";
+import { utf8DecodeJs, TEXT_DECODER_THRESHOLD, utf8DecodeTD } from "./utils/utf8";
 import { createDataView, ensureUint8Array } from "./utils/typedArrays";
 import { CachedKeyDecoder } from "./CachedKeyDecoder";
 import { DecodeError } from "./DecodeError";
-const STATE_ARRAY = "array";
-const STATE_MAP_KEY = "map_key";
-const STATE_MAP_VALUE = "map_value";
 const isValidMapKeyType = (key) => {
-    return typeof key === "string" || typeof key === "number";
+    const keyType = typeof key;
+    return keyType === "string" || keyType === "number";
 };
-class StackPool {
-    constructor() {
-        this.stack = [];
-        this.stackHeadPosition = -1;
-    }
-    get length() {
-        return this.stackHeadPosition + 1;
-    }
-    top() {
-        return this.stack[this.stackHeadPosition];
-    }
-    pushArrayState(size) {
-        const state = this.getUninitializedStateFromPool();
-        state.type = STATE_ARRAY;
-        state.position = 0;
-        state.size = size;
-        state.array = new Array(size);
-    }
-    pushMapState(size) {
-        const state = this.getUninitializedStateFromPool();
-        state.type = STATE_MAP_KEY;
-        state.readCount = 0;
-        state.size = size;
-        state.map = {};
-    }
-    getUninitializedStateFromPool() {
-        this.stackHeadPosition++;
-        if (this.stackHeadPosition === this.stack.length) {
-            const partialState = {
-                type: undefined,
-                size: 0,
-                array: undefined,
-                position: 0,
-                readCount: 0,
-                map: undefined,
-                key: null,
-            };
-            this.stack.push(partialState);
-        }
-        return this.stack[this.stackHeadPosition];
-    }
-    release(state) {
-        const topStackState = this.stack[this.stackHeadPosition];
-        if (topStackState !== state) {
-            throw new Error("Invalid stack state. Released state is not on top of the stack.");
-        }
-        if (state.type === STATE_ARRAY) {
-            const partialState = state;
-            partialState.size = 0;
-            partialState.array = undefined;
-            partialState.position = 0;
-            partialState.type = undefined;
-        }
-        if (state.type === STATE_MAP_KEY || state.type === STATE_MAP_VALUE) {
-            const partialState = state;
-            partialState.size = 0;
-            partialState.map = undefined;
-            partialState.readCount = 0;
-            partialState.type = undefined;
-        }
-        this.stackHeadPosition--;
-    }
-    reset() {
-        this.stack.length = 0;
-        this.stackHeadPosition = -1;
-    }
-}
 const HEAD_BYTE_REQUIRED = -1;
 const EMPTY_VIEW = new DataView(new ArrayBuffer(0));
 const EMPTY_BYTES = new Uint8Array(EMPTY_VIEW.buffer);
-try {
-    EMPTY_VIEW.getInt8(0);
-}
-catch (e) {
-    if (!(e instanceof RangeError)) {
-        throw new Error("This module is not supported in the current JavaScript engine because DataView does not throw RangeError on out-of-bounds access");
+export const DataViewIndexOutOfBoundsError = (() => {
+    try {
+        EMPTY_VIEW.getInt8(0);
     }
-}
-export const DataViewIndexOutOfBoundsError = RangeError;
+    catch (e) {
+        return e.constructor;
+    }
+    throw new Error("never reached");
+})();
 const MORE_DATA = new DataViewIndexOutOfBoundsError("Insufficient data");
 const sharedCachedKeyDecoder = new CachedKeyDecoder();
 export class Decoder {
-    constructor(options) {
+    constructor(extensionCodec = ExtensionCodec.defaultCodec, context = undefined, maxStrLength = UINT32_MAX, maxBinLength = UINT32_MAX, maxArrayLength = UINT32_MAX, maxMapLength = UINT32_MAX, maxExtLength = UINT32_MAX, keyDecoder = sharedCachedKeyDecoder) {
+        this.extensionCodec = extensionCodec;
+        this.context = context;
+        this.maxStrLength = maxStrLength;
+        this.maxBinLength = maxBinLength;
+        this.maxArrayLength = maxArrayLength;
+        this.maxMapLength = maxMapLength;
+        this.maxExtLength = maxExtLength;
+        this.keyDecoder = keyDecoder;
         this.totalPos = 0;
         this.pos = 0;
         this.view = EMPTY_VIEW;
         this.bytes = EMPTY_BYTES;
         this.headByte = HEAD_BYTE_REQUIRED;
-        this.stack = new StackPool();
-        this.extensionCodec = options?.extensionCodec ?? ExtensionCodec.defaultCodec;
-        this.context = options?.context;
-        this.useBigInt64 = options?.useBigInt64 ?? false;
-        this.maxStrLength = options?.maxStrLength ?? UINT32_MAX;
-        this.maxBinLength = options?.maxBinLength ?? UINT32_MAX;
-        this.maxArrayLength = options?.maxArrayLength ?? UINT32_MAX;
-        this.maxMapLength = options?.maxMapLength ?? UINT32_MAX;
-        this.maxExtLength = options?.maxExtLength ?? UINT32_MAX;
-        this.keyDecoder = options?.keyDecoder !== undefined ? options.keyDecoder : sharedCachedKeyDecoder;
+        this.stack = [];
     }
     reinitializeState() {
         this.totalPos = 0;
         this.headByte = HEAD_BYTE_REQUIRED;
-        this.stack.reset();
+        this.stack.length = 0;
     }
     setBuffer(buffer) {
         this.bytes = ensureUint8Array(buffer);
@@ -282,12 +212,7 @@ export class Decoder {
                 object = this.readU32();
             }
             else if (headByte === 0xcf) {
-                if (this.useBigInt64) {
-                    object = this.readU64AsBigInt();
-                }
-                else {
-                    object = this.readU64();
-                }
+                object = this.readU64();
             }
             else if (headByte === 0xd0) {
                 object = this.readI8();
@@ -299,12 +224,7 @@ export class Decoder {
                 object = this.readI32();
             }
             else if (headByte === 0xd3) {
-                if (this.useBigInt64) {
-                    object = this.readI64AsBigInt();
-                }
-                else {
-                    object = this.readI64();
-                }
+                object = this.readI64();
             }
             else if (headByte === 0xd9) {
                 const byteLength = this.lookU8();
@@ -407,19 +327,19 @@ export class Decoder {
             this.complete();
             const stack = this.stack;
             while (stack.length > 0) {
-                const state = stack.top();
-                if (state.type === STATE_ARRAY) {
+                const state = stack[stack.length - 1];
+                if (state.type === 0) {
                     state.array[state.position] = object;
                     state.position++;
                     if (state.position === state.size) {
+                        stack.pop();
                         object = state.array;
-                        stack.release(state);
                     }
                     else {
                         continue DECODE;
                     }
                 }
-                else if (state.type === STATE_MAP_KEY) {
+                else if (state.type === 1) {
                     if (!isValidMapKeyType(object)) {
                         throw new DecodeError("The type of key must be string or number but " + typeof object);
                     }
@@ -427,19 +347,19 @@ export class Decoder {
                         throw new DecodeError("The key __proto__ is not allowed");
                     }
                     state.key = object;
-                    state.type = STATE_MAP_VALUE;
+                    state.type = 2;
                     continue DECODE;
                 }
                 else {
                     state.map[state.key] = object;
                     state.readCount++;
                     if (state.readCount === state.size) {
+                        stack.pop();
                         object = state.map;
-                        stack.release(state);
                     }
                     else {
                         state.key = null;
-                        state.type = STATE_MAP_KEY;
+                        state.type = 1;
                         continue DECODE;
                     }
                 }
@@ -477,13 +397,24 @@ export class Decoder {
         if (size > this.maxMapLength) {
             throw new DecodeError(`Max length exceeded: map length (${size}) > maxMapLengthLength (${this.maxMapLength})`);
         }
-        this.stack.pushMapState(size);
+        this.stack.push({
+            type: 1,
+            size,
+            key: null,
+            readCount: 0,
+            map: {},
+        });
     }
     pushArrayState(size) {
         if (size > this.maxArrayLength) {
             throw new DecodeError(`Max length exceeded: array length (${size}) > maxArrayLength (${this.maxArrayLength})`);
         }
-        this.stack.pushArrayState(size);
+        this.stack.push({
+            type: 0,
+            size,
+            array: new Array(size),
+            position: 0,
+        });
     }
     decodeUtf8String(byteLength, headerOffset) {
         if (byteLength > this.maxStrLength) {
@@ -497,16 +428,19 @@ export class Decoder {
         if (this.stateIsMapKey() && this.keyDecoder?.canBeCached(byteLength)) {
             object = this.keyDecoder.decode(this.bytes, offset, byteLength);
         }
+        else if (byteLength > TEXT_DECODER_THRESHOLD) {
+            object = utf8DecodeTD(this.bytes, offset, byteLength);
+        }
         else {
-            object = utf8Decode(this.bytes, offset, byteLength);
+            object = utf8DecodeJs(this.bytes, offset, byteLength);
         }
         this.pos += headerOffset + byteLength;
         return object;
     }
     stateIsMapKey() {
         if (this.stack.length > 0) {
-            const state = this.stack.top();
-            return state.type === STATE_MAP_KEY;
+            const state = this.stack[this.stack.length - 1];
+            return state.type === 1;
         }
         return false;
     }
@@ -576,16 +510,6 @@ export class Decoder {
     }
     readI64() {
         const value = getInt64(this.view, this.pos);
-        this.pos += 8;
-        return value;
-    }
-    readU64AsBigInt() {
-        const value = this.view.getBigUint64(this.pos);
-        this.pos += 8;
-        return value;
-    }
-    readI64AsBigInt() {
-        const value = this.view.getBigInt64(this.pos);
         this.pos += 8;
         return value;
     }

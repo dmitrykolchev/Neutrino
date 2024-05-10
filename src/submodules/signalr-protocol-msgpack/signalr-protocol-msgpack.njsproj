@@ -1,0 +1,122 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>signalr-protocol-msgpack</Name>
+    <RootNamespace>signalr-protocol-msgpack</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>83c0469f-0c56-41ce-8230-7b055c5ca270</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>
+    </StartupFile>
+    <StartWebBrowser>False</StartWebBrowser>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <EnableTypeScript>true</EnableTypeScript>
+    <StartWebBrowser>false</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="dist\esm\BinaryMessageFormat.js" />
+    <Content Include="dist\esm\BinaryMessageFormat.js.map" />
+    <Content Include="dist\esm\browser-index.js" />
+    <Content Include="dist\esm\browser-index.js.map" />
+    <Content Include="dist\esm\index.js" />
+    <Content Include="dist\esm\index.js.map" />
+    <Content Include="dist\esm\MessagePackHubProtocol.js" />
+    <Content Include="dist\esm\MessagePackHubProtocol.js.map" />
+    <Content Include="dist\esm\MessagePackOptions.js" />
+    <Content Include="dist\esm\MessagePackOptions.js.map" />
+    <Content Include="dist\esm\pkg-version.js" />
+    <Content Include="dist\esm\pkg-version.js.map" />
+    <Content Include="dist\esm\Utils.js" />
+    <Content Include="dist\esm\Utils.js.map" />
+    <Content Include="dist\signalr-protocol-msgpack.d.ts.map" />
+    <Content Include="dist\signalr-protocol-msgpack.js" />
+    <Content Include="dist\signalr-protocol-msgpack.js.map" />
+    <Content Include="dist\signalr-protocol-msgpack.min.js" />
+    <Content Include="dist\signalr-protocol-msgpack.min.js.map" />
+    <Content Include="dist\signalr.d.ts.map" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="rollup.config.js" />
+    <Content Include="src\third-party-notices.txt" />
+    <Content Include="tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="dist\" />
+    <Folder Include="dist\dts\" />
+    <Folder Include="dist\esm\" />
+    <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="dist\dts\BinaryMessageFormat.d.ts" />
+    <TypeScriptCompile Include="dist\dts\browser-index.d.ts" />
+    <TypeScriptCompile Include="dist\dts\index.d.ts" />
+    <TypeScriptCompile Include="dist\dts\MessagePackHubProtocol.d.ts" />
+    <TypeScriptCompile Include="dist\dts\MessagePackOptions.d.ts" />
+    <TypeScriptCompile Include="dist\dts\pkg-version.d.ts" />
+    <TypeScriptCompile Include="dist\dts\Utils.d.ts" />
+    <TypeScriptCompile Include="dist\signalr-protocol-msgpack.d.ts" />
+    <TypeScriptCompile Include="dist\signalr.d.ts" />
+    <TypeScriptCompile Include="src\BinaryMessageFormat.ts" />
+    <TypeScriptCompile Include="src\browser-index.ts" />
+    <TypeScriptCompile Include="src\index.ts" />
+    <TypeScriptCompile Include="src\MessagePackHubProtocol.ts" />
+    <TypeScriptCompile Include="src\MessagePackOptions.ts" />
+    <TypeScriptCompile Include="src\pkg-version.ts" />
+    <TypeScriptCompile Include="src\Utils.ts" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

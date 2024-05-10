@@ -1,20 +1,19 @@
-import { utf8Count, utf8Encode } from "./utils/utf8";
+import { utf8EncodeJs, utf8Count, TEXT_ENCODER_THRESHOLD, utf8EncodeTE } from "./utils/utf8";
 import { ExtensionCodec } from "./ExtensionCodec";
 import { setInt64, setUint64 } from "./utils/int";
 import { ensureUint8Array } from "./utils/typedArrays";
 export const DEFAULT_MAX_DEPTH = 100;
 export const DEFAULT_INITIAL_BUFFER_SIZE = 2048;
 export class Encoder {
-    constructor(options) {
-        this.extensionCodec = options?.extensionCodec ?? ExtensionCodec.defaultCodec;
-        this.context = options?.context;
-        this.useBigInt64 = options?.useBigInt64 ?? false;
-        this.maxDepth = options?.maxDepth ?? DEFAULT_MAX_DEPTH;
-        this.initialBufferSize = options?.initialBufferSize ?? DEFAULT_INITIAL_BUFFER_SIZE;
-        this.sortKeys = options?.sortKeys ?? false;
-        this.forceFloat32 = options?.forceFloat32 ?? false;
-        this.ignoreUndefined = options?.ignoreUndefined ?? false;
-        this.forceIntegerToFloat = options?.forceIntegerToFloat ?? false;
+    constructor(extensionCodec = ExtensionCodec.defaultCodec, context = undefined, maxDepth = DEFAULT_MAX_DEPTH, initialBufferSize = DEFAULT_INITIAL_BUFFER_SIZE, sortKeys = false, forceFloat32 = false, ignoreUndefined = false, forceIntegerToFloat = false) {
+        this.extensionCodec = extensionCodec;
+        this.context = context;
+        this.maxDepth = maxDepth;
+        this.initialBufferSize = initialBufferSize;
+        this.sortKeys = sortKeys;
+        this.forceFloat32 = forceFloat32;
+        this.ignoreUndefined = ignoreUndefined;
+        this.forceIntegerToFloat = forceIntegerToFloat;
         this.pos = 0;
         this.view = new DataView(new ArrayBuffer(this.initialBufferSize));
         this.bytes = new Uint8Array(this.view.buffer);
@@ -43,18 +42,10 @@ export class Encoder {
             this.encodeBoolean(object);
         }
         else if (typeof object === "number") {
-            if (!this.forceIntegerToFloat) {
-                this.encodeNumber(object);
-            }
-            else {
-                this.encodeNumberAsFloat(object);
-            }
+            this.encodeNumber(object);
         }
         else if (typeof object === "string") {
             this.encodeString(object);
-        }
-        else if (this.useBigInt64 && typeof object === "bigint") {
-            this.encodeBigInt64(object);
         }
         else {
             this.encodeObject(object, depth);
@@ -86,7 +77,7 @@ export class Encoder {
         }
     }
     encodeNumber(object) {
-        if (!this.forceIntegerToFloat && Number.isSafeInteger(object)) {
+        if (Number.isSafeInteger(object) && !this.forceIntegerToFloat) {
             if (object >= 0) {
                 if (object < 0x80) {
                     this.writeU8(object);
@@ -103,12 +94,9 @@ export class Encoder {
                     this.writeU8(0xce);
                     this.writeU32(object);
                 }
-                else if (!this.useBigInt64) {
+                else {
                     this.writeU8(0xcf);
                     this.writeU64(object);
-                }
-                else {
-                    this.encodeNumberAsFloat(object);
                 }
             }
             else {
@@ -127,37 +115,21 @@ export class Encoder {
                     this.writeU8(0xd2);
                     this.writeI32(object);
                 }
-                else if (!this.useBigInt64) {
+                else {
                     this.writeU8(0xd3);
                     this.writeI64(object);
-                }
-                else {
-                    this.encodeNumberAsFloat(object);
                 }
             }
         }
         else {
-            this.encodeNumberAsFloat(object);
-        }
-    }
-    encodeNumberAsFloat(object) {
-        if (this.forceFloat32) {
-            this.writeU8(0xca);
-            this.writeF32(object);
-        }
-        else {
-            this.writeU8(0xcb);
-            this.writeF64(object);
-        }
-    }
-    encodeBigInt64(object) {
-        if (object >= BigInt(0)) {
-            this.writeU8(0xcf);
-            this.writeBigUint64(object);
-        }
-        else {
-            this.writeU8(0xd3);
-            this.writeBigInt64(object);
+            if (this.forceFloat32) {
+                this.writeU8(0xca);
+                this.writeF32(object);
+            }
+            else {
+                this.writeU8(0xcb);
+                this.writeF64(object);
+            }
         }
     }
     writeStringHeader(byteLength) {
@@ -182,11 +154,21 @@ export class Encoder {
     }
     encodeString(object) {
         const maxHeaderSize = 1 + 4;
-        const byteLength = utf8Count(object);
-        this.ensureBufferSizeToWrite(maxHeaderSize + byteLength);
-        this.writeStringHeader(byteLength);
-        utf8Encode(object, this.bytes, this.pos);
-        this.pos += byteLength;
+        const strLength = object.length;
+        if (strLength > TEXT_ENCODER_THRESHOLD) {
+            const byteLength = utf8Count(object);
+            this.ensureBufferSizeToWrite(maxHeaderSize + byteLength);
+            this.writeStringHeader(byteLength);
+            utf8EncodeTE(object, this.bytes, this.pos);
+            this.pos += byteLength;
+        }
+        else {
+            const byteLength = utf8Count(object);
+            this.ensureBufferSizeToWrite(maxHeaderSize + byteLength);
+            this.writeStringHeader(byteLength);
+            utf8EncodeJs(object, this.bytes, this.pos);
+            this.pos += byteLength;
+        }
     }
     encodeObject(object, depth) {
         const ext = this.extensionCodec.tryToEncode(object, this.context);
@@ -372,16 +354,6 @@ export class Encoder {
     writeI64(value) {
         this.ensureBufferSizeToWrite(8);
         setInt64(this.view, this.pos, value);
-        this.pos += 8;
-    }
-    writeBigUint64(value) {
-        this.ensureBufferSizeToWrite(8);
-        this.view.setBigUint64(this.pos, value);
-        this.pos += 8;
-    }
-    writeBigInt64(value) {
-        this.ensureBufferSizeToWrite(8);
-        this.view.setBigInt64(this.pos, value);
         this.pos += 8;
     }
 }

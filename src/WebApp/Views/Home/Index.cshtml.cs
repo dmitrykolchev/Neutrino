@@ -1,4 +1,4 @@
-﻿namespace MyFramework.Views.Home;
+﻿namespace WebApp.Views.Home;
 
 public class Index
 {
