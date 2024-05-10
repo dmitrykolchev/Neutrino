@@ -20,12 +20,17 @@ async function initialize() {
         .withUrl("/EventHandlerHub")
         .withHubProtocol(new MessagePackHubProtocol())
         .build();
-    connection.on("RaiseEventCompleted", raiseEventCompleted);
+    connection.on("NotifyCurrentTime", notifyCurrentTime);
     await connection.start();
 }
-let count = 0;
-function raiseEventCompleted(response) {
-    count++;
+function notifyCurrentTime(currentTime) {
+    try {
+        const currentTimeElement = document.getElementById("currentTime");
+        currentTimeElement.innerHTML = currentTime.CurrentTime.toISOString();
+    }
+    catch (ex) {
+        console.log(ex);
+    }
 }
 async function handleClick() {
     const client = new DefaultHttpClient(NullLogger.instance);
@@ -35,7 +40,6 @@ async function handleClick() {
     };
     const response = await client.post("/Home/Index/RaiseEvent", request);
     console.debug(response);
-    count = 0;
     console.time("RaiseEvent");
     for (let index = 0; index < 1000; ++index) {
         await connection.send("RaiseEvent", message);
@@ -47,7 +51,6 @@ async function handleClick() {
         messageResponse = await connection.invoke("RaiseEventWithResponse", message);
     }
     console.debug(messageResponse);
-    console.log(`RaiseEventWithResponse, count: ${count}`);
     console.timeEnd("RaiseEventWithResponse");
 }
 //# sourceMappingURL=Index.cshtml.js.map

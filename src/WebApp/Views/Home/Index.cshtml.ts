@@ -34,13 +34,18 @@ async function initialize(): Promise<void> {
         .withUrl("/EventHandlerHub")
         .withHubProtocol(new MessagePackHubProtocol())
         .build();
-    connection.on("RaiseEventCompleted", raiseEventCompleted)
+    connection.on("NotifyCurrentTime", notifyCurrentTime);
     await connection.start();
 }
 
-let count = 0;
-function raiseEventCompleted(response: string) {
-    count++;
+function notifyCurrentTime(currentTime: { CurrentTime: Date }) {
+    try {
+        const currentTimeElement: HTMLElement = <HTMLElement>document.getElementById("currentTime");
+        currentTimeElement.innerHTML = currentTime.CurrentTime.toISOString();
+    }
+    catch (ex) {
+        console.log(ex);
+    }
 }
 
 async function handleClick() {
@@ -51,8 +56,6 @@ async function handleClick() {
     }
     const response = await client.post("/Home/Index/RaiseEvent", request);
     console.debug(response);
-
-    count = 0;
 
     console.time("RaiseEvent");
     for (let index = 0; index < 1000; ++index) {
@@ -68,6 +71,5 @@ async function handleClick() {
         messageResponse = await connection.invoke("RaiseEventWithResponse", message);
     }
     console.debug(messageResponse);
-    console.log(`RaiseEventWithResponse, count: ${count}`)
     console.timeEnd("RaiseEventWithResponse");
 }

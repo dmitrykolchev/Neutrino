@@ -1,5 +1,6 @@
 using WebApp.Hubs;
 using Serilog;
+using WebApp.Services;
 
 namespace WebApp;
 
@@ -11,7 +12,7 @@ public class Program
             .WriteTo.Console()
             .CreateLogger();
 
-        var builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddLogging((configure) =>
         {
@@ -24,10 +25,9 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-        builder.Services.AddSignalR().AddMessagePackProtocol(options =>
-        {
-            options.SerializerOptions = MessagePack.MessagePackSerializerOptions.Standard;
-        });
+        builder.Services.AddSignalR().AddMessagePackProtocol();
+        builder.Services.AddHostedService<NotificationWorker>();
+
 
         WebApplication app = builder.Build();
 

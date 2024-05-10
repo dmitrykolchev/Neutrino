@@ -3,7 +3,6 @@ import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import dts from 'rollup-plugin-dts';
 import alias from '@rollup/plugin-alias';
-import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 
 const plugins = [

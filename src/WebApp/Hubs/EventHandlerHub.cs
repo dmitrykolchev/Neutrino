@@ -9,10 +9,9 @@ public class EventHandlerHub : Hub
         return Task.CompletedTask;
     }
 
-    public async Task<EventMessage> RaiseEventWithResponse(EventMessage message)
+    public Task<EventMessage> RaiseEventWithResponse(EventMessage message)
     {
-        await Clients.All.SendAsync("RaiseEventCompleted", message);
-        return message;
+        return Task.FromResult(message);
     }
 
     public override Task OnConnectedAsync()
