@@ -1,16 +1,15 @@
-﻿// <copyright file="Program.cs" company="E5">
-// Copyright (c) 2022-23 E5. All rights reserved.
+﻿// <copyright file="Program.cs" company="Division By Zero">
+// Copyright (c) 2024 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System.Linq.Expressions;
 using BenchmarkDotNet.Running;
 using DataStream;
 using MessagePack;
 
 namespace DataStreamBenchmarks;
 
-public enum EmployeeState: short
+public enum EmployeeState : short
 {
     Unknown,
     Active,
@@ -35,7 +34,13 @@ public class Employee
     [Key(nameof(Name))]
     public string? Name { get; set; }
 
-    //public DateOnly DateOfBirth { get; set; }
+    [Key(nameof(DateOfBirth))]
+    public DateTime? DateOfBirth { get; set; }
+
+    [Key(nameof(FireDate))]
+    public DateTime? FireDate { get; set; }
+    [Key(nameof(Avatar))]
+    public byte[]? Avatar { get; set; }
 
     //public DateTime CreatedDate { get; set; }
 }
@@ -43,7 +48,7 @@ public class Employee
 
 internal class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         BenchmarkRunner.Run<Benchmarks>();
 
@@ -51,8 +56,11 @@ internal class Program
         //{
         //    Id = 1,
         //    State = EmployeeState.Active,
-        //    Name = "Dmitry Kolchev"
-        //    //DateOfBirth = new DateOnly(1968, 6, 4),
+        //    Name = "Dmitry Kolchev",
+        //    DateOfBirth = new DateTime(1968, 6, 4),
+        //    FireDate = null,
+        //    Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+        //              10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
         //    //CreatedDate = DateTime.UtcNow
         //};
 

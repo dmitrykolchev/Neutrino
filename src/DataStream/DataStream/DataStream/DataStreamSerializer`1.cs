@@ -42,7 +42,7 @@ public sealed class DataStreamSerializer<TItem>
     {
         DataStreamWriterContext context = new() { Options = _options };
         Action<DataStreamWriter, DataStreamWriterContext, TItem> write = 
-            (Action<DataStreamWriter, DataStreamWriterContext, TItem>)s_resolver.GetOrAddWriter(typeof(TItem));
+            (Action<DataStreamWriter, DataStreamWriterContext, TItem>)s_resolver.GetOrAddWriter(typeof(TItem), context);
         write(writer, context, item);
     }
 
