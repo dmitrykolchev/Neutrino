@@ -47,7 +47,7 @@ dotnet_style_qualification_for_event = false:warning
 # C# files
 [*.cs]
 csharp_prefer_braces = true:suggestion
-file_header_template = <copyright file="{fileName}" company="E5">\nCopyright (c) 2022-23 E5. All rights reserved.\nSee LICENSE in the project root for license information\n</copyright>
+file_header_template = <copyright file="{fileName}" company="Division By Zero">\nCopyright (c) 2024 Dmitry Kolchev. All rights reserved.\nSee LICENSE in the project root for license information\n</copyright>
 
 # New line preferences
 csharp_new_line_before_open_brace = all
@@ -221,6 +221,7 @@ csharp_style_prefer_switch_expression = true:suggestion
 csharp_style_prefer_pattern_matching = true:silent
 csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
+csharp_style_prefer_primary_constructors = true:suggestion
 
 # C++ Files
 [*.{cpp,h,in}]

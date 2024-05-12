@@ -25,4 +25,8 @@
     <TypeScriptCompile Include="Views\Home\Index.cshtml.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 </Project>
