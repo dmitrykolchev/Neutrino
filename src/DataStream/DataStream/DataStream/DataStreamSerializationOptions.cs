@@ -32,4 +32,5 @@ public enum DateTimeSerializationMode
 public class DataStreamSerializationOptions
 {
     public DateTimeSerializationMode DateTimeSerializationMode { get; init; } = DateTimeSerializationMode.Utc;
+    public bool SerializeNulls { get; set; }
 }

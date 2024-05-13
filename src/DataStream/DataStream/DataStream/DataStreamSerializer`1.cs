@@ -1,25 +1,35 @@
-﻿// <copyright file="DataStreamSerializer`1.cs" company="E5">
-// Copyright (c) 2022-23 E5. All rights reserved.
+﻿// <copyright file="DataStreamSerializer`1.cs" company="Division By Zero">
+// Copyright (c) 2024 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System.Text;
-
 namespace DataStream;
+
+public sealed class DataStreamSerializer
+{
+    public static readonly DataStreamSerializationOptions DefaultOptions = new();
+
+    public static DataStreamSerializer<TItem> CreateSerializer<TItem>()
+    {
+        return CreateSerializer<TItem>(DefaultOptions);
+    }
+
+    public static DataStreamSerializer<TItem> CreateSerializer<TItem>(DataStreamSerializationOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        DataStreamSerializer<TItem> serializer = new (options);
+        serializer.Initialize();
+        return serializer;
+    }
+}
 
 public sealed class DataStreamSerializer<TItem>
 {
     private static readonly DataStreamResolver s_resolver = new();
-    public static readonly DataStreamSerializationOptions DefaultOptions = new DataStreamSerializationOptions();
+    private readonly DataStreamSerializationOptions _options;
+    private Action<DataStreamWriter, TItem> _serializeAction = null!;
 
-    private DataStreamSerializationOptions _options;
-
-    public DataStreamSerializer()
-    {
-        _options = DefaultOptions;
-    }
-
-    public DataStreamSerializer(DataStreamSerializationOptions options)
+    internal DataStreamSerializer(DataStreamSerializationOptions options)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
     }
@@ -40,16 +50,12 @@ public sealed class DataStreamSerializer<TItem>
 
     private void SerializeInternal(DataStreamWriter writer, TItem item)
     {
-        DataStreamSerializerContext context = new() { Options = _options };
-        Action<DataStreamWriter, TItem> write = 
-            (Action<DataStreamWriter, TItem>)s_resolver.GetOrAddWriter(typeof(TItem), context);
-        write(writer, item);
+        _serializeAction(writer, item);
     }
-
-    public TItem Deserialize(Stream stream)
+    
+    internal void Initialize()
     {
-        ArgumentNullException.ThrowIfNull(stream);
-
-        throw new NotImplementedException();
+        DataStreamSerializerContext context = new() { Options = _options };
+        _serializeAction = (Action<DataStreamWriter, TItem>)s_resolver.GetOrAddWriter(typeof(TItem), context);
     }
 }

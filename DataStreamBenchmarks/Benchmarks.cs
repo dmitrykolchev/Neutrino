@@ -38,8 +38,20 @@ public class Benchmarks
     public void DataStreamBenchmark()
     {
         using MemoryStream stream = new();
-        DataStreamSerializer<Employee> employeeSerializer = new();
-        employeeSerializer.Serialize(stream, _employee[0]);
+        DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>();
+        serializer.Serialize(stream, _employee[0]);
+    }
+
+    [Benchmark]
+    public void DataStreamSerializeNullsBenchmark()
+    {
+        using MemoryStream stream = new();
+        DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>(
+            new DataStreamSerializationOptions
+            {
+                 SerializeNulls = true
+            });
+        serializer.Serialize(stream, _employee[0]);
     }
 
     [Benchmark]
