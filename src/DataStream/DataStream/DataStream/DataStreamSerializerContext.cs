@@ -5,7 +5,7 @@
 
 namespace DataStream;
 
-public class DataStreamWriterContext
+public class DataStreamSerializerContext
 {
     public required DataStreamSerializationOptions Options { get; init; }
 

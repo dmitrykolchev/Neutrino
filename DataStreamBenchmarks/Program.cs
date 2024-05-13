@@ -17,6 +17,17 @@ public enum EmployeeState : short
 }
 
 [MessagePackObject]
+public class Organization
+{
+    [Key(nameof(Id))]
+    public int Id { get; set; }
+
+    [Key(nameof(Name))]
+    public string? Name { get; set; }
+}
+
+
+[MessagePackObject]
 public class Employee
 {
     [Key(nameof(Id))]
@@ -25,11 +36,17 @@ public class Employee
     [Key(nameof(State))]
     public EmployeeState State { get; set; }
 
+    [Key(nameof(State1))]
+    public Nullable<EmployeeState> State1 { get; set; }
+
     [Key(nameof(OficeWorker))]
     public bool OficeWorker { get; set; }
 
     [Key(nameof(Salary))]
     public double Salary { get; set; }
+
+    [Key(nameof(SalaryDecimal))]
+    public decimal SalaryDecimal { get; set; }
 
     [Key(nameof(Name))]
     public string? Name { get; set; }
@@ -42,7 +59,11 @@ public class Employee
     [Key(nameof(Avatar))]
     public byte[]? Avatar { get; set; }
 
-    //public DateTime CreatedDate { get; set; }
+    [Key(nameof(Organization))]
+    public Organization? Organization { get; set; }
+
+    [Key(nameof(ParentOrganization))]
+    public Organization? ParentOrganization { get; set; }
 }
 
 
@@ -52,35 +73,33 @@ internal class Program
     {
         BenchmarkRunner.Run<Benchmarks>();
 
-        //Employee employee = new()
-        //{
-        //    Id = 1,
-        //    State = EmployeeState.Active,
-        //    Name = "Dmitry Kolchev",
-        //    DateOfBirth = new DateTime(1968, 6, 4),
-        //    FireDate = null,
-        //    Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-        //              10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-        //    //CreatedDate = DateTime.UtcNow
-        //};
+        //TestSerializer();
+    }
 
-        //using (MemoryStream stream = new())
-        //{
-        //    DataStreamSerializer<Employee> employeeSerializer = new();
-        //    employeeSerializer.Serialize(stream, employee);
+    private static void TestSerializer()
+    {
+        Employee employee = new()
+        {
+            Id = 1,
+            State = EmployeeState.Active,
+            Name = "Dmitry Kolchev",
+            DateOfBirth = new DateTime(1968, 6, 4),
+            FireDate = null,
+            Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                      10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+            Organization = new() { Id = 2, Name = "ООО \"Василёк\"" }
+            //CreatedDate = DateTime.UtcNow
+        };
 
-        //    MessagePackSerializer.Serialize<Employee>(stream, employee);
+        using (MemoryStream stream = new())
+        {
+            DataStreamSerializer<Employee> employeeSerializer = new();
+            employeeSerializer.Serialize(stream, employee);
+        }
 
-        //    //    DataStreamSerializer<Employee> employeeSerializer1 = new();
-        //    //    employeeSerializer.Serialize(stream, employee);
-        //}
-
-        //var writerParameter = Expression.Parameter(typeof(DataStreamWriter<Employee>), "writer");
-        //var itemParameter = Expression.Parameter(typeof(Employee), "item");
-
-        //Expression<Action<DataStreamWriter<Employee>, Employee>> expression = Expression.Lambda<Action<DataStreamWriter<Employee>, Employee>>(body, writerParameter, itemParameter);
-
-        //Action<DataStreamWriter<Employee>, Employee> write = expression.Compile();
-        //write(writer, employee);
+        using (MemoryStream stream = new())
+        {
+            MessagePackSerializer.Serialize<Employee>(stream, employee);
+        }
     }
 }

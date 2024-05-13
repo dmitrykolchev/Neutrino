@@ -22,8 +22,10 @@ public enum DataStreemTypeTag : byte
     Single,
     String,
     DateTime,
+    Decimal,
     ArrayOf,
-    Object,
+    StartOfObject,
+    EndOfObject,
     PropertyName,
     PropertyIndex
 }
@@ -40,10 +42,11 @@ public class DataStreamWriter
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WritePropertyName(string propertyName)
+    public void WritePropertyName(byte[] propertyName)
     {
         _stream.WriteByte((byte)DataStreemTypeTag.PropertyName);
-        _writer.Write(propertyName);
+        _writer.Write7BitEncodedInt(propertyName.Length);
+        _stream.Write(propertyName, 0, propertyName.Length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -57,6 +60,18 @@ public class DataStreamWriter
     public void WriteNull()
     {
         _stream.WriteByte((byte)DataStreemTypeTag.Null);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteStartOfObject()
+    {
+        _stream.WriteByte((byte)DataStreemTypeTag.StartOfObject);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteEndOfObject()
+    {
+        _stream.WriteByte((byte)DataStreemTypeTag.EndOfObject);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -107,6 +122,13 @@ public class DataStreamWriter
     {
         _stream.WriteByte((byte)DataStreemTypeTag.Int64);
         _writer.Write7BitEncodedInt64(item);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Write(decimal item)
+    {
+        _stream.WriteByte((byte)DataStreemTypeTag.Decimal);
+        _writer.Write(item);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

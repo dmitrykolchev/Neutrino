@@ -15,7 +15,7 @@ public class DataStreamResolver
     private readonly ConcurrentDictionary<Type, Delegate> _writers = new();
     private readonly ConcurrentDictionary<Type, Delegate> _readers = new();
 
-    public Delegate GetOrAddWriter(Type type, DataStreamWriterContext context)
+    public Delegate GetOrAddWriter(Type type, DataStreamSerializerContext context)
     {
         ArgumentNullException.ThrowIfNull(type);
         if (!_writers.TryGetValue(type, out Delegate? writer))
@@ -31,16 +31,28 @@ public class DataStreamResolver
         throw new NotImplementedException();
     }
 
-    private Delegate CreateWriter(Type type, DataStreamWriterContext context)
+    private Delegate CreateWriter(Type type, DataStreamSerializerContext context)
     {
-        PropertyInfo[] properties = type.GetProperties(
+        var writerParameter = Expression.Parameter(typeof(DataStreamWriter), "writer");
+        var contextParameter = Expression.Parameter(typeof(DataStreamSerializerContext), "context");
+        var itemParameter = Expression.Parameter(type, "item");
+
+        BlockExpression body = GetSerializationExpression(type, itemParameter, writerParameter, context);
+
+        LambdaExpression lambda = Expression.Lambda(body, writerParameter, itemParameter);
+        return lambda.Compile();
+    }
+
+    private BlockExpression GetSerializationExpression(
+        Type itemType,
+        Expression item,
+        ParameterExpression writerParameter,
+        DataStreamSerializerContext context)
+    {
+        PropertyInfo[] properties = itemType.GetProperties(
             BindingFlags.Public |
             BindingFlags.Instance |
             BindingFlags.GetProperty);
-
-        var writerParameter = Expression.Parameter(typeof(DataStreamWriter), "writer");
-        var contextParameter = Expression.Parameter(typeof(DataStreamWriterContext), "context");
-        var itemParameter = Expression.Parameter(type, "item");
 
         List<Expression> expressions = new();
 
@@ -50,66 +62,105 @@ public class DataStreamResolver
 
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
-                if (!context.PropertyNameMap.TryGetValue(property.Name, out int propertyNameIndex))
-                {
-                    propertyNameIndex = context.PropertyNameMap.Count;
-                    context.PropertyNameMap.Add(property.Name, propertyNameIndex);
-                    MethodCallExpression writePropertyNameExpression = Call<DataStreamWriter>(
-                        nameof(DataStreamWriter.WritePropertyName),
-                        [typeof(string)],
-                        writerParameter,
-                        Expression.Constant(property.Name));
-                    expressions.Add(writePropertyNameExpression);
-                }
+                expressions.Add(WritePropertyNameExpression(property, context, writerParameter));
 
-                MethodCallExpression writePropertyIndexExpression = Call<DataStreamWriter>(
-                    nameof(DataStreamWriter.WritePropertyIndex),
-                    [typeof(int)],
-                    writerParameter,
-                    Expression.Constant(propertyNameIndex));
-
-                expressions.Add(writePropertyIndexExpression);
-
-                Expression getPropertyValueExpression = Expression.Property(itemParameter, property.Name);
+                Expression itemPropertyExpression = Expression.Property(item, property.Name);
                 Type propertyType = property.PropertyType;
-                Expression writePropertyValueExpression;
 
-                if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                if (IsScalar(propertyType) || propertyType == typeof(byte[]))
+                {
+                    expressions.Add(WriteScalarPropertyExpression(
+                        writerParameter,
+                        itemPropertyExpression,
+                        propertyType));
+                }
+                else if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     if (IsScalar(propertyType.GetGenericArguments()[0]))
                     {
-                        writePropertyValueExpression = WriteNullableScalarPropertyExpression(
-                            writerParameter,
-                            getPropertyValueExpression,
-                            propertyType);
+                        expressions.Add(Expression.IfThenElse(
+                            Expression.NotEqual(itemPropertyExpression, Expression.Constant(null)),
+                            WriteScalarPropertyExpression(
+                                writerParameter,
+                                Expression.Property(itemPropertyExpression, "Value"),
+                                propertyType.GetGenericArguments()[0]),
+                            Call<DataStreamWriter>(
+                                nameof(DataStreamWriter.WriteNull),
+                                Array.Empty<Type>(),
+                                writerParameter)
+                            ));
                     }
                     else
                     {
                         throw new InvalidOperationException($"cannot serialize {propertyType}");
                     }
-                }
-                else if(IsScalar(propertyType) || propertyType == typeof(byte[]))
-                {
-                    writePropertyValueExpression = WriteScalarPropertyExpression(
-                        writerParameter, 
-                        getPropertyValueExpression, 
-                        propertyType);
+                    //if (IsScalar(propertyType.GetGenericArguments()[0]))
+                    //{
+                    //    expressions.Add(WriteNullableScalarPropertyExpression(
+                    //        writerParameter,
+                    //        itemPropertyExpression,
+                    //        propertyType));
+                    //}
+                    //else
+                    //{
+                    //    throw new InvalidOperationException($"cannot serialize {propertyType}");
+                    //}
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    expressions.Add(Expression.IfThenElse(
+                        Expression.NotEqual(itemPropertyExpression, Expression.Constant(null)),
+                        Expression.Block(
+                            Call<DataStreamWriter>(
+                                nameof(DataStreamWriter.WriteStartOfObject),
+                                Array.Empty<Type>(),
+                                writerParameter),
+                            GetSerializationExpression(
+                                propertyType,
+                                itemPropertyExpression,
+                                writerParameter,
+                                context),
+                            Call<DataStreamWriter>(
+                                nameof(DataStreamWriter.WriteEndOfObject),
+                                Array.Empty<Type>(),
+                                writerParameter)
+                        ),
+                        Call<DataStreamWriter>(
+                            nameof(DataStreamWriter.WriteNull),
+                            Array.Empty<Type>(),
+                            writerParameter)));
                 }
-                expressions.Add(writePropertyValueExpression);
             }
         }
-        BlockExpression body = Expression.Block(expressions);
-        LambdaExpression lambda = Expression.Lambda(body, writerParameter, contextParameter, itemParameter);
-        return lambda.Compile();
+
+        return Expression.Block(expressions);
+    }
+
+    private Expression WritePropertyNameExpression(
+        PropertyInfo property,
+        DataStreamSerializerContext context,
+        Expression writerParameter)
+    {
+        if (!context.PropertyNameMap.TryGetValue(property.Name, out int propertyNameIndex))
+        {
+            propertyNameIndex = context.PropertyNameMap.Count;
+            context.PropertyNameMap.Add(property.Name, propertyNameIndex);
+            return Call<DataStreamWriter>(
+                nameof(DataStreamWriter.WritePropertyName),
+                [typeof(byte[])],
+                writerParameter,
+                Expression.Constant(Encoding.UTF8.GetBytes(property.Name)));
+        }
+        return Call<DataStreamWriter>(
+            nameof(DataStreamWriter.WritePropertyIndex),
+            [typeof(int)],
+            writerParameter,
+            Expression.Constant(propertyNameIndex));
     }
 
     private Expression WriteScalarPropertyExpression(
-        ParameterExpression writerParameter, 
-        Expression getPropertyValueExpression, 
+        ParameterExpression writerParameter,
+        Expression getPropertyValueExpression,
         Type propertyType)
     {
         Expression writePropertyValueExpression;
@@ -129,34 +180,31 @@ public class DataStreamResolver
     }
 
     private Expression WriteNullableScalarPropertyExpression(
-        ParameterExpression writerParameter, 
-        Expression getPropertyValueExpression, 
+        ParameterExpression writerParameter,
+        Expression propertyExpression,
         Type propertyType)
     {
-        Expression writePropertyValueExpression;
         propertyType = propertyType.GetGenericArguments()[0];
-        Expression hasValueExpression = Expression.Property(getPropertyValueExpression, "HasValue");
-        getPropertyValueExpression = Expression.Property(getPropertyValueExpression, "Value");
+        Expression valueExpression = Expression.Property(propertyExpression, "Value");
         if (propertyType.IsEnum)
         {
             propertyType = propertyType.GetEnumUnderlyingType();
-            getPropertyValueExpression = Expression.Convert(
-                getPropertyValueExpression,
+            valueExpression = Expression.Convert(
+                valueExpression,
                 propertyType);
         }
-        writePropertyValueExpression = Expression.IfThenElse(
-            hasValueExpression,
+        return Expression.IfThenElse(
+            Expression.NotEqual(propertyExpression, Expression.Constant(null)),
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.Write),
                 [propertyType],
                 writerParameter,
-                getPropertyValueExpression),
+                valueExpression),
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteNull),
-                [],
+                Array.Empty<Type>(),
                 writerParameter)
         );
-        return writePropertyValueExpression;
     }
 
     private MethodCallExpression Call<T>(
@@ -192,6 +240,7 @@ public class DataStreamResolver
             TypeCode.DateTime or
             TypeCode.Byte or
             TypeCode.Int64 or
+            TypeCode.Decimal or
             TypeCode.Double or
             TypeCode.Single => true,
             _ => false

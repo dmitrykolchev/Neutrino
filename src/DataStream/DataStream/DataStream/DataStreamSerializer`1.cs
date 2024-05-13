@@ -40,10 +40,10 @@ public sealed class DataStreamSerializer<TItem>
 
     private void SerializeInternal(DataStreamWriter writer, TItem item)
     {
-        DataStreamWriterContext context = new() { Options = _options };
-        Action<DataStreamWriter, DataStreamWriterContext, TItem> write = 
-            (Action<DataStreamWriter, DataStreamWriterContext, TItem>)s_resolver.GetOrAddWriter(typeof(TItem), context);
-        write(writer, context, item);
+        DataStreamSerializerContext context = new() { Options = _options };
+        Action<DataStreamWriter, TItem> write = 
+            (Action<DataStreamWriter, TItem>)s_resolver.GetOrAddWriter(typeof(TItem), context);
+        write(writer, item);
     }
 
     public TItem Deserialize(Stream stream)

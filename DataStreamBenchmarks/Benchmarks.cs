@@ -28,8 +28,8 @@ public class Benchmarks
                 Salary = 23423.33,
                 Name = "Dmitry Kolchev",
                 DateOfBirth = new DateTime(1968, 6, 4),
-                FireDate = null
-                //CreatedDate = DateTime.UtcNow
+                FireDate = null,
+                Organization = new() { Id = 2, Name = "ООО \"Василёк\"" }
             };
         }
     }
