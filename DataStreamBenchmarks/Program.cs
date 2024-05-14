@@ -95,16 +95,8 @@ internal class Program
         {
             DataStreamSerializer<Employee> employeeSerializer = DataStreamSerializer.CreateSerializer<Employee>();
             employeeSerializer.Serialize(stream, employee);
-        }
-
-        using (MemoryStream stream = new())
-        {
-            DataStreamSerializer<Employee> employeeSerializer = DataStreamSerializer.CreateSerializer<Employee>(
-                new DataStreamSerializationOptions
-                {
-                    SerializeNulls = true
-                });
-            employeeSerializer.Serialize(stream, employee);
+            stream.Position = 0;
+            var result = employeeSerializer.Deserialize(stream);
         }
 
         using (MemoryStream stream = new())

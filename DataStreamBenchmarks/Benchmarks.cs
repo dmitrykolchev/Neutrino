@@ -35,7 +35,7 @@ public class Benchmarks
     }
 
     [Benchmark]
-    public void DataStreamBenchmark()
+    public void DataStreamSerializeBenchmark()
     {
         using MemoryStream stream = new();
         DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>();
@@ -43,21 +43,28 @@ public class Benchmarks
     }
 
     [Benchmark]
-    public void DataStreamSerializeNullsBenchmark()
-    {
-        using MemoryStream stream = new();
-        DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>(
-            new DataStreamSerializationOptions
-            {
-                 SerializeNulls = true
-            });
-        serializer.Serialize(stream, _employee[0]);
-    }
-
-    [Benchmark]
-    public void MessagePackBenchmark()
+    public void MessagePackSerializeBenchmark()
     {
         using MemoryStream stream = new();
         MessagePackSerializer.Serialize<Employee>(stream, _employee[0]);
+    }
+
+    [Benchmark]
+    public void DataStreamDeserializeBenchmark()
+    {
+        using MemoryStream stream = new();
+        DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>();
+        serializer.Serialize(stream, _employee[0]);
+        stream.Position = 0;
+        Employee result = serializer.Deserialize(stream);
+    }
+
+    [Benchmark]
+    public void MessagePackDeserializeBenchmark()
+    {
+        using MemoryStream stream = new();
+        MessagePackSerializer.Serialize<Employee>(stream, _employee[0]);
+        stream.Position = 0;
+        Employee result = MessagePackSerializer.Deserialize<Employee>(stream);
     }
 }
