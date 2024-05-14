@@ -15,7 +15,7 @@ public class DataStreamResolver
     private readonly ConcurrentDictionary<(Type, bool), Delegate> _writers = new();
     private readonly ConcurrentDictionary<Type, Delegate> _readers = new();
 
-    public Delegate GetOrAddWriter(Type type, DataStreamSerializerContext context)
+    public Delegate GetOrAddSerializer(Type type, DataStreamSerializerContext context)
     {
         ArgumentNullException.ThrowIfNull(type);
         ArgumentNullException.ThrowIfNull(context);
@@ -23,24 +23,48 @@ public class DataStreamResolver
         var key = (type, context.Options.SerializeNulls);
         if (!_writers.TryGetValue(key, out Delegate? writer))
         {
-            writer = _writers.GetOrAdd(key, t => CreateWriter(t.Item1, context));
+            writer = _writers.GetOrAdd(key, t => CreateSerializerWriter(t.Item1, context));
         }
         return writer;
     }
 
-    public DataStreamReader GetOrAddReader(Type type)
+    public Delegate GetOrAddDeserializer(Type type, DataStreamSerializerContext context)
     {
         ArgumentNullException.ThrowIfNull(type);
+        ArgumentNullException.ThrowIfNull(context);
+
+        if (!_readers.TryGetValue(type, out Delegate? reader))
+        {
+            reader = _readers.GetOrAdd(type, t => CreateDeserializerReader(t, context));
+        }
+        return reader;
+    }
+
+    private Delegate CreateDeserializerReader(Type type, DataStreamSerializerContext context)
+    {
+        var readerParameter = Expression.Parameter(typeof(DataStreamReader), "reader");
+
+        Expression body = GetDeserializationExpression(type, readerParameter, context);
+
+        LambdaExpression lambda = Expression.Lambda(body, readerParameter);
+        return lambda.Compile();
+    }
+
+    private Expression GetDeserializationExpression(
+        Type type, 
+        Expression readerExpression, 
+        DataStreamSerializerContext context)
+    {
         throw new NotImplementedException();
     }
 
-    private Delegate CreateWriter(Type type, DataStreamSerializerContext context)
+    private Delegate CreateSerializerWriter(Type type, DataStreamSerializerContext context)
     {
         var writerParameter = Expression.Parameter(typeof(DataStreamWriter), "writer");
-        var contextParameter = Expression.Parameter(typeof(DataStreamSerializerContext), "context");
         var itemParameter = Expression.Parameter(type, "item");
-
-        BlockExpression body = GetSerializationExpression(type, itemParameter, writerParameter, context);
+        
+        Dictionary<string, int> propertyMap = new ();
+        BlockExpression body = GetSerializationExpression(type, itemParameter, writerParameter, context, propertyMap);
 
         LambdaExpression lambda = Expression.Lambda(body, writerParameter, itemParameter);
         return lambda.Compile();
@@ -50,7 +74,8 @@ public class DataStreamResolver
         Type itemType,
         Expression item,
         ParameterExpression writerParameter,
-        DataStreamSerializerContext context)
+        DataStreamSerializerContext context,
+        Dictionary<string,int> propertyMap)
     {
         PropertyInfo[] properties = itemType.GetProperties(
             BindingFlags.Public |
@@ -65,7 +90,10 @@ public class DataStreamResolver
 
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
-                Expression writePropertyNameExpression = WritePropertyNameExpression(property, context, writerParameter);
+                Expression writePropertyNameExpression = WritePropertyNameExpression(
+                    property, 
+                    propertyMap, 
+                    writerParameter);
 
                 Expression itemPropertyExpression = Expression.Property(item, property.Name);
                 Type propertyType = property.PropertyType;
@@ -171,7 +199,8 @@ public class DataStreamResolver
                                             propertyType,
                                             itemPropertyExpression,
                                             writerParameter,
-                                            context),
+                                            context,
+                                            propertyMap),
                                         Call<DataStreamWriter>(
                                             nameof(DataStreamWriter.WriteEndOfObject),
                                             Array.Empty<Type>(),
@@ -196,7 +225,8 @@ public class DataStreamResolver
                                     propertyType,
                                     itemPropertyExpression,
                                     writerParameter,
-                                    context),
+                                    context,
+                                    propertyMap),
                                 Call<DataStreamWriter>(
                                     nameof(DataStreamWriter.WriteEndOfObject),
                                     Array.Empty<Type>(),
@@ -212,13 +242,13 @@ public class DataStreamResolver
 
     private Expression WritePropertyNameExpression(
         PropertyInfo property,
-        DataStreamSerializerContext context,
+        Dictionary<string, int> propertyNameMap,
         Expression writerParameter)
     {
-        if (!context.PropertyNameMap.TryGetValue(property.Name, out int propertyNameIndex))
+        if (!propertyNameMap.TryGetValue(property.Name, out int propertyNameIndex))
         {
-            propertyNameIndex = context.PropertyNameMap.Count;
-            context.PropertyNameMap.Add(property.Name, propertyNameIndex);
+            propertyNameIndex = propertyNameMap.Count;
+            propertyNameMap.Add(property.Name, propertyNameIndex);
             return Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WritePropertyName),
                 [typeof(byte[])],

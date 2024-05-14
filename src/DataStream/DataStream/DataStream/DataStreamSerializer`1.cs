@@ -28,6 +28,7 @@ public sealed class DataStreamSerializer<TItem>
     private static readonly DataStreamResolver s_resolver = new();
     private readonly DataStreamSerializationOptions _options;
     private Action<DataStreamWriter, TItem> _serializeAction = null!;
+    private Func<DataStreamReader, TItem> _deserializeAction = null!;
 
     internal DataStreamSerializer(DataStreamSerializationOptions options)
     {
@@ -48,14 +49,27 @@ public sealed class DataStreamSerializer<TItem>
         SerializeInternal(writer, item);
     }
 
+    public TItem Deserialize(Stream stream)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+        return DeserializeInternal(new DataStreamReader(stream));
+    }
+
+
     private void SerializeInternal(DataStreamWriter writer, TItem item)
     {
         _serializeAction(writer, item);
+    }
+
+    private TItem DeserializeInternal(DataStreamReader reader)
+    {
+        return _deserializeAction(reader);
     }
     
     internal void Initialize()
     {
         DataStreamSerializerContext context = new() { Options = _options };
-        _serializeAction = (Action<DataStreamWriter, TItem>)s_resolver.GetOrAddWriter(typeof(TItem), context);
+        _serializeAction = (Action<DataStreamWriter, TItem>)s_resolver.GetOrAddSerializer(typeof(TItem), context);
+        //_deserializeAction = (Func<DataStreamReader, TItem>)s_resolver.GetOrAddDeserializer(typeof(TItem), context);
     }
 }

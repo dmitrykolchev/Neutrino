@@ -8,6 +8,4 @@ namespace DataStream;
 public class DataStreamSerializerContext
 {
     public required DataStreamSerializationOptions Options { get; init; }
-
-    public Dictionary<string, int> PropertyNameMap { get; } = new();
 }
