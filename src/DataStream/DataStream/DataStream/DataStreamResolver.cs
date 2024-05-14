@@ -41,7 +41,7 @@ public class DataStreamResolver
 
     private Delegate CreateDeserializerReader(Type type, DataStreamSerializerContext context)
     {
-        var readerParameter = Expression.Parameter(typeof(DataStreamReader), "reader");
+        ParameterExpression readerParameter = Expression.Parameter(typeof(DataStreamReader), "reader");
 
         Expression body = GetDeserializationExpression(type, readerParameter, context);
 
@@ -50,8 +50,8 @@ public class DataStreamResolver
     }
 
     private Expression GetDeserializationExpression(
-        Type type, 
-        Expression readerExpression, 
+        Type type,
+        Expression readerExpression,
         DataStreamSerializerContext context)
     {
         throw new NotImplementedException();
@@ -59,10 +59,10 @@ public class DataStreamResolver
 
     private Delegate CreateSerializerWriter(Type type, DataStreamSerializerContext context)
     {
-        var writerParameter = Expression.Parameter(typeof(DataStreamWriter), "writer");
-        var itemParameter = Expression.Parameter(type, "item");
-        
-        Dictionary<string, int> propertyMap = new ();
+        ParameterExpression writerParameter = Expression.Parameter(typeof(DataStreamWriter), "writer");
+        ParameterExpression itemParameter = Expression.Parameter(type, "item");
+
+        Dictionary<string, int> propertyMap = new();
         BlockExpression body = Expression.Block(
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteStartOfStream),
@@ -83,7 +83,7 @@ public class DataStreamResolver
         Expression item,
         ParameterExpression writerParameter,
         DataStreamSerializerContext context,
-        Dictionary<string,int> propertyMap)
+        Dictionary<string, int> propertyMap)
     {
         PropertyInfo[] properties = itemType.GetProperties(
             BindingFlags.Public |
@@ -99,14 +99,14 @@ public class DataStreamResolver
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
                 Expression writePropertyNameExpression = WritePropertyNameExpression(
-                    property, 
-                    propertyMap, 
+                    property,
+                    propertyMap,
                     writerParameter);
 
                 Expression itemPropertyExpression = Expression.Property(item, property.Name);
                 Type propertyType = property.PropertyType;
 
-                if (IsScalar(propertyType))
+                if (IsScalar(propertyType) || propertyType == typeof(Guid))
                 {
                     expressions.Add(Expression.Block(
                         writePropertyNameExpression,
@@ -115,7 +115,7 @@ public class DataStreamResolver
                             itemPropertyExpression,
                             propertyType)));
                 }
-                else if(propertyType == typeof(byte[]))
+                else if (propertyType == typeof(byte[]))
                 {
                     expressions.Add(
                         Expression.Block(
@@ -135,7 +135,8 @@ public class DataStreamResolver
                 }
                 else if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
-                    if (IsScalar(propertyType.GetGenericArguments()[0]))
+                    Type genericArgumentType = propertyType.GetGenericArguments()[0];
+                    if (IsScalar(genericArgumentType) || genericArgumentType == typeof(Guid))
                     {
                         expressions.Add(Expression.Block(
                             writePropertyNameExpression,
@@ -144,7 +145,7 @@ public class DataStreamResolver
                                 WriteScalarPropertyExpression(
                                     writerParameter,
                                     Expression.Property(itemPropertyExpression, "Value"),
-                                    propertyType.GetGenericArguments()[0]
+                                    genericArgumentType
                                 ),
                                 Call<DataStreamWriter>(
                                     nameof(DataStreamWriter.WriteNull),

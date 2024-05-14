@@ -30,6 +30,9 @@ public class Organization
 [MessagePackObject]
 public class Employee
 {
+    [Key(nameof(Gid))]
+    public Guid Gid { get; set; }
+
     [Key(nameof(Id))]
     public int Id { get; set; }
 
@@ -64,6 +67,9 @@ public class Employee
 
     [Key(nameof(ParentOrganization))]
     public Organization? ParentOrganization { get; set; }
+
+    [Key(nameof(CreatedDate))]
+    public DateTime CreatedDate { get; set; }
 }
 
 
@@ -80,6 +86,7 @@ internal class Program
     {
         Employee employee = new()
         {
+            Gid = Guid.NewGuid(),
             Id = 1,
             State = EmployeeState.Active,
             Name = "Dmitry Kolchev",
@@ -87,8 +94,10 @@ internal class Program
             FireDate = null,
             Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                       10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-            Organization = new() { Id = 2, Name = "ООО \"Василёк\"" }
-            //CreatedDate = DateTime.UtcNow
+            Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
+            Salary = 12322.23,
+            SalaryDecimal = 7473737,
+            CreatedDate = DateTime.UtcNow
         };
 
         using (MemoryStream stream = new())

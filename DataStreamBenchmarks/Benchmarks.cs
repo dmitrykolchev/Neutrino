@@ -22,6 +22,7 @@ public class Benchmarks
         {
             _employee[index] = new()
             {
+                Gid = Guid.NewGuid(),
                 Id = 1,
                 State = EmployeeState.Active,
                 OficeWorker = true,
@@ -29,7 +30,9 @@ public class Benchmarks
                 Name = "Dmitry Kolchev",
                 DateOfBirth = new DateTime(1968, 6, 4),
                 FireDate = null,
-                Organization = new() { Id = 2, Name = "ООО \"Василёк\"" }
+                Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
+                SalaryDecimal = 7473737,
+                CreatedDate = DateTime.UtcNow
             };
         }
     }
