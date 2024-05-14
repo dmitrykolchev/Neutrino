@@ -53,7 +53,7 @@ public enum DataStreamElementType : byte
     EnumTypeMask = 0b0001_1111
 }
 
-public class DataStreamWriter
+internal class DataStreamWriter
 {
     private const int MaxArrayPoolRentalSize = 64 * 1024; // try to keep rentals to a reasonable size
 

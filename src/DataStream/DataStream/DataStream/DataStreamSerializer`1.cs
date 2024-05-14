@@ -44,7 +44,7 @@ public sealed class DataStreamSerializer<TItem>
         SerializeInternal(new DataStreamWriter(stream), item);
     }
 
-    public void Serialize(DataStreamWriter writer, TItem item)
+    internal void Serialize(DataStreamWriter writer, TItem item)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(item);
@@ -108,6 +108,7 @@ public sealed class DataStreamSerializer<TItem>
             {
                 return item;
             }
+
             if (index > 1000)
             {
                 throw new InvalidOperationException("too many properties");
@@ -184,21 +185,18 @@ public sealed class DataStreamSerializer<TItem>
 
     private object ReadEnum(DataStreamReader reader)
     {
-        switch (reader.ElementType & DataStreamElementType.EnumTypeMask)
+        return (reader.ElementType & DataStreamElementType.EnumTypeMask) switch
         {
-            case DataStreamElementType.Byte:
-                return reader.ReadByte();
-            case DataStreamElementType.Int16:
-                return reader.ReadInt16();
-            case DataStreamElementType.Int32:
-                return reader.ReadInt32();
-        }
-        throw new FormatException();
+            DataStreamElementType.Byte => reader.ReadByte(),
+            DataStreamElementType.Int16 => reader.ReadInt16(),
+            DataStreamElementType.Int32 => reader.ReadInt32(),
+            _ => throw new FormatException()
+        };
     }
 
     private object ReadArray(DataStreamReader reader)
     {
-        if ((reader.ElementType & DataStreamElementType.EnumTypeMask) == DataStreamElementType.Byte)
+        if ((reader.ElementType & DataStreamElementType.ElementTypeMask) == DataStreamElementType.Byte)
         {
             return reader.ReadBinary();
         }

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace DataStream;
 
-public class DataStreamReader
+internal class DataStreamReader
 {
     private readonly Stream _stream;
     private readonly Encoding _encoding;
