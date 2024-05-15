@@ -77,9 +77,9 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        BenchmarkRunner.Run<Benchmarks>();
+        //BenchmarkRunner.Run<Benchmarks>();
 
-        //TestSerializer();
+        TestSerializer();
     }
 
     private static void TestSerializer()

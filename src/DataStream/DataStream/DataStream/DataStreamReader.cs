@@ -25,6 +25,7 @@ internal class DataStreamReader
         _encoding = Encoding.UTF8;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public DataStreamElementType ReadElementType()
     {
         _elementType = (DataStreamElementType)InternalReadByte();
@@ -52,6 +53,16 @@ internal class DataStreamReader
         {
             throw new FormatException("unexpected tag");
         }
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ReadBoolean()
+    {
+        return ReadElementType() switch
+        {
+            DataStreamElementType.True => true,
+            DataStreamElementType.False => false,
+            _ => throw new FormatException()
+        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

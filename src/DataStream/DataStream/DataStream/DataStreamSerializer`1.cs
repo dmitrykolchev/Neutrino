@@ -3,6 +3,7 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DataStream;
@@ -27,8 +28,11 @@ public sealed class DataStreamSerializer
 
 public sealed class DataStreamSerializer<TItem>
 {
-    private static readonly DataStreamResolver s_resolver = new();
+    private static readonly DataStreamWriterCompiler s_writerCompiler = new();
+    private static readonly DataStreamReaderCompiler s_readerCompiler = new();
+
     private readonly DataStreamSerializationOptions _options;
+
     private Action<DataStreamWriter, TItem> _serializeAction = null!;
     private Func<DataStreamReader, TItem> _deserializeAction = null!;
 
@@ -71,8 +75,9 @@ public sealed class DataStreamSerializer<TItem>
     internal void Initialize()
     {
         DataStreamSerializerContext context = new() { Options = _options };
-        _serializeAction = (Action<DataStreamWriter, TItem>)s_resolver.GetOrAddSerializer(typeof(TItem), context);
-        _deserializeAction = DeserializeAction;
+        _serializeAction = (Action<DataStreamWriter, TItem>)s_writerCompiler.GetOrAdd(typeof(TItem), context);
+        _deserializeAction = (Func<DataStreamReader, TItem>)s_readerCompiler.GetOrAdd(typeof(TItem), context);
+        //_deserializeAction = DeserializeAction;
         //(Func<DataStreamReader, TItem>)s_resolver.GetOrAddDeserializer(typeof(TItem), context);
     }
 
@@ -114,10 +119,9 @@ public sealed class DataStreamSerializer<TItem>
                 throw new InvalidOperationException("too many properties");
             }
 
-            string propertyName = reader.ReadProperty(out int propertyIndex);
+            string propertyName = reader.ReadProperty(out int _);
             PropertyInfo property = properties[propertyName];
             DataStreamElementType valueTypeTag = reader.ReadElementType();
-
             switch (valueTypeTag)
             {
                 case DataStreamElementType.False:

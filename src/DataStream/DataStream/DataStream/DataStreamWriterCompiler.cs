@@ -10,54 +10,23 @@ using System.Text;
 
 namespace DataStream;
 
-public class DataStreamResolver
+internal class DataStreamWriterCompiler: DataStreamCompilerBase
 {
     private readonly ConcurrentDictionary<Type, Delegate> _writers = new();
-    private readonly ConcurrentDictionary<Type, Delegate> _readers = new();
 
-    public Delegate GetOrAddSerializer(Type type, DataStreamSerializerContext context)
+    public Delegate GetOrAdd(Type type, DataStreamSerializerContext context)
     {
         ArgumentNullException.ThrowIfNull(type);
         ArgumentNullException.ThrowIfNull(context);
 
         if (!_writers.TryGetValue(type, out Delegate? writer))
         {
-            writer = _writers.GetOrAdd(type, t => CreateSerializerWriter(t, context));
+            writer = _writers.GetOrAdd(type, t => Create(t, context));
         }
         return writer;
     }
 
-    public Delegate GetOrAddDeserializer(Type type, DataStreamSerializerContext context)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-        ArgumentNullException.ThrowIfNull(context);
-
-        if (!_readers.TryGetValue(type, out Delegate? reader))
-        {
-            reader = _readers.GetOrAdd(type, t => CreateDeserializerReader(t, context));
-        }
-        return reader;
-    }
-
-    private Delegate CreateDeserializerReader(Type type, DataStreamSerializerContext context)
-    {
-        ParameterExpression readerParameter = Expression.Parameter(typeof(DataStreamReader), "reader");
-
-        Expression body = GetDeserializationExpression(type, readerParameter, context);
-
-        LambdaExpression lambda = Expression.Lambda(body, readerParameter);
-        return lambda.Compile();
-    }
-
-    private Expression GetDeserializationExpression(
-        Type type,
-        Expression readerExpression,
-        DataStreamSerializerContext context)
-    {
-        throw new NotImplementedException();
-    }
-
-    private Delegate CreateSerializerWriter(Type type, DataStreamSerializerContext context)
+    private Delegate Create(Type type, DataStreamSerializerContext context)
     {
         ParameterExpression writerParameter = Expression.Parameter(typeof(DataStreamWriter), "writer");
         ParameterExpression itemParameter = Expression.Parameter(type, "item");
@@ -68,7 +37,7 @@ public class DataStreamResolver
                 nameof(DataStreamWriter.WriteStartOfStream),
                 Array.Empty<Type>(),
                 writerParameter),
-            GetSerializationExpression(type, itemParameter, writerParameter, context, propertyMap),
+            GetExpression(type, itemParameter, writerParameter, context, propertyMap),
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteEndOfStream),
                 Array.Empty<Type>(),
@@ -78,7 +47,7 @@ public class DataStreamResolver
         return lambda.Compile();
     }
 
-    private BlockExpression GetSerializationExpression(
+    private BlockExpression GetExpression(
         Type itemType,
         Expression item,
         ParameterExpression writerParameter,
@@ -170,7 +139,7 @@ public class DataStreamResolver
                                         nameof(DataStreamWriter.WriteStartOfObject),
                                         Array.Empty<Type>(),
                                         writerParameter),
-                                    GetSerializationExpression(
+                                    GetExpression(
                                         propertyType,
                                         itemPropertyExpression,
                                         writerParameter,
@@ -244,43 +213,4 @@ public class DataStreamResolver
         return writePropertyValueExpression;
     }
 
-    private MethodCallExpression Call<T>(
-        string methodName,
-        Type[] parameterTypes,
-        Expression? instance,
-        params Expression[] parameters)
-    {
-        MethodInfo? method = typeof(T).GetMethod(
-            methodName,
-            BindingFlags.Public | BindingFlags.Instance,
-            parameterTypes) ?? throw new ArgumentException("undefined method", nameof(methodName));
-        if (instance is null)
-        {
-            return Expression.Call(
-                method,
-                parameters);
-        }
-        return Expression.Call(
-            instance,
-            method,
-            parameters);
-    }
-
-    private bool IsScalar(Type type)
-    {
-        return Type.GetTypeCode(type) switch
-        {
-            TypeCode.Int32 or
-            TypeCode.Int16 or
-            TypeCode.Boolean or
-            TypeCode.String or
-            TypeCode.DateTime or
-            TypeCode.Byte or
-            TypeCode.Int64 or
-            TypeCode.Decimal or
-            TypeCode.Double or
-            TypeCode.Single => true,
-            _ => false
-        };
-    }
 }
