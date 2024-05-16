@@ -12,17 +12,14 @@ internal class PropertyMap
     private readonly Dictionary<string, int> _properties = new();
     private readonly List<int> _propertyIndex = new();
 
-    public void Add(IEnumerable<PropertyInfo> properties)
+    public int Add(string propertyName)
     {
-        foreach (PropertyInfo property in properties)
+        if (!_properties.TryGetValue(propertyName, out int index))
         {
-            Add(property.Name);
+            index = _properties.Count;
+            _properties.Add(propertyName, index);
         }
-    }
-
-    public void Add(string propertyName)
-    {
-        _properties.Add(propertyName, _properties.Count);
+        return index;
     }
 
     public int GetInternalIndex(string propertyName)
@@ -40,5 +37,10 @@ internal class PropertyMap
     public int GetStreamIndex(int propertyIndex)
     {
         return _propertyIndex[propertyIndex];
+    }
+
+    public string? FromStreamIndex(int streamIndex)
+    {
+        return _properties.Where(t => t.Value == _propertyIndex[streamIndex]).Select(t => t.Key).First();
     }
 }

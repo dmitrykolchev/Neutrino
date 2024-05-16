@@ -15,18 +15,29 @@ internal class DataStreamReader
 {
     private readonly Stream _stream;
     private readonly Encoding _encoding;
-    private readonly Dictionary<string, int> _nameToIndex = new();
-    private readonly Dictionary<int, string> _indexToName = new();
-    private readonly PropertyMap _propertyMap = new PropertyMap();
+    private readonly PropertyMap _propertyMap = new();
 
     private DataStreamElementType _elementType;
-    private string? _propertyName;
+    private int _propertyIndex = -1;
 
     public DataStreamReader(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
         _stream = stream ?? throw new ArgumentNullException(nameof(stream));
         _encoding = Encoding.UTF8;
+    }
+
+    public DataStreamElementType ElementType => _elementType;
+
+    public int PropertyIndex => _propertyIndex;
+
+    public string? PropertyName => _propertyMap.FromStreamIndex(PropertyIndex);
+
+    internal PropertyMap PropertyMap => _propertyMap;
+
+    public int Add(string property)
+    {
+        return _propertyMap.Add(property);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -36,36 +47,21 @@ internal class DataStreamReader
         return _elementType;
     }
 
-    public DataStreamElementType ElementType => _elementType;
-
-    public string? PropertyName => _propertyName;
-
-    internal PropertyMap PropertyMap => _propertyMap;
-
-    public string ReadProperty()
-    {
-        return ReadProperty(out _);
-    }
-
-    public string ReadProperty(out int propertyIndex)
+    public int ReadProperty()
     {
         if (ElementType == DataStreamElementType.PropertyIndex)
         {
-            propertyIndex = Read7BitEncodedInt32();
-            _propertyName = _indexToName[propertyIndex];
+            _propertyIndex = PropertyMap.GetStreamIndex(Read7BitEncodedInt32());
         }
         else if (ElementType == DataStreamElementType.PropertyName)
         {
-            _propertyName = ReadStringInternal();
-            propertyIndex = _nameToIndex.Count;
-            _nameToIndex.Add(_propertyName, propertyIndex);
-            _indexToName.Add(propertyIndex, _propertyName);
+            _propertyIndex = PropertyMap.GetStreamIndex(ReadStringInternal());
         }
         else
         {
             throw new FormatException("unexpected tag");
         }
-        return _propertyName;
+        return _propertyIndex;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

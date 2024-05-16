@@ -8,4 +8,6 @@ namespace DataStream;
 public class DataStreamSerializerContext
 {
     public required DataStreamSerializationOptions Options { get; init; }
+
+    internal PropertyMap PropertyMap { get; } = new PropertyMap();
 }

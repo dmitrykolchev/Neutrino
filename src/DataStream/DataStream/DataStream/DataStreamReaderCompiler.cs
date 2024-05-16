@@ -28,7 +28,6 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
     private Delegate Create(Type type, DataStreamSerializerContext context)
     {
-
         ParameterExpression readerParameter = Parameter(typeof(DataStreamReader), "reader");
         Expression body = GetExpression(type, readerParameter, context);
         LambdaExpression lambda = Lambda(body, readerParameter);
@@ -84,18 +83,32 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         Expression newInstance = Assign(result, New(type));
         Expression elementType = Property(reader, nameof(DataStreamReader.ElementType));
 
-        ParameterExpression propertyName = Variable(typeof(string), "propertyName");
+        ParameterExpression propertyIndex = Variable(typeof(int), "propertyIndex");
 
         List<SwitchCase> cases = new();
+        List<Expression> inits = new();
         foreach (PropertyInfo property in properties)
         {
-            Expression switchCaseBody = Assign(
-                Property(result, property.Name),
-                ReadValue(reader, property.PropertyType, context)
-            );
-            cases.Add(SwitchCase(switchCaseBody, Constant(property.Name)));
+            if (property.GetCustomAttribute<IgnoreAttribute>() == null)
+            {
+                inits.Add(
+                    Call<DataStreamReader>(
+                        nameof(DataStreamReader.Add),
+                        [typeof(string)],
+                        reader,
+                        Constant(property.Name)
+                    )
+                );
+                int caseIndex = context.PropertyMap.Add(property.Name);
+
+                Expression switchCaseBody = Assign(
+                    Property(result, property.Name),
+                    ReadValue(reader, property.PropertyType, context)
+                );
+                cases.Add(SwitchCase(switchCaseBody, Constant(caseIndex)));
+            }
         }
-        Expression @switch = Switch(typeof(void), propertyName, null, null, cases.ToArray());
+        Expression @switch = Switch(typeof(void), propertyIndex, null, null, cases.ToArray());
 
         Expression loopBody = Block(
             Read(reader, nameof(DataStreamReader.ReadElementType)),
@@ -106,7 +119,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                 ),
                 Break(breakTarget)
             ),
-            Assign(propertyName, Read(
+            Assign(propertyIndex, Read(
                 reader,
                 nameof(DataStreamReader.ReadProperty))
             ),
@@ -117,8 +130,9 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         Expression loop = Loop(loopBody, breakTarget);
 
         return Block(
-            [result, propertyName],
+            [result, propertyIndex],
             newInstance,
+            Block(typeof(void), inits),
             loop,
             result
         );

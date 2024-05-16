@@ -127,6 +127,7 @@ internal class DataStreamWriter
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(Guid item)
     {
         _stream.WriteByte((byte)DataStreamElementType.Guid);
