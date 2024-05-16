@@ -3,10 +3,7 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System.Buffers;
-using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DataStream;
