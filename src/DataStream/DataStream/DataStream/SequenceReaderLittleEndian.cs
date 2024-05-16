@@ -1,20 +1,19 @@
-﻿// <copyright file="SequenceReader.cs" company="Division By Zero">
+﻿// <copyright file="SequenceReaderLittleEndian.cs" company="Division By Zero">
 // Copyright (c) 2024 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
-using System.Text;
+using System.Runtime.InteropServices;
 
 namespace DataStream;
 
-internal struct SequenceReader
+internal struct SequenceReaderLittleEndian : ISequenceReader
 {
     private readonly ReadOnlyMemory<byte> _data;
     private int _position;
 
-    public SequenceReader(ReadOnlyMemory<byte> data)
+    public SequenceReaderLittleEndian(ReadOnlyMemory<byte> data)
     {
         _data = data;
         _position = 0;
@@ -38,48 +37,42 @@ internal struct SequenceReader
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void ReadExactly(Span<byte> buffer)
+    public short ReadInt16()
     {
-        _data.Slice(_position, buffer.Length).Span.CopyTo(buffer);
-        _position += buffer.Length;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public short ReadInt16BigEndian()
-    {
-        short value = BinaryPrimitives.ReadInt16BigEndian(_data.Slice(_position, sizeof(short)).Span);
+        var span = _data.Slice(_position, sizeof(short)).Span;
+        short value = MemoryMarshal.Read<short>(span);
         _position += sizeof(short);
         return value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int ReadInt32BigEndian()
+    public int ReadInt32()
     {
-        int value = BinaryPrimitives.ReadInt32BigEndian(_data.Slice(_position, sizeof(int)).Span);
+        int value = MemoryMarshal.Read<int>(_data.Slice(_position, sizeof(int)).Span);
         _position += sizeof(int);
         return value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public long ReadInt64BigEndian()
+    public long ReadInt64()
     {
-        long value = BinaryPrimitives.ReadInt64BigEndian(_data.Slice(_position, sizeof(long)).Span);
+        long value = MemoryMarshal.Read<long>(_data.Slice(_position, sizeof(long)).Span);
         _position += sizeof(long);
         return value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double ReadDoubleBigEndian()
+    public double ReadDouble()
     {
-        double value = BinaryPrimitives.ReadDoubleBigEndian(_data.Slice(_position, sizeof(double)).Span);
+        double value = MemoryMarshal.Read<double>(_data.Slice(_position, sizeof(double)).Span);
         _position += sizeof(double);
         return value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float ReadSingleBigEndian()
+    public float ReadSingle()
     {
-        float value = BinaryPrimitives.ReadSingleBigEndian(_data.Slice(_position, sizeof(float)).Span);
+        float value = MemoryMarshal.Read<float>(_data.Slice(_position, sizeof(float)).Span);
         _position += sizeof(float);
         return value;
     }
@@ -87,7 +80,7 @@ internal struct SequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Guid ReadGuid()
     {
-        Guid value = new Guid(_data.Slice(_position, 16).Span, true);
+        Guid value = new(_data.Slice(_position, 16).Span, true);
         _position += 16;
         return value;
     }
@@ -96,10 +89,10 @@ internal struct SequenceReader
     public decimal ReadDecimal()
     {
         Span<int> data = stackalloc int[4];
-        data[0] = ReadInt32BigEndian();
-        data[1] = ReadInt32BigEndian();
-        data[2] = ReadInt32BigEndian();
-        data[3] = ReadInt32BigEndian();
+        data[0] = ReadInt32();
+        data[1] = ReadInt32();
+        data[2] = ReadInt32();
+        data[3] = ReadInt32();
         return new decimal(data);
     }
 
@@ -107,7 +100,7 @@ internal struct SequenceReader
     public string ReadString()
     {
         int length = Read7BitEncodedInt32();
-        string value = Encoding.UTF8.GetString(_data.Slice(_position, length).Span);
+        string value = DataStreamSerializer.UTF8.GetString(_data.Slice(_position, length).Span);
         _position += length;
         return value;
     }

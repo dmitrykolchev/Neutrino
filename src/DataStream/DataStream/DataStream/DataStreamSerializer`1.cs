@@ -3,11 +3,14 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Text;
+
 namespace DataStream;
 
 public sealed class DataStreamSerializer
 {
     public static readonly DataStreamSerializationOptions DefaultOptions = new();
+    internal static readonly Encoding UTF8 = new UTF8Encoding(false);
 
     public static DataStreamSerializer<TItem> CreateSerializer<TItem>()
     {
@@ -32,10 +35,12 @@ public sealed class DataStreamSerializer<TItem>
 
     private Action<DataStreamWriter, TItem> _serializeAction = null!;
     private Func<DataStreamReader, TItem> _deserializeAction = null!;
+    private DataStreamSerializerContext _context;
 
     internal DataStreamSerializer(DataStreamSerializationOptions options)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
+        _context = new() { Options = options };
     }
 
     public void Serialize(Stream stream, TItem item)
@@ -59,7 +64,9 @@ public sealed class DataStreamSerializer<TItem>
         {
             return DeserializeInternal(
                 new DataStreamReader(
-                    new SequenceReader(buffer.AsMemory(checked((int)stream.Position)))
+                    BitConverter.IsLittleEndian 
+                        ? new SequenceReaderLittleEndian(buffer.AsMemory(checked((int)stream.Position)))
+                        : throw new InvalidOperationException()
                 ));
         }
         throw new NotImplementedException();
@@ -79,8 +86,7 @@ public sealed class DataStreamSerializer<TItem>
 
     internal void Initialize()
     {
-        DataStreamSerializerContext context = new() { Options = _options };
-        _serializeAction = (Action<DataStreamWriter, TItem>)s_writerCompiler.GetOrAdd(typeof(TItem), context);
-        _deserializeAction = (Func<DataStreamReader, TItem>)s_readerCompiler.GetOrAdd(typeof(TItem), context);
+        _serializeAction = (Action<DataStreamWriter, TItem>)s_writerCompiler.GetOrAdd(typeof(TItem), _context);
+        _deserializeAction = (Func<DataStreamReader, TItem>)s_readerCompiler.GetOrAdd(typeof(TItem), _context);
     }
 }

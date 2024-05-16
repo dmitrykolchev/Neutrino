@@ -58,12 +58,10 @@ internal class DataStreamWriter
     private const int MaxArrayPoolRentalSize = 64 * 1024; // try to keep rentals to a reasonable size
 
     private readonly Stream _stream;
-    private readonly Encoding _encoding;
 
     public DataStreamWriter(Stream stream)
     {
         _stream = stream ?? throw new ArgumentNullException(nameof(stream));
-        _encoding = Encoding.UTF8;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -159,7 +157,7 @@ internal class DataStreamWriter
     {
         _stream.WriteByte((byte)(DataStreamElementType.Int16 | DataStreamElementType.Enum));
         Span<byte> buffer = stackalloc byte[sizeof(short)];
-        BinaryPrimitives.WriteInt16BigEndian(buffer, item);
+        BinaryPrimitives.WriteInt16LittleEndian(buffer, item);
         _stream.Write(buffer);
     }
 
@@ -184,7 +182,7 @@ internal class DataStreamWriter
     {
         _stream.WriteByte((byte)DataStreamElementType.Int16);
         Span<byte> buffer = stackalloc byte[sizeof(short)];
-        BinaryPrimitives.WriteInt16BigEndian(buffer, item);
+        BinaryPrimitives.WriteInt16LittleEndian(buffer, item);
         _stream.Write(buffer);
     }
 
@@ -209,13 +207,13 @@ internal class DataStreamWriter
         Span<int> data = stackalloc int[4];
         decimal.GetBits(item, data);
         Span<byte> buffer = stackalloc byte[sizeof(int)];
-        BinaryPrimitives.WriteInt32BigEndian(buffer, data[0]);
+        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[0]);
         _stream.Write(buffer);
-        BinaryPrimitives.WriteInt32BigEndian(buffer, data[1]);
+        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[1]);
         _stream.Write(buffer);
-        BinaryPrimitives.WriteInt32BigEndian(buffer, data[2]);
+        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[2]);
         _stream.Write(buffer);
-        BinaryPrimitives.WriteInt32BigEndian(buffer, data[3]);
+        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[3]);
         _stream.Write(buffer);
     }
 
@@ -224,7 +222,7 @@ internal class DataStreamWriter
     {
         _stream.WriteByte((byte)DataStreamElementType.Double);
         Span<byte> buffer = stackalloc byte[sizeof(double)];
-        BinaryPrimitives.WriteDoubleBigEndian(buffer, item);
+        BinaryPrimitives.WriteDoubleLittleEndian(buffer, item);
         _stream.Write(buffer);
     }
 
@@ -233,7 +231,7 @@ internal class DataStreamWriter
     {
         _stream.WriteByte((byte)DataStreamElementType.Single);
         Span<byte> buffer = stackalloc byte[sizeof(float)];
-        BinaryPrimitives.WriteSingleBigEndian(buffer, item);
+        BinaryPrimitives.WriteSingleLittleEndian(buffer, item);
         _stream.Write(buffer);
     }
 
@@ -242,7 +240,7 @@ internal class DataStreamWriter
     {
         _stream.WriteByte((byte)DataStreamElementType.DateTime);
         Span<byte> buffer = stackalloc byte[sizeof(long)];
-        BinaryPrimitives.WriteInt64BigEndian(buffer, item.ToBinary());
+        BinaryPrimitives.WriteInt64LittleEndian(buffer, item.ToBinary());
         _stream.Write(buffer);
     }
 
@@ -260,28 +258,28 @@ internal class DataStreamWriter
             {
                 // Max expansion: each char -> 3 bytes, so 127 bytes max of data, +1 for length prefix
                 Span<byte> buffer = stackalloc byte[128];
-                int actualByteCount = _encoding.GetBytes(value, buffer.Slice(1));
+                int actualByteCount = DataStreamSerializer.UTF8.GetBytes(value, buffer.Slice(1));
                 buffer[0] = (byte)actualByteCount; // bypass call to Write7BitEncodedInt
                 _stream.Write(buffer.Slice(0, actualByteCount + 1 /* length prefix */));
             }
             else if (value.Length <= MaxArrayPoolRentalSize / 3)
             {
                 byte[] rented = ArrayPool<byte>.Shared.Rent(value.Length * 3); // max expansion: each char -> 3 bytes
-                int actualByteCount = _encoding.GetBytes(value, rented);
+                int actualByteCount = DataStreamSerializer.UTF8.GetBytes(value, rented);
                 Write7BitEncodedInt(actualByteCount);
                 _stream.Write(rented, 0, actualByteCount);
                 ArrayPool<byte>.Shared.Return(rented);
             }
             else
             {
-                int actualBytecount = _encoding.GetByteCount(value);
+                int actualBytecount = DataStreamSerializer.UTF8.GetByteCount(value);
                 Write7BitEncodedInt(actualBytecount);
                 // We're dealing with an enormous amount of data, so acquire an Encoder.
                 // It should be rare that callers pass sufficiently large inputs to hit
                 // this code path, and the cost of the operation is dominated by the transcoding
                 // step anyway, so it's ok for us to take the allocation here.
                 byte[] rented = ArrayPool<byte>.Shared.Rent(MaxArrayPoolRentalSize);
-                Encoder encoder = _encoding.GetEncoder();
+                Encoder encoder = DataStreamSerializer.UTF8.GetEncoder();
                 bool completed;
 
                 ReadOnlySpan<char> chars = value;

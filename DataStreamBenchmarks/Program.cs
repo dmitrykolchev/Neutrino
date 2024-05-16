@@ -80,12 +80,14 @@ internal class Program
 #if RELEASE
         BenchmarkRunner.Run<Benchmarks>();
 #else
+        DataStreamSerializer.CreateSerializer<Employee>();
         TestSerializer();
 #endif
     }
 
     private static void TestSerializer()
     {
+        Console.WriteLine($"LittleEndian = {BitConverter.IsLittleEndian}");
         Employee employee = new()
         {
             Gid = Guid.NewGuid(),

@@ -10,18 +10,16 @@ namespace DataStream;
 
 internal class DataStreamReader
 {
-    private SequenceReader _sequence;
-    private readonly Encoding _encoding;
+    private ISequenceReader _reader;
     private readonly PropertyMap _propertyMap = new();
 
     private DataStreamElementType _elementType;
     private int _propertyIndex = -1;
 
-    public DataStreamReader(SequenceReader sequence)
+    public DataStreamReader(SequenceReaderLittleEndian sequence)
     {
         ArgumentNullException.ThrowIfNull(sequence);
-        _sequence = sequence;
-        _encoding = Encoding.UTF8;
+        _reader = sequence;
     }
 
     public DataStreamElementType ElementType => _elementType;
@@ -40,19 +38,19 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public DataStreamElementType ReadElementType()
     {
-        _elementType = (DataStreamElementType)_sequence.ReadByte();
+        _elementType = (DataStreamElementType)_reader.ReadByte();
         return _elementType;
     }
 
     public int ReadProperty()
     {
-        if (ElementType == DataStreamElementType.PropertyIndex)
+        if (_elementType == DataStreamElementType.PropertyIndex)
         {
-            _propertyIndex = PropertyMap.GetStreamIndex(_sequence.Read7BitEncodedInt32());
+            _propertyIndex = PropertyMap.GetStreamIndex(_reader.Read7BitEncodedInt32());
         }
-        else if (ElementType == DataStreamElementType.PropertyName)
+        else if (_elementType == DataStreamElementType.PropertyName)
         {
-            _propertyIndex = PropertyMap.GetStreamIndex(_sequence.ReadString());
+            _propertyIndex = PropertyMap.GetStreamIndex(_reader.ReadString());
         }
         else
         {
@@ -64,7 +62,7 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool ReadBoolean()
     {
-        return ElementType switch
+        return _elementType switch
         {
             DataStreamElementType.True => true,
             DataStreamElementType.False => false,
@@ -75,117 +73,114 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
     {
-        if (ElementType != DataStreamElementType.Byte &&
-            ElementType != (DataStreamElementType.Enum | DataStreamElementType.Byte))
+        if ((_elementType & DataStreamElementType.EnumTypeMask) != DataStreamElementType.Byte)
         {
             throw new FormatException();
         }
-        return _sequence.ReadByte();
+        return _reader.ReadByte();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt16()
     {
-        if (ElementType != DataStreamElementType.Int16 &&
-            ElementType != (DataStreamElementType.Enum | DataStreamElementType.Int16))
+        if ((_elementType & DataStreamElementType.EnumTypeMask) != DataStreamElementType.Int16)
         {
             throw new FormatException();
         }
-        return _sequence.ReadInt16BigEndian();
+        return _reader.ReadInt16();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt32()
     {
-        if (ElementType != DataStreamElementType.Int32 &&
-            ElementType != (DataStreamElementType.Enum | DataStreamElementType.Int32))
+        if ((_elementType & DataStreamElementType.EnumTypeMask) != DataStreamElementType.Int32)
         {
             throw new FormatException();
         }
-        return _sequence.Read7BitEncodedInt32();
+        return _reader.Read7BitEncodedInt32();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long ReadInt64()
     {
-        if (ElementType != DataStreamElementType.Int64)
+        if ((_elementType & DataStreamElementType.EnumTypeMask) != DataStreamElementType.Int64)
         {
             throw new FormatException();
         }
-        return _sequence.Read7BitEncodedInt64();
+        return _reader.Read7BitEncodedInt64();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ReadDouble()
     {
-        if (ElementType != DataStreamElementType.Double)
+        if (_elementType != DataStreamElementType.Double)
         {
             throw new FormatException();
         }
-        return _sequence.ReadDoubleBigEndian();
+        return _reader.ReadDouble();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ReadSingle()
     {
-        if (ElementType != DataStreamElementType.Single)
+        if (_elementType != DataStreamElementType.Single)
         {
             throw new FormatException();
         }
-        return _sequence.ReadSingleBigEndian();
+        return _reader.ReadSingle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public DateTime ReadDateTime()
     {
-        if (ElementType != DataStreamElementType.DateTime)
+        if (_elementType != DataStreamElementType.DateTime)
         {
             throw new FormatException();
         }
-        long value = _sequence.ReadInt64BigEndian();
+        long value = _reader.ReadInt64();
         return DateTime.FromBinary(value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Guid ReadGuid()
     {
-        if (ElementType != DataStreamElementType.Guid)
+        if (_elementType != DataStreamElementType.Guid)
         {
             throw new FormatException();
         }
-        return _sequence.ReadGuid();
+        return _reader.ReadGuid();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public decimal ReadDecimal()
     {
-        if (ElementType != DataStreamElementType.Decimal)
+        if (_elementType != DataStreamElementType.Decimal)
         {
             throw new FormatException();
         }
-        return _sequence.ReadDecimal();
+        return _reader.ReadDecimal();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte[] ReadBinary()
     {
-        if (ElementType != (DataStreamElementType.ArrayOf | DataStreamElementType.Byte))
+        if (_elementType != (DataStreamElementType.ArrayOf | DataStreamElementType.Byte))
         {
             throw new FormatException();
         }
-        int length = _sequence.Read7BitEncodedInt32();
+        int length = _reader.Read7BitEncodedInt32();
         byte[] buffer = new byte[length];
-        _sequence.Read(buffer, 0, length);
+        _reader.Read(buffer, 0, length);
         return buffer;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ReadString()
     {
-        if (ElementType != DataStreamElementType.String)
+        if (_elementType != DataStreamElementType.String)
         {
             throw new FormatException();
         }
-        return _sequence.ReadString();
+        return _reader.ReadString();
     }
 }

@@ -52,7 +52,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
         Expression readObject = Assign(
             result,
-            ReadObjectExpression(type, reader, context)
+            ReadObjectExpression(type, reader, context, true)
         );
 
         Expression checkEndOfStream = IfThen(
@@ -73,7 +73,8 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
     private Expression ReadObjectExpression(
         Type type,
         ParameterExpression reader,
-        DataStreamSerializerContext context)
+        DataStreamSerializerContext context,
+        bool root)
     {
         PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
 
@@ -108,15 +109,20 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                 cases.Add(SwitchCase(switchCaseBody, Constant(caseIndex)));
             }
         }
-        Expression @switch = Switch(typeof(void), propertyIndex, null, null, cases.ToArray());
+        Expression @switch = Switch(
+            typeof(void), 
+            propertyIndex, 
+            Throw(New(typeof(FormatException))), 
+            null, 
+            cases);
+
+        var readElementType = Read(reader, nameof(DataStreamReader.ReadElementType));
 
         Expression loopBody = Block(
-            Read(reader, nameof(DataStreamReader.ReadElementType)),
             IfThen(
-                OrElse(
-                    Equal(elementType, Constant(DataStreamElementType.EndOfStream)),
-                    Equal(elementType, Constant(DataStreamElementType.EndOfObject))
-                ),
+                root 
+                    ? Equal(readElementType, Constant(DataStreamElementType.EndOfStream))
+                    : Equal(readElementType, Constant(DataStreamElementType.EndOfObject)),
                 Break(breakTarget)
             ),
             Assign(propertyIndex, Read(
@@ -172,7 +178,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                         NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.StartOfObject)),
                         Throw(New(typeof(FormatException)))
                     ),
-                    Assign(objectResult, ReadObjectExpression(valueType, reader, context)),
+                    Assign(objectResult, ReadObjectExpression(valueType, reader, context, false)),
                     IfThen(
                         NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.EndOfObject)),
                         Throw(New(typeof(FormatException)))
