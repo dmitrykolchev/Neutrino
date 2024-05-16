@@ -39,14 +39,14 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
     private Expression GetExpression(
         Type type,
-        Expression readerExpression,
+        ParameterExpression reader,
         DataStreamSerializerContext context)
     {
-        Expression readElementType = Read(readerExpression, nameof(DataStreamReader.ReadElementType));
+        Expression readElementType = Read(reader, nameof(DataStreamReader.ReadElementType));
 
         ParameterExpression result = Variable(type, "root");
 
-        Expression elementType = Property(readerExpression, nameof(DataStreamReader.ElementType));
+        Expression elementType = Property(reader, nameof(DataStreamReader.ElementType));
 
         Expression checkStartOfStream = IfThen(
                 NotEqual(elementType, Constant(DataStreamElementType.StartOfStream)),
@@ -55,7 +55,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
         Expression readObject = Assign(
             result,
-            ReadObjectExpression(type, readerExpression, context)
+            ReadObjectExpression(type, reader, context)
         );
 
         Expression checkEndOfStream = IfThen(
@@ -75,58 +75,100 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
     private Expression ReadObjectExpression(
         Type type,
-        Expression readerExpression,
+        ParameterExpression reader,
         DataStreamSerializerContext context)
     {
         PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
 
+        LabelTarget breakTarget = Label("loopBreak");
+
         ParameterExpression result = Variable(type, "inner");
         Expression newInstance = Assign(result, New(type));
-        Expression readElementType = Read(readerExpression, nameof(DataStreamReader.ReadElementType));
-        Expression elementType = Property(readerExpression, nameof(DataStreamReader.ElementType));
+        Expression elementType = Property(reader, nameof(DataStreamReader.ElementType));
 
-        Expression checkEndOfObject = IfThen(
-                AndAlso(
-                    NotEqual(elementType, Constant(DataStreamElementType.EndOfStream)),
-                    NotEqual(elementType, Constant(DataStreamElementType.EndOfObject))
-                ),
-                Throw(New(typeof(FormatException)))
-            );
-        
-        Expression propertyName = Variable(typeof(string), "propertyName");
-        Expression readRropertyName = Assign(propertyName, Read(
-            readerExpression,
-            nameof(DataStreamReader.ReadProperty)));
+        ParameterExpression propertyName = Variable(typeof(string), "propertyName");
 
         List<SwitchCase> cases = new();
         foreach (PropertyInfo property in properties)
         {
-            Expression left = Property(result, property.Name);
-            Expression right = ReadValue(readerExpression, property.PropertyType);
-            Expression propertyReadAndAssign = Assign(left, right);
-            cases.Add(SwitchCase(propertyReadAndAssign, Constant(property.Name)));
+            Expression switchCaseBody = Assign(
+                Property(result, property.Name),
+                ReadValue(reader, property.PropertyType, context)
+            );
+            cases.Add(SwitchCase(switchCaseBody, Constant(property.Name)));
         }
         Expression @switch = Switch(typeof(void), propertyName, null, null, cases.ToArray());
 
+        Expression loopBody = Block(
+            Read(reader, nameof(DataStreamReader.ReadElementType)),
+            IfThen(
+                OrElse(
+                    Equal(elementType, Constant(DataStreamElementType.EndOfStream)),
+                    Equal(elementType, Constant(DataStreamElementType.EndOfObject))
+                ),
+                Break(breakTarget)
+            ),
+            Assign(propertyName, Read(
+                reader,
+                nameof(DataStreamReader.ReadProperty))
+            ),
+            Read(reader, nameof(DataStreamReader.ReadElementType)),
+            @switch
+        );
+
+        Expression loop = Loop(loopBody, breakTarget);
+
         return Block(
-            [result],
+            [result, propertyName],
             newInstance,
-            readElementType,
-            checkEndOfObject,
-            propertyName,
-            readRropertyName,
-            @switch,
+            loop,
             result
         );
     }
 
-    private Expression ReadValue(Expression reader, Type valueType)
+    private Expression ReadValue(ParameterExpression reader, Type valueType,
+         DataStreamSerializerContext context)
     {
         if(valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            return Convert(ReadSimpleValue(reader, valueType.GetGenericArguments()[0]), valueType);
+            return Condition(
+                Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
+                Constant(null, valueType),
+                Convert(ReadSimpleValue(reader, valueType.GetGenericArguments()[0]), valueType),
+                valueType);
         }
-        return ReadSimpleValue(reader, valueType);
+        if (valueType == typeof(byte[]))
+        {
+            return Condition(
+                Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
+                Constant(null, valueType),
+                Read(reader, nameof(DataStreamReader.ReadBinary)),
+                valueType);
+        }
+        if (IsScalar(valueType) || valueType.IsEnum || valueType == typeof(Guid))
+        {
+            return ReadSimpleValue(reader, valueType);
+        }
+        ParameterExpression objectResult = Expression.Variable(valueType);
+        return Condition(
+            Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
+            Constant(null, valueType),
+            Invoke(Lambda(
+                Block(
+                    [objectResult],
+                    IfThen(
+                        NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.StartOfObject)),
+                        Throw(New(typeof(FormatException)))
+                    ),
+                    Assign(objectResult, ReadObjectExpression(valueType, reader, context)),
+                    IfThen(
+                        NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.EndOfObject)),
+                        Throw(New(typeof(FormatException)))
+                    ),
+                    objectResult
+                ), reader), 
+            reader)
+        );
     }
 
     private Expression ReadSimpleValue(Expression reader, Type valueType)
@@ -138,10 +180,6 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         if (valueType == typeof(Guid))
         {
             return Read(reader, nameof(DataStreamReader.ReadGuid));
-        }
-        if (valueType == typeof(byte[]))
-        {
-            return Read(reader, nameof(DataStreamReader.ReadBinary));
         }
         TypeCode typeCode = Type.GetTypeCode(valueType);
         switch (typeCode)

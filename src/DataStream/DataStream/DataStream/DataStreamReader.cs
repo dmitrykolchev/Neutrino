@@ -17,6 +17,7 @@ internal class DataStreamReader
     private readonly Dictionary<string, int> _nameToIndex = new();
     private readonly Dictionary<int, string> _indexToName = new();
     private DataStreamElementType _elementType;
+    private string _propertyName;
 
     public DataStreamReader(Stream stream)
     {
@@ -34,6 +35,8 @@ internal class DataStreamReader
 
     public DataStreamElementType ElementType => _elementType;
 
+    public string PropertyName => _propertyName;
+
     public string ReadProperty()
     {
         return ReadProperty(out _);
@@ -43,21 +46,21 @@ internal class DataStreamReader
     {
         if (ElementType == DataStreamElementType.PropertyIndex)
         {
-            propertyIndex = ReadInt32();
-            return _indexToName[propertyIndex];
+            propertyIndex = Read7BitEncodedInt32();
+            _propertyName = _indexToName[propertyIndex];
         }
         else if (ElementType == DataStreamElementType.PropertyName)
         {
-            string propertyName = ReadString();
+            _propertyName = ReadStringInternal();
             propertyIndex = _nameToIndex.Count;
-            _nameToIndex.Add(propertyName, propertyIndex);
-            _indexToName.Add(propertyIndex, propertyName);
-            return propertyName;
+            _nameToIndex.Add(_propertyName, propertyIndex);
+            _indexToName.Add(propertyIndex, _propertyName);
         }
         else
         {
             throw new FormatException("unexpected tag");
         }
+        return _propertyName;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,7 +77,8 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
     {
-        if(ElementType != DataStreamElementType.Byte)
+        if(ElementType != DataStreamElementType.Byte &&
+            ElementType != (DataStreamElementType.Enum | DataStreamElementType.Byte))
         {
             throw new FormatException();
         }
@@ -84,7 +88,8 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt16()
     {
-        if (ElementType != DataStreamElementType.Int16)
+        if (ElementType != DataStreamElementType.Int16 &&
+            ElementType != (DataStreamElementType.Enum | DataStreamElementType.Int16))
         {
             throw new FormatException();
         }
@@ -96,7 +101,8 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt32()
     {
-        if (ElementType != DataStreamElementType.Int32)
+        if (ElementType != DataStreamElementType.Int32 &&
+            ElementType != (DataStreamElementType.Enum | DataStreamElementType.Int32))
         {
             throw new FormatException();
         }
@@ -203,6 +209,12 @@ internal class DataStreamReader
         {
             throw new FormatException();
         }
+        return ReadStringInternal();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string ReadStringInternal()
+    {
         int length = Read7BitEncodedInt32();
         byte[] buffer = ArrayPool<byte>.Shared.Rent(length);
         _stream.ReadExactly(buffer, 0, length);
