@@ -5,6 +5,7 @@
 
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using static System.Linq.Expressions.Expression;
 using System.Reflection;
 using System.Text;
 
@@ -28,11 +29,11 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
 
     private Delegate Create(Type type, DataStreamSerializerContext context)
     {
-        ParameterExpression writerParameter = Expression.Parameter(typeof(DataStreamWriter), "writer");
-        ParameterExpression itemParameter = Expression.Parameter(type, "item");
+        ParameterExpression writerParameter = Parameter(typeof(DataStreamWriter), "writer");
+        ParameterExpression itemParameter = Parameter(type, "item");
 
         Dictionary<string, int> propertyMap = new();
-        BlockExpression body = Expression.Block(
+        BlockExpression body = Block(
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteStartOfStream),
                 Array.Empty<Type>(),
@@ -43,7 +44,7 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
                 Array.Empty<Type>(),
                 writerParameter)
         );
-        LambdaExpression lambda = Expression.Lambda(body, writerParameter, itemParameter);
+        LambdaExpression lambda = Lambda(body, writerParameter, itemParameter);
         return lambda.Compile();
     }
 
@@ -72,12 +73,12 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
                     propertyMap,
                     writerParameter);
 
-                Expression itemPropertyExpression = Expression.Property(item, property.Name);
+                Expression itemPropertyExpression = Property(item, property.Name);
                 Type propertyType = property.PropertyType;
 
                 if (IsScalar(propertyType) || propertyType == typeof(Guid))
                 {
-                    expressions.Add(Expression.Block(
+                    expressions.Add(Block(
                         writePropertyNameExpression,
                         WriteScalarPropertyExpression(
                             writerParameter,
@@ -87,10 +88,10 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
                 else if (propertyType == typeof(byte[]))
                 {
                     expressions.Add(
-                        Expression.Block(
+                        Block(
                             writePropertyNameExpression,
-                            Expression.IfThenElse(
-                                Expression.NotEqual(itemPropertyExpression, Expression.Constant(null)),
+                            IfThenElse(
+                                NotEqual(itemPropertyExpression, Constant(null)),
                                 WriteScalarPropertyExpression(
                                     writerParameter,
                                     itemPropertyExpression,
@@ -107,13 +108,13 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
                     Type genericArgumentType = propertyType.GetGenericArguments()[0];
                     if (IsScalar(genericArgumentType) || genericArgumentType == typeof(Guid))
                     {
-                        expressions.Add(Expression.Block(
+                        expressions.Add(Block(
                             writePropertyNameExpression,
-                            Expression.IfThenElse(
-                                Expression.NotEqual(itemPropertyExpression, Expression.Constant(null)),
+                            IfThenElse(
+                                NotEqual(itemPropertyExpression, Constant(null)),
                                 WriteScalarPropertyExpression(
                                     writerParameter,
-                                    Expression.Property(itemPropertyExpression, "Value"),
+                                    Property(itemPropertyExpression, "Value"),
                                     genericArgumentType
                                 ),
                                 Call<DataStreamWriter>(
@@ -130,11 +131,11 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
                 else
                 {
                     expressions.Add(
-                        Expression.Block(
+                        Block(
                             writePropertyNameExpression,
-                            Expression.IfThenElse(
-                                Expression.NotEqual(itemPropertyExpression, Expression.Constant(null)),
-                                Expression.Block(
+                            IfThenElse(
+                                NotEqual(itemPropertyExpression, Constant(null)),
+                                Block(
                                     Call<DataStreamWriter>(
                                         nameof(DataStreamWriter.WriteStartOfObject),
                                         Array.Empty<Type>(),
@@ -159,7 +160,7 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
             }
         }
 
-        return Expression.Block(expressions);
+        return Block(expressions);
     }
 
     private Expression WritePropertyNameExpression(
@@ -175,13 +176,13 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
                 nameof(DataStreamWriter.WritePropertyName),
                 [typeof(byte[])],
                 writerParameter,
-                Expression.Constant(Encoding.UTF8.GetBytes(property.Name)));
+                Constant(Encoding.UTF8.GetBytes(property.Name)));
         }
         return Call<DataStreamWriter>(
             nameof(DataStreamWriter.WritePropertyIndex),
             [typeof(int)],
             writerParameter,
-            Expression.Constant(propertyNameIndex));
+            Constant(propertyNameIndex));
     }
 
     private Expression WriteScalarPropertyExpression(
@@ -193,7 +194,7 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
         if (propertyType.IsEnum)
         {
             propertyType = propertyType.GetEnumUnderlyingType();
-            getPropertyValueExpression = Expression.Convert(
+            getPropertyValueExpression = Convert(
                 getPropertyValueExpression,
                 propertyType);
             writePropertyValueExpression = Call<DataStreamWriter>(

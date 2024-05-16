@@ -34,6 +34,11 @@ internal class DataStreamReader
 
     public DataStreamElementType ElementType => _elementType;
 
+    public string ReadProperty()
+    {
+        return ReadProperty(out _);
+    }
+
     public string ReadProperty(out int propertyIndex)
     {
         if (ElementType == DataStreamElementType.PropertyIndex)
@@ -54,10 +59,11 @@ internal class DataStreamReader
             throw new FormatException("unexpected tag");
         }
     }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool ReadBoolean()
     {
-        return ReadElementType() switch
+        return ElementType switch
         {
             DataStreamElementType.True => true,
             DataStreamElementType.False => false,
@@ -68,12 +74,20 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
     {
+        if(ElementType != DataStreamElementType.Byte)
+        {
+            throw new FormatException();
+        }
         return InternalReadByte();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt16()
     {
+        if (ElementType != DataStreamElementType.Int16)
+        {
+            throw new FormatException();
+        }
         Span<byte> buffer = stackalloc byte[sizeof(short)];
         _stream.ReadExactly(buffer);
         return BinaryPrimitives.ReadInt16BigEndian(buffer);
@@ -82,18 +96,30 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt32()
     {
+        if (ElementType != DataStreamElementType.Int32)
+        {
+            throw new FormatException();
+        }
         return Read7BitEncodedInt32();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long ReadInt64()
     {
+        if (ElementType != DataStreamElementType.Int64)
+        {
+            throw new FormatException();
+        }
         return Read7BitEncodedInt64();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ReadDouble()
     {
+        if (ElementType != DataStreamElementType.Double)
+        {
+            throw new FormatException();
+        }
         Span<byte> buffer = stackalloc byte[sizeof(double)];
         _stream.ReadExactly(buffer);
         return BinaryPrimitives.ReadDoubleBigEndian(buffer);
@@ -102,6 +128,10 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ReadSingle()
     {
+        if (ElementType != DataStreamElementType.Single)
+        {
+            throw new FormatException();
+        }
         Span<byte> buffer = stackalloc byte[sizeof(float)];
         _stream.ReadExactly(buffer);
         return BinaryPrimitives.ReadDoubleBigEndian(buffer);
@@ -110,6 +140,10 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public DateTime ReadDateTime()
     {
+        if (ElementType != DataStreamElementType.DateTime)
+        {
+            throw new FormatException();
+        }
         Span<byte> buffer = stackalloc byte[sizeof(long)];
         _stream.ReadExactly(buffer);
         long value = BinaryPrimitives.ReadInt64BigEndian(buffer);
@@ -119,6 +153,10 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Guid ReadGuid()
     {
+        if (ElementType != DataStreamElementType.Guid)
+        {
+            throw new FormatException();
+        }
         Span<byte> buffer = stackalloc byte[16];
         _stream.ReadExactly(buffer);
         return new Guid(buffer, true);
@@ -127,6 +165,10 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public decimal ReadDecimal()
     {
+        if (ElementType != DataStreamElementType.Decimal)
+        {
+            throw new FormatException();
+        }
         Span<int> data = stackalloc int[4];
 
         Span<byte> buffer = stackalloc byte[sizeof(int)];
@@ -144,6 +186,10 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte[] ReadBinary()
     {
+        if (ElementType != (DataStreamElementType.ArrayOf | DataStreamElementType.Byte))
+        {
+            throw new FormatException();
+        }
         int length = Read7BitEncodedInt32();
         byte[] buffer = new byte[length];
         _stream.ReadExactly(buffer);
@@ -153,6 +199,10 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ReadString()
     {
+        if (ElementType != DataStreamElementType.String)
+        {
+            throw new FormatException();
+        }
         int length = Read7BitEncodedInt32();
         byte[] buffer = ArrayPool<byte>.Shared.Rent(length);
         _stream.ReadExactly(buffer, 0, length);
@@ -170,7 +220,7 @@ internal class DataStreamReader
         return (byte)b;
     }
 
-    public int Read7BitEncodedInt32()
+    private int Read7BitEncodedInt32()
     {
         // Unlike writing, we can't delegate to the 64-bit read on
         // 64-bit platforms. The reason for this is that we want to
@@ -214,7 +264,7 @@ internal class DataStreamReader
         return (int)result;
     }
 
-    public long Read7BitEncodedInt64()
+    private long Read7BitEncodedInt64()
     {
         ulong result = 0;
         byte byteReadJustNow;
