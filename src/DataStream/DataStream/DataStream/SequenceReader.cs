@@ -20,7 +20,7 @@ internal struct SequenceReader
         _position = 0;
     }
 
-    public int Position => _position;
+    public readonly int Position => _position;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
