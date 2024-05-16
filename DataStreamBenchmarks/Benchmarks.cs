@@ -35,6 +35,7 @@ public class Benchmarks
                 CreatedDate = DateTime.UtcNow
             };
         }
+        DataStreamSerializer.CreateSerializer<Employee>();
     }
 
     [Benchmark]
@@ -53,21 +54,21 @@ public class Benchmarks
     }
 
     [Benchmark]
-    public void DataStreamDeserializeBenchmark()
+    public Employee DataStreamDeserializeBenchmark()
     {
         using MemoryStream stream = new();
         DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>();
         serializer.Serialize(stream, _employee[0]);
         stream.Position = 0;
-        Employee result = serializer.Deserialize(stream);
+        return serializer.Deserialize(stream);
     }
 
     [Benchmark]
-    public void MessagePackDeserializeBenchmark()
+    public Employee MessagePackDeserializeBenchmark()
     {
         using MemoryStream stream = new();
         MessagePackSerializer.Serialize<Employee>(stream, _employee[0]);
         stream.Position = 0;
-        Employee result = MessagePackSerializer.Deserialize<Employee>(stream);
+        return MessagePackSerializer.Deserialize<Employee>(stream);
     }
 }

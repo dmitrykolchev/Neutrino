@@ -6,6 +6,7 @@
 using System.Buffers;
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DataStream;
@@ -16,8 +17,10 @@ internal class DataStreamReader
     private readonly Encoding _encoding;
     private readonly Dictionary<string, int> _nameToIndex = new();
     private readonly Dictionary<int, string> _indexToName = new();
+    private readonly PropertyMap _propertyMap = new PropertyMap();
+
     private DataStreamElementType _elementType;
-    private string _propertyName;
+    private string? _propertyName;
 
     public DataStreamReader(Stream stream)
     {
@@ -35,7 +38,9 @@ internal class DataStreamReader
 
     public DataStreamElementType ElementType => _elementType;
 
-    public string PropertyName => _propertyName;
+    public string? PropertyName => _propertyName;
+
+    internal PropertyMap PropertyMap => _propertyMap;
 
     public string ReadProperty()
     {
@@ -77,7 +82,7 @@ internal class DataStreamReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
     {
-        if(ElementType != DataStreamElementType.Byte &&
+        if (ElementType != DataStreamElementType.Byte &&
             ElementType != (DataStreamElementType.Enum | DataStreamElementType.Byte))
         {
             throw new FormatException();
@@ -94,7 +99,7 @@ internal class DataStreamReader
             throw new FormatException();
         }
         Span<byte> buffer = stackalloc byte[sizeof(short)];
-        _stream.ReadExactly(buffer);
+        ReadExactly(buffer);
         return BinaryPrimitives.ReadInt16BigEndian(buffer);
     }
 
@@ -127,7 +132,7 @@ internal class DataStreamReader
             throw new FormatException();
         }
         Span<byte> buffer = stackalloc byte[sizeof(double)];
-        _stream.ReadExactly(buffer);
+        ReadExactly(buffer);
         return BinaryPrimitives.ReadDoubleBigEndian(buffer);
     }
 
@@ -139,7 +144,7 @@ internal class DataStreamReader
             throw new FormatException();
         }
         Span<byte> buffer = stackalloc byte[sizeof(float)];
-        _stream.ReadExactly(buffer);
+        ReadExactly(buffer);
         return BinaryPrimitives.ReadDoubleBigEndian(buffer);
     }
 
@@ -151,7 +156,7 @@ internal class DataStreamReader
             throw new FormatException();
         }
         Span<byte> buffer = stackalloc byte[sizeof(long)];
-        _stream.ReadExactly(buffer);
+        ReadExactly(buffer);
         long value = BinaryPrimitives.ReadInt64BigEndian(buffer);
         return DateTime.FromBinary(value);
     }
@@ -164,7 +169,7 @@ internal class DataStreamReader
             throw new FormatException();
         }
         Span<byte> buffer = stackalloc byte[16];
-        _stream.ReadExactly(buffer);
+        ReadExactly(buffer);
         return new Guid(buffer, true);
     }
 
@@ -176,17 +181,21 @@ internal class DataStreamReader
             throw new FormatException();
         }
         Span<int> data = stackalloc int[4];
-
-        Span<byte> buffer = stackalloc byte[sizeof(int)];
-        _stream.ReadExactly(buffer);
-        data[0] = BinaryPrimitives.ReadInt32BigEndian(buffer);
-        _stream.ReadExactly(buffer);
-        data[1] = BinaryPrimitives.ReadInt32BigEndian(buffer);
-        _stream.ReadExactly(buffer);
-        data[2] = BinaryPrimitives.ReadInt32BigEndian(buffer);
-        _stream.ReadExactly(buffer);
-        data[3] = BinaryPrimitives.ReadInt32BigEndian(buffer);
-        return new decimal(data);
+        int[] buffer = ArrayPool<int>.Shared.Rent(4);
+        try
+        {
+            Span<byte> span = MemoryMarshal.AsBytes(buffer.AsSpan());
+            ReadExactly(span.Slice(0, sizeof(int) * 4));
+            data[0] = BinaryPrimitives.ReadInt32BigEndian(span.Slice(sizeof(int) * 0, sizeof(int)));
+            data[1] = BinaryPrimitives.ReadInt32BigEndian(span.Slice(sizeof(int) * 1, sizeof(int)));
+            data[2] = BinaryPrimitives.ReadInt32BigEndian(span.Slice(sizeof(int) * 2, sizeof(int)));
+            data[3] = BinaryPrimitives.ReadInt32BigEndian(span.Slice(sizeof(int) * 3, sizeof(int)));
+            return new decimal(data);
+        }
+        finally
+        {
+            ArrayPool<int>.Shared.Return(buffer);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -198,7 +207,7 @@ internal class DataStreamReader
         }
         int length = Read7BitEncodedInt32();
         byte[] buffer = new byte[length];
-        _stream.ReadExactly(buffer);
+        Read(buffer, 0, length);
         return buffer;
     }
 
@@ -217,11 +226,19 @@ internal class DataStreamReader
     {
         int length = Read7BitEncodedInt32();
         byte[] buffer = ArrayPool<byte>.Shared.Rent(length);
-        _stream.ReadExactly(buffer, 0, length);
-        return _encoding.GetString(buffer, 0, length);
+        try
+        {
+            Read(buffer, 0, length);
+            return _encoding.GetString(buffer, 0, length);
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
+        }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Inlined to avoid some method call overhead with InternalRead.
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // Inlined to avoid some method call overhead with InternalRead.
     private byte InternalReadByte()
     {
         int b = _stream.ReadByte();
@@ -314,5 +331,21 @@ internal class DataStreamReader
 
         result |= (ulong)byteReadJustNow << (MaxBytesWithoutOverflow * 7);
         return (long)result;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void Read(byte[] buffer, int offset, int count)
+    {
+        int readBytes = _stream.Read(buffer, offset, count);
+        if (readBytes != count)
+        {
+            throw new EndOfStreamException();
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void ReadExactly(Span<byte> buffer)
+    {
+        _stream.ReadExactly(buffer);
     }
 }

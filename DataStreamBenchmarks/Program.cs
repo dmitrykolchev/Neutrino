@@ -77,9 +77,11 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        //BenchmarkRunner.Run<Benchmarks>();
-
+#if RELEASE
+        BenchmarkRunner.Run<Benchmarks>();
+#else
         TestSerializer();
+#endif
     }
 
     private static void TestSerializer()
@@ -96,6 +98,21 @@ internal class Program
                       10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
             Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
             Salary = 12322.23,
+            SalaryDecimal = 7473737,
+            CreatedDate = DateTime.UtcNow
+        };
+
+        employee = new()
+        {
+            Gid = Guid.NewGuid(),
+            Id = 1,
+            State = EmployeeState.Active,
+            OficeWorker = true,
+            Salary = 23423.33,
+            Name = "Dmitry Kolchev",
+            DateOfBirth = new DateTime(1968, 6, 4),
+            FireDate = null,
+            Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
             SalaryDecimal = 7473737,
             CreatedDate = DateTime.UtcNow
         };

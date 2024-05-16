@@ -30,9 +30,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
     {
 
         ParameterExpression readerParameter = Parameter(typeof(DataStreamReader), "reader");
-
         Expression body = GetExpression(type, readerParameter, context);
-
         LambdaExpression lambda = Lambda(body, readerParameter);
         return lambda.Compile();
     }

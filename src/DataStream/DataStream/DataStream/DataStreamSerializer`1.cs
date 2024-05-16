@@ -77,8 +77,6 @@ public sealed class DataStreamSerializer<TItem>
         DataStreamSerializerContext context = new() { Options = _options };
         _serializeAction = (Action<DataStreamWriter, TItem>)s_writerCompiler.GetOrAdd(typeof(TItem), context);
         _deserializeAction = (Func<DataStreamReader, TItem>)s_readerCompiler.GetOrAdd(typeof(TItem), context);
-        //_deserializeAction = DeserializeAction;
-        //(Func<DataStreamReader, TItem>)s_resolver.GetOrAddDeserializer(typeof(TItem), context);
     }
 
     private TItem DeserializeAction(DataStreamReader reader)
