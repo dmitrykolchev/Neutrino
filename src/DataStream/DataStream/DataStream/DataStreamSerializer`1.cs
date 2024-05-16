@@ -3,9 +3,6 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System.Linq.Expressions;
-using System.Reflection;
-
 namespace DataStream;
 
 public sealed class DataStreamSerializer
@@ -58,7 +55,15 @@ public sealed class DataStreamSerializer<TItem>
     public TItem Deserialize(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
-        return DeserializeInternal(new DataStreamReader(stream));
+        if (stream is MemoryStream memory && memory.TryGetBuffer(out ArraySegment<byte> buffer))
+        {
+            return DeserializeInternal(
+                new DataStreamReader(
+                    new SequenceReader(buffer.AsMemory(checked((int)stream.Position)))
+                ));
+        }
+        throw new NotImplementedException();
+        //return DeserializeInternal(new DataStreamReader(stream));
     }
 
 
