@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{451B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloPhotino.NET", "src\PhotinoApp\HelloPhotino.NET.csproj", "{6CF56872-6F27-48EF-AE9E-DC10CD162288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xobex.Components.Server", "src\Xobex.Components.Server\Xobex.Components.Server.csproj", "{BEF49751-C023-4891-8D2C-27913543A2A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xobex.Components.Server", "src\Xobex.Components.Server\Xobex.Components.Server.csproj", "{BEF49751-C023-4891-8D2C-27913543A2A4}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "msgpack", "src\submodules\msgpack\msgpack.esproj", "{A2BCAC64-6EA9-4616-B5B7-58CA2F5627D2}"
 EndProject
@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataStream", "DataStream", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStream", "src\DataStream\DataStream\DataStream.csproj", "{DD4989A1-A644-46CE-996D-69E4C4D972C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStreamBenchmarks", "DataStreamBenchmarks\DataStreamBenchmarks.csproj", "{2BB8487B-5C57-44E7-A24F-2CCDCCB098C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStreamBenchmarks", "src\DataStream\DataStreamBenchmarks\DataStreamBenchmarks.csproj", "{0074C674-AA74-47DA-A6A1-2EC5E195FD10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +67,10 @@ Global
 		{DD4989A1-A644-46CE-996D-69E4C4D972C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD4989A1-A644-46CE-996D-69E4C4D972C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD4989A1-A644-46CE-996D-69E4C4D972C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BB8487B-5C57-44E7-A24F-2CCDCCB098C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BB8487B-5C57-44E7-A24F-2CCDCCB098C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BB8487B-5C57-44E7-A24F-2CCDCCB098C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BB8487B-5C57-44E7-A24F-2CCDCCB098C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0074C674-AA74-47DA-A6A1-2EC5E195FD10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0074C674-AA74-47DA-A6A1-2EC5E195FD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0074C674-AA74-47DA-A6A1-2EC5E195FD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0074C674-AA74-47DA-A6A1-2EC5E195FD10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,7 +86,7 @@ Global
 		{1F652F04-A3EB-45D8-8694-4AD621672B2C} = {D507D5DD-529D-4F06-9008-9402EB163597}
 		{7059FE9A-3C5C-490C-84A1-6FE910450B92} = {BAB0DAB7-FF19-4EEF-9168-7017BC224F8F}
 		{DD4989A1-A644-46CE-996D-69E4C4D972C6} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
-		{2BB8487B-5C57-44E7-A24F-2CCDCCB098C7} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
+		{0074C674-AA74-47DA-A6A1-2EC5E195FD10} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB655AAD-9761-4D41-A290-85A0E5EAA593}
