@@ -10,10 +10,10 @@ namespace DataStream;
 
 internal struct SequenceReaderLittleEndian : ISequenceReader
 {
-    private readonly ReadOnlyMemory<byte> _data;
+    private readonly ArraySegment<byte> _data;
     private int _position;
 
-    public SequenceReaderLittleEndian(ReadOnlyMemory<byte> data)
+    public SequenceReaderLittleEndian(ArraySegment<byte> data)
     {
         _data = data;
         _position = 0;
@@ -24,7 +24,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
     {
-        byte value = _data.Slice(_position, 1).Span[0];
+        byte value = _data.Slice(_position, 1)[0];
         _position++;
         return value;
     }
@@ -32,15 +32,14 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Read(byte[] buffer, int offset, int count)
     {
-        _data.Slice(_position, count).CopyTo(buffer.AsMemory(offset, count));
+        _data.Slice(_position, count).CopyTo(buffer);
         _position += count;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public short ReadInt16()
     {
-        var span = _data.Slice(_position, sizeof(short)).Span;
-        short value = MemoryMarshal.Read<short>(span);
+        short value = MemoryMarshal.Read<short>(_data.Slice(_position, sizeof(short)));
         _position += sizeof(short);
         return value;
     }
@@ -48,7 +47,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt32()
     {
-        int value = MemoryMarshal.Read<int>(_data.Slice(_position, sizeof(int)).Span);
+        int value = MemoryMarshal.Read<int>(_data.Slice(_position, sizeof(int)));
         _position += sizeof(int);
         return value;
     }
@@ -56,7 +55,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long ReadInt64()
     {
-        long value = MemoryMarshal.Read<long>(_data.Slice(_position, sizeof(long)).Span);
+        long value = MemoryMarshal.Read<long>(_data.Slice(_position, sizeof(long)));
         _position += sizeof(long);
         return value;
     }
@@ -64,7 +63,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ReadDouble()
     {
-        double value = MemoryMarshal.Read<double>(_data.Slice(_position, sizeof(double)).Span);
+        double value = MemoryMarshal.Read<double>(_data.Slice(_position, sizeof(double)));
         _position += sizeof(double);
         return value;
     }
@@ -72,7 +71,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float ReadSingle()
     {
-        float value = MemoryMarshal.Read<float>(_data.Slice(_position, sizeof(float)).Span);
+        float value = MemoryMarshal.Read<float>(_data.Slice(_position, sizeof(float)));
         _position += sizeof(float);
         return value;
     }
@@ -80,7 +79,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Guid ReadGuid()
     {
-        Guid value = new(_data.Slice(_position, 16).Span, true);
+        Guid value = new(_data.Slice(_position, 16), true);
         _position += 16;
         return value;
     }
@@ -100,7 +99,17 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     public string ReadString()
     {
         int length = Read7BitEncodedInt32();
-        string value = DataStreamSerializer.UTF8.GetString(_data.Slice(_position, length).Span);
+        string value = DataStreamSerializer.UTF8.GetString(_data.Slice(_position, length));
+        _position += length;
+        return value;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public byte[] ReadBinary()
+    {
+        int length = Read7BitEncodedInt32();
+        byte[] value = new byte[length];
+        _data.Slice(_position, length).CopyTo(value);
         _position += length;
         return value;
     }

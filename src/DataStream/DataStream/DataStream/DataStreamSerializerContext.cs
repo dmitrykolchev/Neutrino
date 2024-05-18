@@ -9,5 +9,5 @@ public class DataStreamSerializerContext
 {
     public required DataStreamSerializationOptions Options { get; init; }
 
-    internal PropertyMap PropertyMap { get; } = new PropertyMap();
+    internal PropertyMap PropertyMap { get; init; } = null!;
 }

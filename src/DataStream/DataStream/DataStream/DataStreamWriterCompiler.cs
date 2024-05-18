@@ -32,13 +32,12 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
         ParameterExpression writerParameter = Parameter(typeof(DataStreamWriter), "writer");
         ParameterExpression itemParameter = Parameter(type, "item");
 
-        Dictionary<string, int> propertyMap = new();
         BlockExpression body = Block(
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteStartOfStream),
                 Array.Empty<Type>(),
                 writerParameter),
-            GetExpression(type, itemParameter, writerParameter, context, propertyMap),
+            GetExpression(type, itemParameter, writerParameter, context),
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteEndOfStream),
                 Array.Empty<Type>(),
@@ -52,13 +51,11 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
         Type itemType,
         Expression item,
         ParameterExpression writer,
-        DataStreamSerializerContext context,
-        Dictionary<string, int> propertyMap)
+        DataStreamSerializerContext context)
     {
         PropertyInfo[] properties = itemType.GetProperties(
             BindingFlags.Public |
-            BindingFlags.Instance |
-            BindingFlags.GetProperty);
+            BindingFlags.Instance);
 
         List<Expression> expressions = new();
 
@@ -69,25 +66,13 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
                 Expression writePropertyNameExpression;
-
-                if (!propertyMap.TryGetValue(property.Name, out int propertyNameIndex))
-                {
-                    propertyNameIndex = propertyMap.Count;
-                    propertyMap.Add(property.Name, propertyNameIndex);
-                    writePropertyNameExpression = Call<DataStreamWriter>(
-                        nameof(DataStreamWriter.WritePropertyName),
-                        [typeof(byte[])],
-                        writer,
-                        Constant(Encoding.UTF8.GetBytes(property.Name)));
-                }
-                else
-                {
-                    writePropertyNameExpression = Call<DataStreamWriter>(
-                        nameof(DataStreamWriter.WritePropertyIndex),
-                        [typeof(int)],
-                        writer,
-                        Constant(propertyNameIndex));
-                }
+                byte[] propertyNameUtf8 = Encoding.UTF8.GetBytes(property.Name);
+                int propertyNameIndex = context.PropertyMap.Add(propertyNameUtf8);
+                writePropertyNameExpression = Call<DataStreamWriter>(
+                    nameof(DataStreamWriter.WriteProperty),
+                    [typeof(int)],
+                    writer,
+                    Constant(propertyNameIndex));
 
                 Expression itemPropertyExpression = Property(item, property.Name);
                 Type propertyType = property.PropertyType;
@@ -160,8 +145,7 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
                                         propertyType,
                                         itemPropertyExpression,
                                         writer,
-                                        context,
-                                        propertyMap),
+                                        context),
                                     Call<DataStreamWriter>(
                                         nameof(DataStreamWriter.WriteEndOfObject),
                                         Array.Empty<Type>(),

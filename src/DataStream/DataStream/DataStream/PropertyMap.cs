@@ -3,42 +3,117 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+
 namespace DataStream;
 
 internal class PropertyMap
 {
-    private readonly Dictionary<string, int> _properties = new();
-    private readonly List<int> _propertyIndex = new();
-
-    public int Add(string propertyName)
+    private struct Entry
     {
-        if (!_properties.TryGetValue(propertyName, out int index))
+        private readonly byte[] _key;
+        private readonly int _hashCode;
+
+        public Entry(byte[] key)
         {
-            index = _properties.Count;
-            _properties.Add(propertyName, index);
+            _key = key;
+            _hashCode = HashProvider.ComputeHash32(key, HashProvider.DefaultSeed);
         }
-        return index;
+
+        public byte[] Key => _key;
+
+        public override int GetHashCode()
+        {
+            return _hashCode;
+        }
+
+        public override bool Equals([NotNullWhen(true)] object? obj)
+        {
+            if (obj is Entry e)
+            {
+                return Enumerable.SequenceEqual(_key, e._key);
+            }
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return DataStreamSerializer.UTF8.GetString(_key);
+        }
     }
 
-    public int GetInternalIndex(string propertyName)
+    private readonly Dictionary<Entry, int> _properties;
+    private readonly List<Entry> _entries;
+    private readonly List<int> _propertyIndex;
+
+    public PropertyMap()
     {
-        return _properties[propertyName];
+        _properties = new();
+        _entries = new();
+        _propertyIndex = new();
     }
 
-    public int GetStreamIndex(string propertyName)
+    private PropertyMap(PropertyMap source)
     {
-        int propertyIndex = _properties[propertyName];
-        _propertyIndex.Add(propertyIndex);
-        return propertyIndex;
+        _properties = source._properties;
+        _entries = source._entries;
+        _propertyIndex = new(_entries.Count);
     }
 
-    public int GetStreamIndex(int propertyIndex)
+    public int Add(byte[] propertyName)
     {
-        return _propertyIndex[propertyIndex];
+        Entry entry = new(propertyName);
+        if (!_properties.TryGetValue(entry, out int internalIndex))
+        {
+            internalIndex = _properties.Count;
+            _entries.Add(entry);
+            _properties.Add(entry, internalIndex);
+        }
+        return internalIndex;
+    }
+
+    public int Count => _entries.Count;
+
+    public byte[] this[int internalIndex] => _entries[internalIndex].Key;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool GetStreamIndex(int internalIndex, out int streamIndex)
+    {
+        if (internalIndex == _propertyIndex.Count)
+        {
+            _propertyIndex.Add(internalIndex);
+            streamIndex = _propertyIndex[internalIndex];
+            return true;
+        }
+        streamIndex = _propertyIndex[internalIndex];
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetInternalIndex(byte[] propertyName)
+    {
+        Entry entry = new(propertyName);
+        int internalIndex = _properties[entry];
+        _propertyIndex.Add(internalIndex);
+        return internalIndex;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetInternalIndex(int propertyStreamIndex)
+    {
+        return _propertyIndex[propertyStreamIndex];
     }
 
     public string? FromStreamIndex(int streamIndex)
     {
-        return _properties.Where(t => t.Value == _propertyIndex[streamIndex]).Select(t => t.Key).First();
+        int index = _propertyIndex[streamIndex];
+        Entry entry = _properties.Where(t => t.Value == index).Select(t => t.Key).First();
+        return DataStreamSerializer.UTF8.GetString(entry.Key);
+    }
+
+    internal PropertyMap Clone()
+    {
+        return new PropertyMap(this);
     }
 }

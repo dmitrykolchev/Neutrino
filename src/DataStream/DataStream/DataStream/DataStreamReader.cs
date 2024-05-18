@@ -4,36 +4,30 @@
 // </copyright>
 
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace DataStream;
 
 internal class DataStreamReader
 {
-    private ISequenceReader _reader;
-    private readonly PropertyMap _propertyMap = new();
+    private readonly ISequenceReader _reader;
+    private readonly DataStreamSerializerContext _context;
 
     private DataStreamElementType _elementType;
     private int _propertyIndex = -1;
 
-    public DataStreamReader(SequenceReaderLittleEndian sequence)
+    public DataStreamReader(SequenceReaderLittleEndian sequence, DataStreamSerializerContext context)
     {
-        ArgumentNullException.ThrowIfNull(sequence);
         _reader = sequence;
+        _context = context;
     }
 
     public DataStreamElementType ElementType => _elementType;
 
     public int PropertyIndex => _propertyIndex;
 
-    public string? PropertyName => _propertyMap.FromStreamIndex(PropertyIndex);
+    public string? PropertyName => PropertyMap.FromStreamIndex(PropertyIndex);
 
-    internal PropertyMap PropertyMap => _propertyMap;
-
-    public int Add(string property)
-    {
-        return _propertyMap.Add(property);
-    }
+    internal PropertyMap PropertyMap => _context.PropertyMap!;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public DataStreamElementType ReadElementType()
@@ -42,15 +36,20 @@ internal class DataStreamReader
         return _elementType;
     }
 
+    /// <summary>
+    /// Returns internal property index
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="FormatException"></exception>
     public int ReadProperty()
     {
         if (_elementType == DataStreamElementType.PropertyIndex)
         {
-            _propertyIndex = PropertyMap.GetStreamIndex(_reader.Read7BitEncodedInt32());
+            _propertyIndex = PropertyMap.GetInternalIndex(_reader.Read7BitEncodedInt32());
         }
         else if (_elementType == DataStreamElementType.PropertyName)
         {
-            _propertyIndex = PropertyMap.GetStreamIndex(_reader.ReadString());
+            _propertyIndex = PropertyMap.GetInternalIndex(_reader.ReadBinary());
         }
         else
         {

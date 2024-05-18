@@ -80,12 +80,20 @@ internal class Program
 #if RELEASE
         BenchmarkRunner.Run<Benchmarks>();
 #else
+        //OptimizationTests();
         DataStreamSerializer.CreateSerializer<Employee>();
         TestSerializer();
 #endif
     }
 
-    private static void TestSerializer()
+    private static short OptimizationTests()
+    {
+        Optimizations o = new ();
+        short v = o.ReadInt16();
+        return v;
+    }
+
+    private static Employee TestSerializer()
     {
         Console.WriteLine($"LittleEndian = {BitConverter.IsLittleEndian}");
         Employee employee = new()
@@ -114,22 +122,26 @@ internal class Program
             Name = "Dmitry Kolchev",
             DateOfBirth = new DateTime(1968, 6, 4),
             FireDate = null,
+            Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                      10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
             Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
             SalaryDecimal = 7473737,
             CreatedDate = DateTime.UtcNow
         };
 
+        Employee result = null!;
         using (MemoryStream stream = new())
         {
             DataStreamSerializer<Employee> employeeSerializer = DataStreamSerializer.CreateSerializer<Employee>();
             employeeSerializer.Serialize(stream, employee);
             stream.Position = 0;
-            var result = employeeSerializer.Deserialize(stream);
+            result = employeeSerializer.Deserialize(stream);
         }
+        return result;
 
-        using (MemoryStream stream = new())
-        {
-            MessagePackSerializer.Serialize<Employee>(stream, employee);
-        }
+        //using (MemoryStream stream = new())
+        //{
+        //    MessagePackSerializer.Serialize<Employee>(stream, employee);
+        //}
     }
 }

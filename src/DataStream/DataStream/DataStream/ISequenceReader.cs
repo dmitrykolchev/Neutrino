@@ -29,6 +29,8 @@ internal interface ISequenceReader
 
     string ReadString();
 
+    byte[] ReadBinary();
+
     int Read7BitEncodedInt32();
 
     long Read7BitEncodedInt64();

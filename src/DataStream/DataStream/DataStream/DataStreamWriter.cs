@@ -58,26 +58,37 @@ internal class DataStreamWriter
     private const int MaxArrayPoolRentalSize = 64 * 1024; // try to keep rentals to a reasonable size
 
     private readonly Stream _stream;
+    private readonly DataStreamSerializerContext _context;
 
-    public DataStreamWriter(Stream stream)
+    public DataStreamWriter(Stream stream, DataStreamSerializerContext context)
     {
         _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WritePropertyName(byte[] propertyName)
+    public void WriteProperty(int propertyInternalIndex)
     {
-        _stream.WriteByte((byte)DataStreamElementType.PropertyName);
-        Write7BitEncodedInt(propertyName.Length);
-        _stream.Write(propertyName, 0, propertyName.Length);
+        if (_context.PropertyMap.GetStreamIndex(propertyInternalIndex, out int streamIndex))
+        {
+            _stream.WriteByte((byte)DataStreamElementType.PropertyName);
+            byte[] propertyName = _context.PropertyMap[propertyInternalIndex];
+            Write7BitEncodedInt32(propertyName.Length);
+            _stream.Write(propertyName, 0, propertyName.Length);
+        }
+        else
+        {
+            _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
+            Write7BitEncodedInt32(streamIndex);
+        }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WritePropertyIndex(int propertyIndex)
-    {
-        _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
-        Write7BitEncodedInt(propertyIndex);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public void WritePropertyIndex(int propertyIndex)
+    //{
+    //    _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
+    //    Write7BitEncodedInt32(propertyIndex);
+    //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteNull()
@@ -120,7 +131,7 @@ internal class DataStreamWriter
         else
         {
             _stream.WriteByte((byte)(DataStreamElementType.ArrayOf | DataStreamElementType.Byte));
-            Write7BitEncodedInt(item.Length);
+            Write7BitEncodedInt32(item.Length);
             _stream.Write(item, 0, item.Length);
         }
     }
@@ -165,7 +176,7 @@ internal class DataStreamWriter
     public void WriteEnum(int item)
     {
         _stream.WriteByte((byte)(DataStreamElementType.Int32 | DataStreamElementType.Enum));
-        Write7BitEncodedInt(item);
+        Write7BitEncodedInt32(item);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -190,7 +201,7 @@ internal class DataStreamWriter
     public void Write(int item)
     {
         _stream.WriteByte((byte)DataStreamElementType.Int32);
-        Write7BitEncodedInt(item);
+        Write7BitEncodedInt32(item);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -266,14 +277,14 @@ internal class DataStreamWriter
             {
                 byte[] rented = ArrayPool<byte>.Shared.Rent(value.Length * 3); // max expansion: each char -> 3 bytes
                 int actualByteCount = DataStreamSerializer.UTF8.GetBytes(value, rented);
-                Write7BitEncodedInt(actualByteCount);
+                Write7BitEncodedInt32(actualByteCount);
                 _stream.Write(rented, 0, actualByteCount);
                 ArrayPool<byte>.Shared.Return(rented);
             }
             else
             {
                 int actualBytecount = DataStreamSerializer.UTF8.GetByteCount(value);
-                Write7BitEncodedInt(actualBytecount);
+                Write7BitEncodedInt32(actualBytecount);
                 // We're dealing with an enormous amount of data, so acquire an Encoder.
                 // It should be rare that callers pass sufficiently large inputs to hit
                 // this code path, and the cost of the operation is dominated by the transcoding
@@ -297,7 +308,7 @@ internal class DataStreamWriter
         }
     }
 
-    private void Write7BitEncodedInt(int value)
+    private void Write7BitEncodedInt32(int value)
     {
         uint uValue = (uint)value;
 

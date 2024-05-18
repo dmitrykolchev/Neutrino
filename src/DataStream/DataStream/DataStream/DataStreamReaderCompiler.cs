@@ -76,7 +76,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         DataStreamSerializerContext context,
         bool root)
     {
-        PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
+        PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
         LabelTarget breakTarget = Label("loopBreak");
 
@@ -87,20 +87,13 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         ParameterExpression propertyIndex = Variable(typeof(int), "propertyIndex");
 
         List<SwitchCase> cases = new();
-        List<Expression> inits = new();
         foreach (PropertyInfo property in properties)
         {
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
-                inits.Add(
-                    Call<DataStreamReader>(
-                        nameof(DataStreamReader.Add),
-                        [typeof(string)],
-                        reader,
-                        Constant(property.Name)
-                    )
-                );
-                int caseIndex = context.PropertyMap.Add(property.Name);
+                byte[] propertyNameUtf8 = DataStreamSerializer.UTF8.GetBytes(property.Name);
+
+                int caseIndex = context.PropertyMap.Add(propertyNameUtf8);
 
                 Expression switchCaseBody = Assign(
                     Property(result, property.Name),
@@ -138,7 +131,6 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         return Block(
             [result, propertyIndex],
             newInstance,
-            Block(typeof(void), inits),
             loop,
             result
         );
