@@ -4,8 +4,8 @@
 // </copyright>
 
 using System.Buffers;
-using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DataStream;
@@ -53,42 +53,43 @@ public enum DataStreamElementType : byte
     EnumTypeMask = 0b0001_1111
 }
 
-internal class DataStreamWriter
+internal class DataStreamWriter : IDisposable
 {
     private const int MaxArrayPoolRentalSize = 64 * 1024; // try to keep rentals to a reasonable size
 
-    private readonly Stream _stream;
+    private readonly BinaryBuffer _stream;
+    private readonly byte[] _buffer;
     private readonly DataStreamSerializerContext _context;
 
     public DataStreamWriter(Stream stream, DataStreamSerializerContext context)
     {
-        _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+        ArgumentNullException.ThrowIfNull(stream);
+        _buffer = ArrayPool<byte>.Shared.Rent(4096);
+        _stream = new BinaryBuffer(stream, _buffer);
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteProperty(int propertyInternalIndex)
+    public void Dispose()
     {
-        if (_context.PropertyMap.GetStreamIndex(propertyInternalIndex, out int streamIndex))
-        {
-            _stream.WriteByte((byte)DataStreamElementType.PropertyName);
-            byte[] propertyName = _context.PropertyMap[propertyInternalIndex];
-            Write7BitEncodedInt32(propertyName.Length);
-            _stream.Write(propertyName, 0, propertyName.Length);
-        }
-        else
-        {
-            _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
-            Write7BitEncodedInt32(streamIndex);
-        }
+        _stream.Flush();
+        ArrayPool<byte>.Shared.Return(_buffer);
     }
 
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public void WritePropertyIndex(int propertyIndex)
-    //{
-    //    _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
-    //    Write7BitEncodedInt32(propertyIndex);
-    //}
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WritePropertyName(byte[] propertyName, int streamIndex)
+    {
+        _stream.WriteByte((byte)DataStreamElementType.PropertyName);
+        Write7BitEncodedInt32(streamIndex);
+        Write7BitEncodedInt32(propertyName.Length);
+        _stream.Write(propertyName, 0, propertyName.Length);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WritePropertyIndex(int streamIndex)
+    {
+        _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
+        Write7BitEncodedInt32(streamIndex);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteNull()
@@ -167,9 +168,7 @@ internal class DataStreamWriter
     public void WriteEnum(short item)
     {
         _stream.WriteByte((byte)(DataStreamElementType.Int16 | DataStreamElementType.Enum));
-        Span<byte> buffer = stackalloc byte[sizeof(short)];
-        BinaryPrimitives.WriteInt16LittleEndian(buffer, item);
-        _stream.Write(buffer);
+        _stream.Write(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref item, 1)));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -192,9 +191,7 @@ internal class DataStreamWriter
     public void Write(short item)
     {
         _stream.WriteByte((byte)DataStreamElementType.Int16);
-        Span<byte> buffer = stackalloc byte[sizeof(short)];
-        BinaryPrimitives.WriteInt16LittleEndian(buffer, item);
-        _stream.Write(buffer);
+        _stream.Write(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref item, 1)));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -217,42 +214,29 @@ internal class DataStreamWriter
         _stream.WriteByte((byte)DataStreamElementType.Decimal);
         Span<int> data = stackalloc int[4];
         decimal.GetBits(item, data);
-        Span<byte> buffer = stackalloc byte[sizeof(int)];
-        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[0]);
-        _stream.Write(buffer);
-        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[1]);
-        _stream.Write(buffer);
-        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[2]);
-        _stream.Write(buffer);
-        BinaryPrimitives.WriteInt32LittleEndian(buffer, data[3]);
-        _stream.Write(buffer);
+        _stream.Write(MemoryMarshal.AsBytes(data));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(double item)
     {
         _stream.WriteByte((byte)DataStreamElementType.Double);
-        Span<byte> buffer = stackalloc byte[sizeof(double)];
-        BinaryPrimitives.WriteDoubleLittleEndian(buffer, item);
-        _stream.Write(buffer);
+        _stream.Write(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref item, 1)));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(float item)
     {
         _stream.WriteByte((byte)DataStreamElementType.Single);
-        Span<byte> buffer = stackalloc byte[sizeof(float)];
-        BinaryPrimitives.WriteSingleLittleEndian(buffer, item);
-        _stream.Write(buffer);
+        _stream.Write(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref item, 1)));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(DateTime item)
     {
         _stream.WriteByte((byte)DataStreamElementType.DateTime);
-        Span<byte> buffer = stackalloc byte[sizeof(long)];
-        BinaryPrimitives.WriteInt64LittleEndian(buffer, item.ToBinary());
-        _stream.Write(buffer);
+        long data = item.ToBinary();
+        _stream.Write(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref data, 1)));
     }
 
     public void Write(string? value)
@@ -336,7 +320,6 @@ internal class DataStreamWriter
         //
         // Using the constants 0x7F and ~0x7F below offers smaller
         // codegen than using the constant 0x80.
-
         while (uValue > 0x7Fu)
         {
             _stream.WriteByte((byte)((uint)uValue | ~0x7Fu));
@@ -345,5 +328,68 @@ internal class DataStreamWriter
 
         _stream.WriteByte((byte)uValue);
     }
-}
 
+    private class BinaryBuffer
+    {
+        private readonly Stream _stream;
+        private readonly byte[] _buffer;
+        private int _position;
+
+        public BinaryBuffer(Stream stream, byte[] buffer)
+        {
+            _stream = stream;
+            _buffer = buffer;
+            _position = 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void WriteByte(byte value)
+        {
+            if (_position >= _buffer.Length)
+            {
+                Flush();
+            }
+            _buffer[_position++] = value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Write(byte[] data, int offset, int count)
+        {
+            if (count - offset <= _buffer.Length - _position)
+            {
+                Array.Copy(data, offset, _buffer, _position, count);
+                _position += count - offset;
+            }
+            else
+            {
+                Flush();
+                _stream.Write(data, offset, count);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Write(Span<byte> data)
+        {
+            if (data.Length <= _buffer.Length - _position)
+            {
+                data.CopyTo(new Span<byte>(_buffer, _position, data.Length));
+                _position += data.Length;
+            }
+            else
+            {
+                Flush();
+                _stream.Write(data);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Flush()
+        {
+            if (_position > 0)
+            {
+                _stream.Write(_buffer, 0, _position);
+                _position = 0;
+            }
+        }
+    }
+}

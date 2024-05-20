@@ -81,7 +81,6 @@ internal class Program
         BenchmarkRunner.Run<Benchmarks>();
 #else
         //OptimizationTests();
-        DataStreamSerializer.CreateSerializer<Employee>();
         TestSerializer();
 #endif
     }
@@ -132,10 +131,13 @@ internal class Program
         Employee result = null!;
         using (MemoryStream stream = new())
         {
-            DataStreamSerializer<Employee> employeeSerializer = DataStreamSerializer.CreateSerializer<Employee>();
-            employeeSerializer.Serialize(stream, employee);
-            stream.Position = 0;
-            result = employeeSerializer.Deserialize(stream);
+            for (int index = 0; index < 1_000_000; ++index)
+            {
+                stream.Position = 0;
+                DataStreamSerializer.Serialize(stream, employee);
+                stream.Position = 0;
+                result = DataStreamSerializer.Deserialize<Employee>(stream);
+            }
         }
         return result;
 

@@ -67,12 +67,22 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
             {
                 Expression writePropertyNameExpression;
                 byte[] propertyNameUtf8 = Encoding.UTF8.GetBytes(property.Name);
-                int propertyNameIndex = context.PropertyMap.Add(propertyNameUtf8);
-                writePropertyNameExpression = Call<DataStreamWriter>(
-                    nameof(DataStreamWriter.WriteProperty),
-                    [typeof(int)],
-                    writer,
-                    Constant(propertyNameIndex));
+                if (context.PropertyMap.TryAdd(propertyNameUtf8, out int propertyNameIndex))
+                {
+                    writePropertyNameExpression = Call<DataStreamWriter>(
+                        nameof(DataStreamWriter.WritePropertyName),
+                        [typeof(byte[]), typeof(int)],
+                        writer,
+                        Constant(propertyNameUtf8), Constant(propertyNameIndex));
+                }
+                else
+                {
+                    writePropertyNameExpression = Call<DataStreamWriter>(
+                        nameof(DataStreamWriter.WritePropertyIndex),
+                        [typeof(int)],
+                        writer,
+                        Constant(propertyNameIndex));
+                }
 
                 Expression itemPropertyExpression = Property(item, property.Name);
                 Type propertyType = property.PropertyType;

@@ -24,15 +24,13 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
     {
-        byte value = _data.Slice(_position, 1)[0];
-        _position++;
-        return value;
+        return _data[_position++];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Read(byte[] buffer, int offset, int count)
     {
-        _data.Slice(_position, count).CopyTo(buffer);
+        _data.Slice(_position, count).CopyTo(buffer, offset);
         _position += count;
     }
 
@@ -88,10 +86,8 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     public decimal ReadDecimal()
     {
         Span<int> data = stackalloc int[4];
-        data[0] = ReadInt32();
-        data[1] = ReadInt32();
-        data[2] = ReadInt32();
-        data[3] = ReadInt32();
+        _data.Slice(_position, sizeof(int) * 4).AsSpan().CopyTo(MemoryMarshal.AsBytes(data));
+        _position += sizeof(int) * 4;
         return new decimal(data);
     }
 
@@ -105,6 +101,16 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public byte[] ReadBinary8()
+    {
+        int length = _data[_position];
+        byte[] value = new byte[length];
+        _data.Slice(_position + 1, length).CopyTo(value);
+        _position += length + 1;
+        return value;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte[] ReadBinary()
     {
         int length = Read7BitEncodedInt32();
@@ -114,6 +120,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
         return value;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Read7BitEncodedInt32()
     {
         // Unlike writing, we can't delegate to the 64-bit read on
@@ -135,7 +142,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
         for (int shift = 0; shift < MaxBytesWithoutOverflow * 7; shift += 7)
         {
             // ReadByte handles end of stream cases for us.
-            byteReadJustNow = ReadByte();
+            byteReadJustNow = _data[_position++];
             result |= (byteReadJustNow & 0x7Fu) << shift;
 
             if (byteReadJustNow <= 0x7Fu)
@@ -148,7 +155,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
         // the value of this byte must fit within 4 bits (32 - 28),
         // and it must not have the high bit set.
 
-        byteReadJustNow = ReadByte();
+        byteReadJustNow = _data[_position++];
         if (byteReadJustNow > 0b_1111u)
         {
             throw new FormatException("bad 7-bit integer");
@@ -158,6 +165,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
         return (int)result;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long Read7BitEncodedInt64()
     {
         ulong result = 0;
@@ -175,7 +183,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
         for (int shift = 0; shift < MaxBytesWithoutOverflow * 7; shift += 7)
         {
             // ReadByte handles end of stream cases for us.
-            byteReadJustNow = ReadByte();
+            byteReadJustNow = _data[_position++];
             result |= (byteReadJustNow & 0x7Ful) << shift;
 
             if (byteReadJustNow <= 0x7Fu)
@@ -188,7 +196,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
         // the value of this byte must fit within 1 bit (64 - 63),
         // and it must not have the high bit set.
 
-        byteReadJustNow = ReadByte();
+        byteReadJustNow = _data[_position++];
         if (byteReadJustNow > 0b_1u)
         {
             throw new FormatException("bad 7-bit integer");

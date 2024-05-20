@@ -18,51 +18,45 @@ public class Benchmarks
     public void GlobalSetup()
     {
         _employee = new Employee[100];
-        for (int index = 0; index < _employee.Length; ++index)
+        _employee[0] = new()
         {
-            _employee[index] = new()
-            {
-                Gid = Guid.NewGuid(),
-                Id = 1,
-                State = EmployeeState.Active,
-                OficeWorker = true,
-                Salary = 23423.33,
-                Name = "Dmitry Kolchev",
-                DateOfBirth = new DateTime(1968, 6, 4),
-                FireDate = null,
-                Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
-                SalaryDecimal = 7473737,
-                CreatedDate = DateTime.UtcNow,
-                Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                      10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-            };
-        }
-        DataStreamSerializer.CreateSerializer<Employee>();
+            Gid = Guid.NewGuid(),
+            Id = 1,
+            State = EmployeeState.Active,
+            OficeWorker = true,
+            Salary = 23423.33,
+            Name = "Dmitry Kolchev",
+            DateOfBirth = new DateTime(1968, 6, 4),
+            FireDate = null,
+            Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
+            SalaryDecimal = 7473737,
+            CreatedDate = DateTime.UtcNow,
+            Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                  10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+        };
     }
 
     [Benchmark]
     public void DataStreamSerializeBenchmark()
     {
         using MemoryStream stream = new();
-        DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>();
-        serializer.Serialize(stream, _employee[0]);
+        DataStreamSerializer.Serialize(stream, _employee[0]);
     }
 
     [Benchmark]
     public void MessagePackSerializeBenchmark()
     {
         using MemoryStream stream = new();
-        MessagePackSerializer.Serialize<Employee>(stream, _employee[0]);
+        MessagePackSerializer.Serialize(stream, _employee[0]);
     }
 
     [Benchmark]
     public Employee DataStreamDeserializeBenchmark()
     {
         using MemoryStream stream = new();
-        DataStreamSerializer<Employee> serializer = DataStreamSerializer.CreateSerializer<Employee>();
-        serializer.Serialize(stream, _employee[0]);
+        DataStreamSerializer.Serialize(stream, _employee[0]);
         stream.Position = 0;
-        return serializer.Deserialize(stream);
+        return DataStreamSerializer.Deserialize<Employee>(stream);
     }
 
     [Benchmark]

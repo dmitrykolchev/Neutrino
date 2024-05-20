@@ -93,7 +93,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
             {
                 byte[] propertyNameUtf8 = DataStreamSerializer.UTF8.GetBytes(property.Name);
 
-                int caseIndex = context.PropertyMap.Add(propertyNameUtf8);
+                context.PropertyMap.TryAdd(propertyNameUtf8, out int caseIndex);
 
                 Expression switchCaseBody = Assign(
                     Property(result, property.Name),
@@ -136,8 +136,10 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         );
     }
 
-    private Expression ReadValue(ParameterExpression reader, Type valueType,
-         DataStreamSerializerContext context)
+    private Expression ReadValue(
+        ParameterExpression reader, 
+        Type valueType,
+        DataStreamSerializerContext context)
     {
         if(valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
@@ -219,11 +221,11 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         }
     }
 
-    private Expression Read(Expression readerExpression, string methodName)
+    private Expression Read(Expression reader, string methodName)
     {
         return Call<DataStreamReader>(
             methodName,
             Array.Empty<Type>(),
-            readerExpression);
+            reader);
     }
 }

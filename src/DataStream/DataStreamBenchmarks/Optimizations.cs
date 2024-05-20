@@ -3,23 +3,19 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataStreamBenchmarks;
+
 internal class Optimizations : IDisposable
 {
-    private ArraySegment<byte> _data;
-    private Stream _stream;
+    private readonly ArraySegment<byte> _data;
+    private readonly Stream _stream;
 
     public Optimizations()
     {
-        MemoryStream stream = new ();
+        MemoryStream stream = new();
         stream.Write([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]);
         stream.Position = 8;
         byte[] buffer = new byte[8];
