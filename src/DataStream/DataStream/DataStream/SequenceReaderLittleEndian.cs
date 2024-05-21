@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace DataStream;
 
-internal struct SequenceReaderLittleEndian : ISequenceReader
+internal class SequenceReaderLittleEndian //: ISequenceReader
 {
     private readonly ArraySegment<byte> _data;
     private int _position;
@@ -19,7 +19,7 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
         _position = 0;
     }
 
-    public readonly int Position => _position;
+    public int Position => _position;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte()
@@ -101,16 +101,6 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public byte[] ReadBinary8()
-    {
-        int length = _data[_position];
-        byte[] value = new byte[length];
-        _data.Slice(_position + 1, length).CopyTo(value);
-        _position += length + 1;
-        return value;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte[] ReadBinary()
     {
         int length = Read7BitEncodedInt32();
@@ -123,6 +113,19 @@ internal struct SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Read7BitEncodedInt32()
     {
+        //uint result = 0;
+        //for(int i = 0; i < 6 ; ++i)
+        //{
+        //    byte value = _data[_position++];
+        //    result <<= 7;
+        //    result |= value;
+        //    if((value & ~0x7Fu) ==  0)
+        //    {
+        //        return unchecked((int)result);
+        //    }
+        //}
+
+        //throw new FormatException("bad 7-bit integer");
         // Unlike writing, we can't delegate to the 64-bit read on
         // 64-bit platforms. The reason for this is that we want to
         // stop consuming bytes if we encounter an integer overflow.

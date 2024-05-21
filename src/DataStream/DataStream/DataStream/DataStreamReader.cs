@@ -9,7 +9,7 @@ namespace DataStream;
 
 internal class DataStreamReader
 {
-    private readonly ISequenceReader _reader;
+    private readonly SequenceReaderLittleEndian _reader;
     private readonly DataStreamSerializerContext _context;
 
     private DataStreamElementType _elementType;
@@ -25,7 +25,7 @@ internal class DataStreamReader
 
     public int PropertyIndex => _propertyIndex;
 
-    public string? PropertyName => PropertyMap.FromIndex(PropertyIndex);
+    public string? PropertyName => PropertyMap.FindProperty(PropertyIndex);
 
     internal PropertyMap PropertyMap => _context.PropertyMap!;
 

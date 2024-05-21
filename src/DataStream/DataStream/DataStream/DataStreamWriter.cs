@@ -4,56 +4,14 @@
 // </copyright>
 
 using System.Buffers;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DataStream;
 
-
-[Flags]
-public enum DataStreamElementType : byte
-{
-    /// <summary>
-    /// Control tags
-    /// </summary>
-    StartOfStream = 0b0000_0001,
-    EndOfStream = 0b0000_0010,
-    StartOfObject = 0b0000_0011,
-    EndOfObject = 0b0000_0100,
-    PropertyName = 0b0000_0101,
-    PropertyIndex = 0b0000_0110,
-    /// <summary>
-    /// Scalar type tags
-    /// </summary>
-    Null = 0b0001_0000,
-    False = 0b0001_0001,
-    True = 0b0001_0010,
-    Byte = 0b0001_0011,
-    Int16 = 0b0001_0100,
-    Int32 = 0b0001_0101,
-    Int64 = 0b0001_0110,
-    Double = 0b0001_0111,
-    Single = 0b0001_1000,
-    String = 0b0001_1001,
-    DateTime = 0b0001_1010,
-    Decimal = 0b0001_1011,
-    Guid = 0b0001_1100,
-    Object = 0b0001_1101,
-    Boolean = 0b0001_1110,
-    /// <summary>
-    /// Enum flag
-    /// </summary>
-    Enum = 0b0010_0000,
-    /// <summary>
-    /// Array flag
-    /// </summary>
-    ArrayOf = 0b0100_0000,
-    ElementTypeMask = 0b0001_1111,
-    EnumTypeMask = 0b0001_1111
-}
-
-internal class DataStreamWriter : IDisposable
+internal partial class DataStreamWriter : IDisposable
 {
     private const int MaxArrayPoolRentalSize = 64 * 1024; // try to keep rentals to a reasonable size
 
@@ -76,19 +34,21 @@ internal class DataStreamWriter : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WritePropertyName(byte[] propertyName, int streamIndex)
+    public void WriteProperty(int streamIndex)
     {
-        _stream.WriteByte((byte)DataStreamElementType.PropertyName);
-        Write7BitEncodedInt32(streamIndex);
-        Write7BitEncodedInt32(propertyName.Length);
-        _stream.Write(propertyName, 0, propertyName.Length);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WritePropertyIndex(int streamIndex)
-    {
-        _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
-        Write7BitEncodedInt32(streamIndex);
+        if (_context.PropertyMap.UseIndex(streamIndex))
+        {
+            byte[] propertyName = _context.PropertyMap.Get(streamIndex);
+            _stream.WriteByte((byte)DataStreamElementType.PropertyName);
+            Write7BitEncodedInt32(streamIndex);
+            Write7BitEncodedInt32(propertyName.Length);
+            _stream.Write(propertyName, 0, propertyName.Length);
+        }
+        else
+        {
+            _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
+            Write7BitEncodedInt32(streamIndex);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -329,67 +289,21 @@ internal class DataStreamWriter : IDisposable
         _stream.WriteByte((byte)uValue);
     }
 
-    private class BinaryBuffer
+    public void Write(IEnumerable? value)
     {
-        private readonly Stream _stream;
-        private readonly byte[] _buffer;
-        private int _position;
-
-        public BinaryBuffer(Stream stream, byte[] buffer)
+        if(value is null)
         {
-            _stream = stream;
-            _buffer = buffer;
-            _position = 0;
+            WriteNull();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteByte(byte value)
+        else
         {
-            if (_position >= _buffer.Length)
+            Write((byte)DataStreamElementType.ArrayOf);
+            Write((byte)DataStreamElementType.Object);
+            foreach (object item in value)
             {
-                Flush();
+                DataStreamSerializer.Serialize(this, item, _context);
             }
-            _buffer[_position++] = value;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write(byte[] data, int offset, int count)
-        {
-            if (count - offset <= _buffer.Length - _position)
-            {
-                Array.Copy(data, offset, _buffer, _position, count);
-                _position += count - offset;
-            }
-            else
-            {
-                Flush();
-                _stream.Write(data, offset, count);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write(Span<byte> data)
-        {
-            if (data.Length <= _buffer.Length - _position)
-            {
-                data.CopyTo(new Span<byte>(_buffer, _position, data.Length));
-                _position += data.Length;
-            }
-            else
-            {
-                Flush();
-                _stream.Write(data);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Flush()
-        {
-            if (_position > 0)
-            {
-                _stream.Write(_buffer, 0, _position);
-                _position = 0;
-            }
+            Write((byte)DataStreamElementType.EndOfArray);
         }
     }
 }

@@ -8,43 +8,71 @@ using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 using System.Reflection;
 using System.Text;
+using System.Collections;
 
 namespace DataStream;
 
 internal class DataStreamWriterCompiler: DataStreamCompilerBase
 {
-    private readonly ConcurrentDictionary<Type, Delegate> _writers = new();
+    private readonly ConcurrentDictionary<Type, Action<DataStreamWriter, object>> _writers = new();
 
-    public Delegate GetOrAdd(Type type, DataStreamSerializerContext context)
+    public DataStreamWriterCompiler()
+    {
+    }
+
+    public Action<DataStreamWriter, object> GetOrAdd(Type type, DataStreamSerializerContext context)
     {
         ArgumentNullException.ThrowIfNull(type);
         ArgumentNullException.ThrowIfNull(context);
 
-        if (!_writers.TryGetValue(type, out Delegate? writer))
+        if (!_writers.TryGetValue(type, out Action<DataStreamWriter, object>? writer))
         {
             writer = _writers.GetOrAdd(type, t => Create(t, context));
         }
         return writer;
     }
 
-    private Delegate Create(Type type, DataStreamSerializerContext context)
+    public Action<DataStreamWriter, object> Get(Type type)
     {
-        ParameterExpression writerParameter = Parameter(typeof(DataStreamWriter), "writer");
-        ParameterExpression itemParameter = Parameter(type, "item");
+        ArgumentNullException.ThrowIfNull(type);
+        return _writers[type];
+    }
+
+    private Action<DataStreamWriter, object> Create(Type type, DataStreamSerializerContext context)
+    {
+        ParameterExpression writer = Parameter(typeof(DataStreamWriter), "writer");
+        ParameterExpression item = Parameter(typeof(object), "item");
 
         BlockExpression body = Block(
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteStartOfStream),
                 Array.Empty<Type>(),
-                writerParameter),
-            GetExpression(type, itemParameter, writerParameter, context),
+                writer),
+            GetExpression(type, Convert(item, type), writer, context),
             Call<DataStreamWriter>(
                 nameof(DataStreamWriter.WriteEndOfStream),
                 Array.Empty<Type>(),
-                writerParameter)
+                writer)
         );
-        LambdaExpression lambda = Lambda(body, writerParameter, itemParameter);
-        return lambda.Compile();
+        LambdaExpression lambda = Lambda(body, writer, item);
+        return (Action<DataStreamWriter, object>)lambda.Compile();
+    }
+
+    private Expression GetArrayExpression(
+        Type itemType,
+        Expression item,
+        ParameterExpression writer,
+        DataStreamSerializerContext context)
+    {
+        if(typeof(IEnumerable).IsAssignableFrom(itemType))
+        {
+            return Call<DataStreamWriter>(
+                    nameof(DataStreamWriter.Write),
+                    [typeof(IEnumerable)],
+                    writer,
+                    item);
+        }
+        return GetExpression(itemType, item, writer, context);
     }
 
     private BlockExpression GetExpression(
@@ -67,22 +95,12 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
             {
                 Expression writePropertyNameExpression;
                 byte[] propertyNameUtf8 = Encoding.UTF8.GetBytes(property.Name);
-                if (context.PropertyMap.TryAdd(propertyNameUtf8, out int propertyNameIndex))
-                {
-                    writePropertyNameExpression = Call<DataStreamWriter>(
-                        nameof(DataStreamWriter.WritePropertyName),
-                        [typeof(byte[]), typeof(int)],
-                        writer,
-                        Constant(propertyNameUtf8), Constant(propertyNameIndex));
-                }
-                else
-                {
-                    writePropertyNameExpression = Call<DataStreamWriter>(
-                        nameof(DataStreamWriter.WritePropertyIndex),
-                        [typeof(int)],
-                        writer,
-                        Constant(propertyNameIndex));
-                }
+                context.PropertyMap.TryAdd(propertyNameUtf8, out int streamIndex);
+                writePropertyNameExpression = Call<DataStreamWriter>(
+                    nameof(DataStreamWriter.WriteProperty),
+                    [typeof(int)],
+                    writer,
+                    Constant(streamIndex));
 
                 Expression itemPropertyExpression = Property(item, property.Name);
                 Type propertyType = property.PropertyType;

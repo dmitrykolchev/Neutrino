@@ -3,6 +3,8 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Runtime.CompilerServices;
+
 namespace DataStream;
 
 internal interface ISequenceReader
@@ -14,26 +16,14 @@ internal interface ISequenceReader
     void Read(byte[] buffer, int offset, int count);
 
     short ReadInt16();
-
     int ReadInt32();
-
     long ReadInt64();
-
     double ReadDouble();
-
     float ReadSingle();
-
     Guid ReadGuid();
-
     decimal ReadDecimal();
-
     string ReadString();
-
     byte[] ReadBinary();
-
-    byte[] ReadBinary8();
-
     int Read7BitEncodedInt32();
-
     long Read7BitEncodedInt64();
 }

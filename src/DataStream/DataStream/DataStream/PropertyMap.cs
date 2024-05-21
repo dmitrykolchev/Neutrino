@@ -3,18 +3,18 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DataStream;
 
-internal class PropertyMap
+internal class PropertyMap: IDisposable
 {
-    internal struct PropertyNameEntry
+    internal class PropertyNameEntry
     {
-        private byte[] _data;
-        private int _hashValue;
-
-        public byte[] Data => _data;
+        internal readonly byte[] _data;
+        internal readonly int _hashValue;
 
         public PropertyNameEntry(byte[] data)
         {
@@ -27,82 +27,100 @@ internal class PropertyMap
             return _hashValue;
         }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj is PropertyNameEntry that)
-            {
-                return _hashValue == that._hashValue && _data.SequenceEqual(that._data);
-            }
-            return false;
-        }
-
         public override string ToString()
         {
             if (_data != null)
             {
-                return DataStreamSerializer.UTF8.GetString(_data);
+                return DataStreamSerializer.UTF8.GetString(_data.ToArray());
             }
             return string.Empty;
         }
     }
 
-    private readonly Dictionary<PropertyNameEntry, int> _propertyIndex;
-    private readonly int[]? _streamIndex;
+    private class PropertyNameEntryComparer : IEqualityComparer<PropertyNameEntry>
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(PropertyNameEntry? x, PropertyNameEntry? y)
+        {
+            return x!._hashValue == y!._hashValue && x._data.SequenceEqual(y._data);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GetHashCode([DisallowNull] PropertyNameEntry obj)
+        {
+            return obj._hashValue;
+        }
+    }
+
+    private static readonly PropertyNameEntryComparer DefaultComparer = new ();
+    private readonly Dictionary<PropertyNameEntry, int> _propertyToIndex;
+    private readonly List<byte[]> _indexToProperty;
+    private int[] _streamIndex = null!;
 
     public PropertyMap()
     {
-        _propertyIndex = new();
+        _propertyToIndex = new(DefaultComparer);
+        _indexToProperty = new();
     }
 
-    private PropertyMap(PropertyMap source)
+    public PropertyMap(PropertyMap source)
     {
-        _propertyIndex = source._propertyIndex;
-        _streamIndex = new int[_propertyIndex.Count];
+        _propertyToIndex = source._propertyToIndex;
+        _indexToProperty = source._indexToProperty;
+        _streamIndex = ArrayPool<int>.Shared.Rent(_propertyToIndex.Count + 1);
+    }
+
+    public void Dispose()
+    {
+        ArrayPool<int>.Shared.Return(_streamIndex);
     }
 
     public bool TryAdd(byte[] propertyName, out int index)
     {
         PropertyNameEntry entry = new(propertyName);
 
-        if (!_propertyIndex.TryGetValue(entry, out index))
+        if (!_propertyToIndex.TryGetValue(entry, out index))
         {
-            index = _propertyIndex.Count;
-            _propertyIndex.Add(entry, index);
+            index = _propertyToIndex.Count + 1;
+            _propertyToIndex.Add(entry, index);
+            _indexToProperty.Add(propertyName);
             return true;
         }
         return false;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetIndex(byte[] propertyName)
+    public bool UseIndex(int streamIndex)
     {
-        PropertyNameEntry entry = new(propertyName);
-        return _propertyIndex[entry];
-    }
-
-    public byte[]? FindProperty(int index)
-    {
-        PropertyNameEntry entry = _propertyIndex.Where(t => t.Value == index).Select(t => t.Key).FirstOrDefault();
-        return entry.Data;
-    }
-
-    public string? FromIndex(int index)
-    {
-        byte[]? data = FindProperty(index);
-        if (data != null)
+        if (_streamIndex[streamIndex] == 0)
         {
-            return DataStreamSerializer.UTF8.GetString(data);
+            _streamIndex[streamIndex] = streamIndex;
+            return true;
         }
-        return null;
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public byte[] Get(int streamIndex)
+    {
+        return _indexToProperty[streamIndex - 1];
+    }
+
+    public string? FindProperty(int index)
+    {
+        PropertyNameEntry? entry = _propertyToIndex.Where(t => t.Value == index).Select(t => t.Key).FirstOrDefault();
+        return entry?.ToString();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int GetInternalIndex(byte[] property, int streamIndex)
     {
-        PropertyNameEntry entry = new(property);
-        int internalIndex = _propertyIndex[entry];
-        _streamIndex![streamIndex] = internalIndex;
-        return internalIndex;
+        if (_streamIndex[streamIndex] == 0)
+        {
+            PropertyNameEntry entry = new(property);
+            _streamIndex![streamIndex] = _propertyToIndex[entry];
+        }
+        return _streamIndex[streamIndex];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -111,9 +129,8 @@ internal class PropertyMap
         return _streamIndex![streamIndex];
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public PropertyMap Clone()
     {
-        return new PropertyMap(this);
+        return new(this);
     }
 }

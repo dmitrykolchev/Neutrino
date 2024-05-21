@@ -3,8 +3,9 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Data.SqlTypes;
+using System.Diagnostics;
 using BenchmarkDotNet.Running;
-using DataStream;
 using MessagePack;
 
 namespace DataStreamBenchmarks;
@@ -85,65 +86,35 @@ internal class Program
 #endif
     }
 
-    private static short OptimizationTests()
-    {
-        Optimizations o = new ();
-        short v = o.ReadInt16();
-        return v;
-    }
-
-    private static Employee TestSerializer()
+    private static void TestSerializer()
     {
         Console.WriteLine($"LittleEndian = {BitConverter.IsLittleEndian}");
-        Employee employee = new()
-        {
-            Gid = Guid.NewGuid(),
-            Id = 1,
-            State = EmployeeState.Active,
-            Name = "Dmitry Kolchev",
-            DateOfBirth = new DateTime(1968, 6, 4),
-            FireDate = null,
-            Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                      10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-            Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
-            Salary = 12322.23,
-            SalaryDecimal = 7473737,
-            CreatedDate = DateTime.UtcNow
-        };
+        Benchmarks b = new();
+        b.GlobalSetup();
 
-        employee = new()
-        {
-            Gid = Guid.NewGuid(),
-            Id = 1,
-            State = EmployeeState.Active,
-            OficeWorker = true,
-            Salary = 23423.33,
-            Name = "Dmitry Kolchev",
-            DateOfBirth = new DateTime(1968, 6, 4),
-            FireDate = null,
-            Avatar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                      10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-            Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
-            SalaryDecimal = 7473737,
-            CreatedDate = DateTime.UtcNow
-        };
-
-        Employee result = null!;
-        using (MemoryStream stream = new())
-        {
-            for (int index = 0; index < 1_000_000; ++index)
-            {
-                stream.Position = 0;
-                DataStreamSerializer.Serialize(stream, employee);
-                stream.Position = 0;
-                result = DataStreamSerializer.Deserialize<Employee>(stream);
-            }
-        }
-        return result;
-
-        //using (MemoryStream stream = new())
+        //for (int index = 0; index < 1_000_000; ++index)
         //{
-        //    MessagePackSerializer.Serialize<Employee>(stream, employee);
+        //    b.DataStreamSerializeBenchmark();
         //}
+        //for (int index = 0; index < 1_000_000; ++index)
+        //{
+        //    b.DataStreamDeserializeBenchmark();
+        //}
+
+        //Stopwatch sw = Stopwatch.StartNew();
+        //for (int index = 0; index < 10_000_000; ++index)
+        //{
+        //    b.DataStreamSerializeBenchmark();
+        //}
+        //sw.Stop();
+        //Console.WriteLine($"{sw.ElapsedMilliseconds * 1000000.0 / 10_000_000} ns");
+
+        Stopwatch sw = Stopwatch.StartNew();
+        for (int index = 0; index < 10_000_000; ++index)
+        {
+            b.DataStreamDeserializeBenchmark();
+        }
+        sw.Stop();
+        Console.WriteLine($"{sw.ElapsedMilliseconds} ns");
     }
 }

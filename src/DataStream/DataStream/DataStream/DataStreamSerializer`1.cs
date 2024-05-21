@@ -26,9 +26,16 @@ public sealed class DataStreamSerializer
             Options = DefaultOptions,
             PropertyMap = GetPropertyMap<TItem>()
         };
-        Action<DataStreamWriter, TItem> serializeAction =
-            (Action<DataStreamWriter, TItem>)s_writerCompiler.GetOrAdd(typeof(TItem), context);
         using DataStreamWriter writer = new (stream, context);
+        s_writerCompiler.GetOrAdd(item.GetType(), context);
+        using var propertyMap= context.PropertyMap.Clone();
+        context.PropertyMap = propertyMap;
+        Serialize(writer, item, context);
+    }
+
+    internal static void Serialize(DataStreamWriter writer, object item, DataStreamSerializerContext context)
+    {
+        Action<DataStreamWriter, object> serializeAction = s_writerCompiler.Get(item.GetType());
         serializeAction(writer, item);
     }
 
@@ -43,6 +50,7 @@ public sealed class DataStreamSerializer
         Func<DataStreamReader, TItem> deserializeAction =
             (Func<DataStreamReader, TItem>)s_readerCompiler.GetOrAdd(typeof(TItem), context);
 
+        context.PropertyMap = context.PropertyMap.Clone();
         if (stream is MemoryStream memory && memory.TryGetBuffer(out ArraySegment<byte> buffer))
         {
             return deserializeAction(
@@ -65,6 +73,6 @@ public sealed class DataStreamSerializer
             s_propertyMaps.TryAdd(typeof(TItem), propertyMap);
             return propertyMap;
         }
-        return s_propertyMaps[typeof(TItem)].Clone();
+        return s_propertyMaps[typeof(TItem)];
     }
 }
