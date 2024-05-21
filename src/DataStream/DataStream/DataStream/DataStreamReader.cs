@@ -9,13 +9,13 @@ namespace DataStream;
 
 internal class DataStreamReader
 {
-    private readonly SequenceReaderLittleEndian _reader;
+    private readonly ISequenceReader _reader;
     private readonly DataStreamSerializerContext _context;
 
     private DataStreamElementType _elementType;
     private int _propertyIndex = -1;
 
-    public DataStreamReader(SequenceReaderLittleEndian sequence, DataStreamSerializerContext context)
+    public DataStreamReader(ISequenceReader sequence, DataStreamSerializerContext context)
     {
         _reader = sequence;
         _context = context;
@@ -61,7 +61,7 @@ internal class DataStreamReader
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ReadBoolean()
+    public bool GetBoolean()
     {
         return _elementType switch
         {

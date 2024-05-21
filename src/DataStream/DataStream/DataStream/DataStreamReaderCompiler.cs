@@ -201,7 +201,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
             case TypeCode.Int16:
                 return Read(reader, nameof(DataStreamReader.ReadInt16));
             case TypeCode.Boolean:
-                return Read(reader, nameof(DataStreamReader.ReadBoolean));
+                return Read(reader, nameof(DataStreamReader.GetBoolean));
             case TypeCode.String:
                 return Read(reader, nameof(DataStreamReader.ReadString));
             case TypeCode.DateTime:

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace DataStream;
 
-internal class SequenceReaderLittleEndian //: ISequenceReader
+internal class SequenceReaderLittleEndian : ISequenceReader
 {
     private readonly ArraySegment<byte> _data;
     private int _position;
