@@ -10,4 +10,6 @@ public class DataStreamSerializerContext
     public required DataStreamSerializationOptions Options { get; init; }
 
     internal PropertyMap PropertyMap { get; set; } = null!;
+
+    internal StreamIndexMap StreamIndexMap { get; set; } = null!;
 }

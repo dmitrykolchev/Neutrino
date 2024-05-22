@@ -26,8 +26,7 @@ public sealed partial class DataStreamSerializer
         using DataStreamWriter writer = new(stream, context);
         s_writerCompiler.TryAdd(item.GetType(), context);
 
-        using PropertyMap propertyMap = context.PropertyMap.Clone();
-        context.PropertyMap = propertyMap;
+        context.StreamIndexMap = new StreamIndexMap(context.PropertyMap);
         Serialize(writer, item, context);
     }
 

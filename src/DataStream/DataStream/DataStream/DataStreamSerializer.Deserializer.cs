@@ -27,8 +27,7 @@ public sealed partial class DataStreamSerializer
                         ? new SequenceReaderLittleEndian(buffer.Slice(checked((int)stream.Position)))
                         : throw new InvalidOperationException(),
                     context);
-            using PropertyMap propertyMap = context.PropertyMap.Clone();
-            context.PropertyMap = propertyMap;
+            context.StreamIndexMap = new StreamIndexMap(context.PropertyMap);
             return (TItem)Deserialize(typeof(TItem), reader);
         }
         throw new NotImplementedException();

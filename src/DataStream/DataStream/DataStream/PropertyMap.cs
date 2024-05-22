@@ -3,25 +3,25 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System.Buffers;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 
 namespace DataStream;
 
-internal class PropertyMap : IDisposable
+internal class PropertyMap
 {
     private static readonly ConcurrentDictionary<Type, PropertyMap> s_propertyMaps = new();
 
     private readonly Dictionary<Utf8String, int> _propertyToIndex;
     private readonly List<Utf8String> _indexToProperty;
-    private readonly int[] _streamIndex = null!;
 
     private PropertyMap()
     {
         _propertyToIndex = new();
         _indexToProperty = new();
     }
+
+    public int Count => _propertyToIndex.Count;
 
     public static PropertyMap GetInstance(Type itemType)
     {
@@ -31,19 +31,7 @@ internal class PropertyMap : IDisposable
         });
     }
 
-    private PropertyMap(PropertyMap source)
-    {
-        _propertyToIndex = source._propertyToIndex;
-        _indexToProperty = source._indexToProperty;
-        _streamIndex = ArrayPool<int>.Shared.Rent(_propertyToIndex.Count + 1);
-        Array.Clear(_streamIndex, 0, _propertyToIndex.Count + 1);
-    }
-
-    public void Dispose()
-    {
-        ArrayPool<int>.Shared.Return(_streamIndex);
-    }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryAdd(in Utf8String propertyName, out int index)
     {
         if (!_propertyToIndex.TryGetValue(propertyName, out index))
@@ -57,46 +45,20 @@ internal class PropertyMap : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool UseIndex(int streamIndex)
+    public int GetIndex(in Utf8String property)
     {
-        if (_streamIndex[streamIndex] == 0)
-        {
-            _streamIndex[streamIndex] = streamIndex;
-            return true;
-        }
-        return false;
+        return _propertyToIndex[property];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8String Get(int streamIndex)
+    public Utf8String GetProperty(int index)
     {
-        return _indexToProperty[streamIndex - 1];
+        return _indexToProperty[index - 1];
     }
 
     public string? FindProperty(int index)
     {
         Utf8String entry = _propertyToIndex.Where(t => t.Value == index).Select(t => t.Key).FirstOrDefault();
         return DataStreamSerializer.UTF8.GetString(entry.AsSpan());
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetInternalIndex(in Utf8String property, int streamIndex)
-    {
-        if (_streamIndex[streamIndex] == 0)
-        {
-            _streamIndex![streamIndex] = _propertyToIndex[property];
-        }
-        return _streamIndex[streamIndex];
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetInternalIndex(int streamIndex)
-    {
-        return _streamIndex![streamIndex];
-    }
-
-    public PropertyMap Clone()
-    {
-        return new(this);
     }
 }

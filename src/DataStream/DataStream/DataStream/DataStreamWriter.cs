@@ -34,20 +34,20 @@ internal partial class DataStreamWriter : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteProperty(int streamIndex)
+    public void WriteProperty(int propertyIndex)
     {
-        if (_context.PropertyMap.UseIndex(streamIndex))
+        if (_context.StreamIndexMap.Allocate(propertyIndex))
         {
             _stream.WriteByte((byte)DataStreamElementType.PropertyName);
-            Write7BitEncodedInt32(streamIndex);
-            Utf8String propertyName = _context.PropertyMap.Get(streamIndex);
+            Write7BitEncodedInt32(propertyIndex);
+            Utf8String propertyName = _context.PropertyMap.GetProperty(propertyIndex);
             Write7BitEncodedInt32(propertyName.Length);
             _stream.Write(propertyName.AsSpan());
         }
         else
         {
             _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
-            Write7BitEncodedInt32(streamIndex);
+            Write7BitEncodedInt32(propertyIndex);
         }
     }
 

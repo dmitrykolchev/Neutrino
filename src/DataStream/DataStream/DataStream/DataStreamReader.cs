@@ -29,6 +29,8 @@ internal class DataStreamReader
 
     internal PropertyMap PropertyMap => _context.PropertyMap!;
 
+    internal StreamIndexMap StreamIndexMap => _context.StreamIndexMap;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public DataStreamElementType ReadElementType()
     {
@@ -47,11 +49,11 @@ internal class DataStreamReader
         int streamIndex = _reader.Read7BitEncodedInt32();
         if (_elementType == DataStreamElementType.PropertyIndex)
         {
-            _propertyIndex = PropertyMap.GetInternalIndex(streamIndex);
+            _propertyIndex = StreamIndexMap.GetInternalIndex(streamIndex);
         }
         else if(_elementType == DataStreamElementType.PropertyName)
         {
-            _propertyIndex = PropertyMap.GetInternalIndex(_reader.ReadProperty(), streamIndex);
+            _propertyIndex = StreamIndexMap.GetInternalIndex(_reader.ReadProperty(), streamIndex);
         }
         else
         {
