@@ -38,9 +38,9 @@ internal partial class DataStreamWriter : IDisposable
     {
         if (_context.PropertyMap.UseIndex(streamIndex))
         {
-            byte[] propertyName = _context.PropertyMap.Get(streamIndex);
             _stream.WriteByte((byte)DataStreamElementType.PropertyName);
             Write7BitEncodedInt32(streamIndex);
+            byte[] propertyName = _context.PropertyMap.Get(streamIndex);
             Write7BitEncodedInt32(propertyName.Length);
             _stream.Write(propertyName, 0, propertyName.Length);
         }

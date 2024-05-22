@@ -4,62 +4,19 @@
 // </copyright>
 
 using System.Buffers;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DataStream;
 
-internal class PropertyMap: IDisposable
+internal class PropertyMap : IDisposable
 {
-    internal class PropertyNameEntry
-    {
-        internal readonly byte[] _data;
-        internal readonly int _hashValue;
-
-        public PropertyNameEntry(byte[] data)
-        {
-            _data = data;
-            _hashValue = HashProvider.ComputeHash32(data, HashProvider.DefaultSeed);
-        }
-
-        public override int GetHashCode()
-        {
-            return _hashValue;
-        }
-
-        public override string ToString()
-        {
-            if (_data != null)
-            {
-                return DataStreamSerializer.UTF8.GetString(_data.ToArray());
-            }
-            return string.Empty;
-        }
-    }
-
-    private class PropertyNameEntryComparer : IEqualityComparer<PropertyNameEntry>
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(PropertyNameEntry? x, PropertyNameEntry? y)
-        {
-            return x!._hashValue == y!._hashValue && x._data.SequenceEqual(y._data);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetHashCode([DisallowNull] PropertyNameEntry obj)
-        {
-            return obj._hashValue;
-        }
-    }
-
-    private static readonly PropertyNameEntryComparer DefaultComparer = new ();
-    private readonly Dictionary<PropertyNameEntry, int> _propertyToIndex;
-    private readonly List<byte[]> _indexToProperty;
-    private int[] _streamIndex = null!;
+    private readonly Dictionary<Utf8String, int> _propertyToIndex;
+    private readonly List<Utf8String> _indexToProperty;
+    private readonly int[] _streamIndex = null!;
 
     public PropertyMap()
     {
-        _propertyToIndex = new(DefaultComparer);
+        _propertyToIndex = new();
         _indexToProperty = new();
     }
 
@@ -68,6 +25,7 @@ internal class PropertyMap: IDisposable
         _propertyToIndex = source._propertyToIndex;
         _indexToProperty = source._indexToProperty;
         _streamIndex = ArrayPool<int>.Shared.Rent(_propertyToIndex.Count + 1);
+        Array.Clear(_streamIndex, 0, _propertyToIndex.Count + 1);
     }
 
     public void Dispose()
@@ -75,14 +33,12 @@ internal class PropertyMap: IDisposable
         ArrayPool<int>.Shared.Return(_streamIndex);
     }
 
-    public bool TryAdd(byte[] propertyName, out int index)
+    public bool TryAdd(Utf8String propertyName, out int index)
     {
-        PropertyNameEntry entry = new(propertyName);
-
-        if (!_propertyToIndex.TryGetValue(entry, out index))
+        if (!_propertyToIndex.TryGetValue(propertyName, out index))
         {
             index = _propertyToIndex.Count + 1;
-            _propertyToIndex.Add(entry, index);
+            _propertyToIndex.Add(propertyName, index);
             _indexToProperty.Add(propertyName);
             return true;
         }
@@ -103,22 +59,21 @@ internal class PropertyMap: IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte[] Get(int streamIndex)
     {
-        return _indexToProperty[streamIndex - 1];
+        return _indexToProperty[streamIndex - 1].Value;
     }
 
     public string? FindProperty(int index)
     {
-        PropertyNameEntry? entry = _propertyToIndex.Where(t => t.Value == index).Select(t => t.Key).FirstOrDefault();
-        return entry?.ToString();
+        Utf8String entry = _propertyToIndex.Where(t => t.Value == index).Select(t => t.Key).FirstOrDefault();
+        return DataStreamSerializer.UTF8.GetString(entry.Value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetInternalIndex(byte[] property, int streamIndex)
+    public int GetInternalIndex(in Utf8String property, int streamIndex)
     {
         if (_streamIndex[streamIndex] == 0)
         {
-            PropertyNameEntry entry = new(property);
-            _streamIndex![streamIndex] = _propertyToIndex[entry];
+            _streamIndex![streamIndex] = _propertyToIndex[property];
         }
         return _streamIndex[streamIndex];
     }

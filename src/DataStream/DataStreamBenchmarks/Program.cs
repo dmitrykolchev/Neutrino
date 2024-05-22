@@ -3,7 +3,6 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System.Data.SqlTypes;
 using System.Diagnostics;
 using BenchmarkDotNet.Running;
 using MessagePack;

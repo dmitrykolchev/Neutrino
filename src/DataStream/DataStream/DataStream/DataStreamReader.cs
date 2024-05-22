@@ -51,7 +51,7 @@ internal class DataStreamReader
         }
         else if(_elementType == DataStreamElementType.PropertyName)
         {
-            _propertyIndex = PropertyMap.GetInternalIndex(_reader.ReadBinary(), streamIndex);
+            _propertyIndex = PropertyMap.GetInternalIndex(_reader.ReadProperty(), streamIndex);
         }
         else
         {

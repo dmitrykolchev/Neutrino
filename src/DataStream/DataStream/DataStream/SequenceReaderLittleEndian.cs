@@ -101,6 +101,16 @@ internal class SequenceReaderLittleEndian : ISequenceReader
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Utf8String ReadProperty()
+    {
+        int length = Read7BitEncodedInt32();
+        ReadOnlySpan<byte> span = _data.Slice(_position, length).AsSpan();
+        Utf8String result = Utf8String.Intern(span);
+        _position += length;
+        return result;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte[] ReadBinary()
     {
         int length = Read7BitEncodedInt32();

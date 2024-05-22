@@ -47,7 +47,12 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
         Expression checkStartOfStream = IfThen(
                 NotEqual(elementType, Constant(DataStreamElementType.StartOfStream)),
-                Throw(New(typeof(FormatException)))
+                Throw(
+                    New(
+                        typeof(FormatException).GetConstructor([typeof(string)])!, 
+                        Constant("Must be start of stream")
+                    )
+                )
             );
 
         Expression readObject = Assign(
@@ -57,7 +62,12 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
         Expression checkEndOfStream = IfThen(
                 NotEqual(elementType, Constant(DataStreamElementType.EndOfStream)),
-                Throw(New(typeof(FormatException)))
+                Throw(
+                    New(
+                        typeof(FormatException).GetConstructor([typeof(string)])!,
+                        Constant("Must be end of stream")
+                    )
+                )
             );
 
         return Block(
@@ -91,7 +101,8 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         {
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
-                byte[] propertyNameUtf8 = DataStreamSerializer.UTF8.GetBytes(property.Name);
+                ReadOnlySpan<byte> data = DataStreamSerializer.UTF8.GetBytes(property.Name);
+                Utf8String propertyNameUtf8 = Utf8String.Intern(data);
 
                 context.PropertyMap.TryAdd(propertyNameUtf8, out int caseIndex);
 
@@ -104,8 +115,13 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         }
         Expression @switch = Switch(
             typeof(void), 
-            propertyIndex, 
-            Throw(New(typeof(FormatException))), 
+            propertyIndex,
+            Throw(
+                New(
+                    typeof(FormatException).GetConstructor([typeof(string)])!,
+                    Constant("Invalid property index")
+                )
+            ),
             null, 
             cases);
 
@@ -170,12 +186,22 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                     [objectResult],
                     IfThen(
                         NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.StartOfObject)),
-                        Throw(New(typeof(FormatException)))
+                        Throw(
+                            New(
+                                typeof(FormatException).GetConstructor([typeof(string)])!,
+                                Constant("Must be start of object")
+                            )
+                        )
                     ),
                     Assign(objectResult, ReadObjectExpression(valueType, reader, context, false)),
                     IfThen(
                         NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.EndOfObject)),
-                        Throw(New(typeof(FormatException)))
+                        Throw(
+                            New(
+                                typeof(FormatException).GetConstructor([typeof(string)])!,
+                                Constant("Must be end of object")
+                            )
+                        )
                     ),
                     objectResult
                 ), reader), 

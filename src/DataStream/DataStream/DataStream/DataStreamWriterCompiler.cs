@@ -94,7 +94,8 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
                 Expression writePropertyNameExpression;
-                byte[] propertyNameUtf8 = Encoding.UTF8.GetBytes(property.Name);
+                ReadOnlySpan<byte> span = Encoding.UTF8.GetBytes(property.Name);
+                Utf8String propertyNameUtf8 = Utf8String.Intern(span);
                 context.PropertyMap.TryAdd(propertyNameUtf8, out int streamIndex);
                 writePropertyNameExpression = Call<DataStreamWriter>(
                     nameof(DataStreamWriter.WriteProperty),

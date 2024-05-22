@@ -23,6 +23,7 @@ internal interface ISequenceReader
     Guid ReadGuid();
     decimal ReadDecimal();
     string ReadString();
+    Utf8String ReadProperty();
     byte[] ReadBinary();
     int Read7BitEncodedInt32();
     long Read7BitEncodedInt64();

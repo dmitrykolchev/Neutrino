@@ -53,13 +53,12 @@ public sealed class DataStreamSerializer
         context.PropertyMap = context.PropertyMap.Clone();
         if (stream is MemoryStream memory && memory.TryGetBuffer(out ArraySegment<byte> buffer))
         {
-            return deserializeAction(
-                new DataStreamReader(
+            DataStreamReader reader = new (
                     BitConverter.IsLittleEndian
                         ? new SequenceReaderLittleEndian(buffer.Slice(checked((int)stream.Position)))
                         : throw new InvalidOperationException(),
-                    context
-                ));
+                    context);
+            return deserializeAction(reader);
         }
         throw new NotImplementedException();
     }

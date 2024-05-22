@@ -53,7 +53,7 @@ partial class DataStreamWriter
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Write(Span<byte> data)
+        public void Write(ReadOnlySpan<byte> data)
         {
             if (data.Length <= _buffer.Length - _position)
             {
