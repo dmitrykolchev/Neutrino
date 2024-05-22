@@ -13,11 +13,11 @@ internal class Utf8StringCacheInterner
 
     private readonly Utf8StringCache _cache = new();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public byte[] Intern(in InternableUtf8String candidate)
-    {
-        return _cache.GetOrCreateEntry(candidate);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public byte[] Intern(in InternableUtf8String candidate)
+    //{
+    //    return _cache.GetOrCreateEntry(candidate);
+    //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte[] Intern(in ReadOnlySpan<byte> candidate, out int hashCode)

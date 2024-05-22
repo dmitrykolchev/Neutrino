@@ -4,23 +4,34 @@
 // </copyright>
 
 using System.Buffers;
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 
 namespace DataStream;
 
 internal class PropertyMap : IDisposable
 {
+    private static readonly ConcurrentDictionary<Type, PropertyMap> s_propertyMaps = new();
+
     private readonly Dictionary<Utf8String, int> _propertyToIndex;
     private readonly List<Utf8String> _indexToProperty;
     private readonly int[] _streamIndex = null!;
 
-    public PropertyMap()
+    private PropertyMap()
     {
         _propertyToIndex = new();
         _indexToProperty = new();
     }
 
-    public PropertyMap(PropertyMap source)
+    public static PropertyMap GetInstance(Type itemType)
+    {
+        return s_propertyMaps.GetOrAdd(itemType, (_) =>
+        {
+            return new();
+        });
+    }
+
+    private PropertyMap(PropertyMap source)
     {
         _propertyToIndex = source._propertyToIndex;
         _indexToProperty = source._indexToProperty;

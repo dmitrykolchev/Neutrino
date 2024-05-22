@@ -12,26 +12,31 @@ namespace DataStream;
 
 internal class DataStreamReaderCompiler : DataStreamCompilerBase
 {
-    private readonly ConcurrentDictionary<Type, Delegate> _readers = new();
+    private readonly ConcurrentDictionary<Type, Func<DataStreamReader, object>> _readers = new();
 
-    public Delegate GetOrAdd(Type type, DataStreamSerializerContext context)
+    public bool TryAdd(Type type, DataStreamSerializerContext context)
     {
         ArgumentNullException.ThrowIfNull(type);
         ArgumentNullException.ThrowIfNull(context);
-
-        if (!_readers.TryGetValue(type, out Delegate? reader))
+        if(_readers.ContainsKey(type))
         {
-            reader = _readers.GetOrAdd(type, t => Create(t, context));
+            return false;
         }
-        return reader;
+        return _readers.TryAdd(type, Create(type, context));
     }
 
-    private Delegate Create(Type type, DataStreamSerializerContext context)
+    public Func<DataStreamReader, object> Get(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+        return _readers[type];
+    }
+
+    private Func<DataStreamReader, object> Create(Type type, DataStreamSerializerContext context)
     {
         ParameterExpression readerParameter = Parameter(typeof(DataStreamReader), "reader");
         Expression body = GetExpression(type, readerParameter, context);
         LambdaExpression lambda = Lambda(body, readerParameter);
-        return lambda.Compile();
+        return (Func<DataStreamReader, object>)lambda.Compile();
     }
 
     private Expression GetExpression(
@@ -41,7 +46,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
     {
         Expression readElementType = Read(reader, nameof(DataStreamReader.ReadElementType));
 
-        ParameterExpression result = Variable(type, "root");
+        ParameterExpression result = Variable(typeof(object), "root");
 
         Expression elementType = Property(reader, nameof(DataStreamReader.ElementType));
 

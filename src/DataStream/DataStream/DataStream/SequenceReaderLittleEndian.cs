@@ -13,7 +13,7 @@ internal class SequenceReaderLittleEndian : ISequenceReader
     private readonly ArraySegment<byte> _data;
     private int _position;
 
-    public SequenceReaderLittleEndian(ArraySegment<byte> data)
+    public SequenceReaderLittleEndian(in ArraySegment<byte> data)
     {
         _data = data;
         _position = 0;
@@ -123,19 +123,6 @@ internal class SequenceReaderLittleEndian : ISequenceReader
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Read7BitEncodedInt32()
     {
-        //uint result = 0;
-        //for(int i = 0; i < 6 ; ++i)
-        //{
-        //    byte value = _data[_position++];
-        //    result <<= 7;
-        //    result |= value;
-        //    if((value & ~0x7Fu) ==  0)
-        //    {
-        //        return unchecked((int)result);
-        //    }
-        //}
-
-        //throw new FormatException("bad 7-bit integer");
         // Unlike writing, we can't delegate to the 64-bit read on
         // 64-bit platforms. The reason for this is that we want to
         // stop consuming bytes if we encounter an integer overflow.

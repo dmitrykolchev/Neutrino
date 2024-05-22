@@ -96,27 +96,9 @@ internal class Utf8StringCache
         handle = new();
         handle.SetValue(result);
         _entriesByHashCode.TryAdd(hashCode, handle);
-        // Remove unused handles if our heuristic indicates that it would be productive.
 
-        int scavengeThreshold = _scavengeThreshold;
-        if (_entriesByHashCode.Count >= scavengeThreshold)
-        {
-            // Before we start scavenging set _scavengeThreshold to a high value to effectively lock other threads from
-            // running Scavenge at the same time.
-            if (Interlocked.CompareExchange(ref _scavengeThreshold, int.MaxValue, scavengeThreshold) == scavengeThreshold)
-            {
-                try
-                {
-                    // Get rid of unused handles.
-                    Scavenge();
-                }
-                finally
-                {
-                    // And do this again when the number of handles reaches double the current after-scavenge number.
-                    _scavengeThreshold = _entriesByHashCode.Count * 2;
-                }
-            }
-        }
+        ManageCache();
+
         return result;
     }
 
@@ -144,8 +126,14 @@ internal class Utf8StringCache
         handle = new();
         handle.SetValue(result);
         _entriesByHashCode.TryAdd(hashCode, handle);
-        // Remove unused handles if our heuristic indicates that it would be productive.
 
+        ManageCache();
+        return result;
+    }
+
+    private void ManageCache()
+    {
+        // Remove unused handles if our heuristic indicates that it would be productive.
         int scavengeThreshold = _scavengeThreshold;
         if (_entriesByHashCode.Count >= scavengeThreshold)
         {
@@ -165,10 +153,9 @@ internal class Utf8StringCache
                 }
             }
         }
-        return result;
     }
 
-    public void Scavenge()
+    private void Scavenge()
     {
         foreach (KeyValuePair<int, BinaryWeakHandle> entry in _entriesByHashCode)
         {

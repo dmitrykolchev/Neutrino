@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace DataStream;
 
-internal class DataStreamWriterCompiler: DataStreamCompilerBase
+internal class DataStreamWriterCompiler : DataStreamCompilerBase
 {
     private readonly ConcurrentDictionary<Type, Action<DataStreamWriter, object>> _writers = new();
 
@@ -20,16 +20,16 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
     {
     }
 
-    public Action<DataStreamWriter, object> GetOrAdd(Type type, DataStreamSerializerContext context)
+    public bool TryAdd(Type type, DataStreamSerializerContext context)
     {
         ArgumentNullException.ThrowIfNull(type);
         ArgumentNullException.ThrowIfNull(context);
-
-        if (!_writers.TryGetValue(type, out Action<DataStreamWriter, object>? writer))
+        if (_writers.ContainsKey(type))
         {
-            writer = _writers.GetOrAdd(type, t => Create(t, context));
+            return false;
         }
-        return writer;
+        _writers.TryAdd(type, Create(type, context));
+        return true;
     }
 
     public Action<DataStreamWriter, object> Get(Type type)
@@ -64,7 +64,7 @@ internal class DataStreamWriterCompiler: DataStreamCompilerBase
         ParameterExpression writer,
         DataStreamSerializerContext context)
     {
-        if(typeof(IEnumerable).IsAssignableFrom(itemType))
+        if (typeof(IEnumerable).IsAssignableFrom(itemType))
         {
             return Call<DataStreamWriter>(
                     nameof(DataStreamWriter.Write),

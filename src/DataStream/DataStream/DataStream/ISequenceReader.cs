@@ -10,11 +10,8 @@ namespace DataStream;
 internal interface ISequenceReader
 {
     int Position { get; }
-
     byte ReadByte();
-
     void Read(byte[] buffer, int offset, int count);
-
     short ReadInt16();
     int ReadInt32();
     long ReadInt64();
