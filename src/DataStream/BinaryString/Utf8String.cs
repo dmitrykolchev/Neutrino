@@ -21,7 +21,9 @@ public struct Utf8String : IEquatable<Utf8String>
         _hashCode = hashCode;
     }
 
-    public byte[] Value => _value;
+    public int Length => _value.Length;
+
+    public ReadOnlySpan<byte> AsSpan() => _value.AsSpan();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf8String Intern(in ReadOnlySpan<byte> value)

@@ -44,7 +44,7 @@ internal class PropertyMap : IDisposable
         ArrayPool<int>.Shared.Return(_streamIndex);
     }
 
-    public bool TryAdd(Utf8String propertyName, out int index)
+    public bool TryAdd(in Utf8String propertyName, out int index)
     {
         if (!_propertyToIndex.TryGetValue(propertyName, out index))
         {
@@ -68,15 +68,15 @@ internal class PropertyMap : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public byte[] Get(int streamIndex)
+    public Utf8String Get(int streamIndex)
     {
-        return _indexToProperty[streamIndex - 1].Value;
+        return _indexToProperty[streamIndex - 1];
     }
 
     public string? FindProperty(int index)
     {
         Utf8String entry = _propertyToIndex.Where(t => t.Value == index).Select(t => t.Key).FirstOrDefault();
-        return DataStreamSerializer.UTF8.GetString(entry.Value);
+        return DataStreamSerializer.UTF8.GetString(entry.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
