@@ -15,7 +15,7 @@ internal ref struct InternableUtf8String
     public InternableUtf8String(in ReadOnlySpan<byte> value)
     {
         _value = value;
-        _hashCode = HashByteArray(in _value);
+        _hashCode = HashByteArray(_value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
