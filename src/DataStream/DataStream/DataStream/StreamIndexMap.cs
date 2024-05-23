@@ -9,49 +9,50 @@ namespace DataStream;
 
 internal class StreamIndexMap
 {
-    private readonly PropertyMap _propertyMap;
+    public const int InvalidPropertyIndex = 0;
+
     private int[] _streamIndex;
 
-    public StreamIndexMap(PropertyMap propertyMap)
+    public StreamIndexMap()
     {
-        _propertyMap = propertyMap;
-        _streamIndex = new int[_propertyMap.Count + 1];
+        _streamIndex = new int[32];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8String GetProperty(int index)
+    public bool Allocate(int streamIndex)
     {
-        return _propertyMap.GetProperty(GetInternalIndex(index));
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Allocate(int index)
-    {
-        if (index > _streamIndex.Length)
+        VerifyStreamIndex(streamIndex);
+        if (_streamIndex[streamIndex] == InvalidPropertyIndex)
         {
-            Array.Resize<int>(ref _streamIndex, (index + 31) & ~0x1F);
-        }
-        if (_streamIndex[index] == 0)
-        {
-            _streamIndex[index] = index;
+            _streamIndex[streamIndex] = streamIndex;
             return true;
         }
         return false;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetInternalIndex(in Utf8String property, int index)
+    public int GetInternalIndex(in Utf8String property, int streamIndex)
     {
-        if (_streamIndex[index] == 0)
+        VerifyStreamIndex(streamIndex);
+        if (_streamIndex[streamIndex] == InvalidPropertyIndex)
         {
-            _streamIndex![index] = _propertyMap.GetIndex(property);
+            return _streamIndex![streamIndex] = PropertyMap.Instance.GetIndex(property);
         }
-        return _streamIndex[index];
+        return _streamIndex[streamIndex];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetInternalIndex(int index)
+    public int GetInternalIndex(int streamIndex)
     {
-        return _streamIndex![index];
+        return _streamIndex![streamIndex];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void VerifyStreamIndex(int streamIndex)
+    {
+        if (streamIndex > _streamIndex.Length)
+        {
+            Array.Resize<int>(ref _streamIndex, (streamIndex + 32) & ~0x1F);
+        }
     }
 }

@@ -14,16 +14,22 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 {
     private readonly ConcurrentDictionary<Type, Func<DataStreamReader, object>> _readers = new();
 
-    public bool TryAdd(Type type, DataStreamSerializerContext context)
+    public bool TryAdd(Type type)
     {
         ArgumentNullException.ThrowIfNull(type);
-        ArgumentNullException.ThrowIfNull(context);
-        if(_readers.ContainsKey(type))
+        if (_readers.ContainsKey(type))
         {
             return false;
         }
-        return _readers.TryAdd(type, Create(type, context));
+        return _readers.TryAdd(type, Create(type));
     }
+
+    public Func<DataStreamReader, object> GetOrAdd(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+        return _readers.GetOrAdd(type, t => Create(t));
+    }
+
 
     public Func<DataStreamReader, object> Get(Type type)
     {
@@ -31,65 +37,24 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         return _readers[type];
     }
 
-    private Func<DataStreamReader, object> Create(Type type, DataStreamSerializerContext context)
+    private Func<DataStreamReader, object> Create(Type type)
     {
         ParameterExpression readerParameter = Parameter(typeof(DataStreamReader), "reader");
-        Expression body = GetExpression(type, readerParameter, context);
+        Expression body = GetExpression(type, readerParameter);
         LambdaExpression lambda = Lambda(body, readerParameter);
         return (Func<DataStreamReader, object>)lambda.Compile();
     }
 
     private Expression GetExpression(
         Type type,
-        ParameterExpression reader,
-        DataStreamSerializerContext context)
+        ParameterExpression reader)
     {
-        Expression readElementType = Read(reader, nameof(DataStreamReader.ReadElementType));
-
-        ParameterExpression result = Variable(typeof(object), "root");
-
-        Expression elementType = Property(reader, nameof(DataStreamReader.ElementType));
-
-        Expression checkStartOfStream = IfThen(
-                NotEqual(elementType, Constant(DataStreamElementType.StartOfStream)),
-                Throw(
-                    New(
-                        typeof(FormatException).GetConstructor([typeof(string)])!, 
-                        Constant("Must be start of stream")
-                    )
-                )
-            );
-
-        Expression readObject = Assign(
-            result,
-            ReadObjectExpression(type, reader, context, true)
-        );
-
-        Expression checkEndOfStream = IfThen(
-                NotEqual(elementType, Constant(DataStreamElementType.EndOfStream)),
-                Throw(
-                    New(
-                        typeof(FormatException).GetConstructor([typeof(string)])!,
-                        Constant("Must be end of stream")
-                    )
-                )
-            );
-
-        return Block(
-            [result],
-            readElementType,
-            checkStartOfStream,
-            readObject,
-            checkEndOfStream,
-            result
-        );
+        return ReadObjectExpression(type, reader);
     }
 
     private Expression ReadObjectExpression(
         Type type,
-        ParameterExpression reader,
-        DataStreamSerializerContext context,
-        bool root)
+        ParameterExpression reader)
     {
         PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
@@ -109,17 +74,17 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                 ReadOnlySpan<byte> data = DataStreamSerializer.UTF8.GetBytes(property.Name);
                 Utf8String propertyNameUtf8 = Utf8String.Intern(data);
 
-                context.PropertyMap.TryAdd(propertyNameUtf8, out int caseIndex);
+                PropertyMap.Instance.TryAdd(propertyNameUtf8, out int internalIndex);
 
                 Expression switchCaseBody = Assign(
                     Property(result, property.Name),
-                    ReadValue(reader, property.PropertyType, context)
+                    ReadValue(reader, property.PropertyType)
                 );
-                cases.Add(SwitchCase(switchCaseBody, Constant(caseIndex)));
+                cases.Add(SwitchCase(switchCaseBody, Constant(internalIndex)));
             }
         }
         Expression @switch = Switch(
-            typeof(void), 
+            typeof(void),
             propertyIndex,
             Throw(
                 New(
@@ -127,16 +92,14 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                     Constant("Invalid property index")
                 )
             ),
-            null, 
+            null,
             cases);
 
         var readElementType = Read(reader, nameof(DataStreamReader.ReadElementType));
 
         Expression loopBody = Block(
             IfThen(
-                root 
-                    ? Equal(readElementType, Constant(DataStreamElementType.EndOfStream))
-                    : Equal(readElementType, Constant(DataStreamElementType.EndOfObject)),
+                Equal(readElementType, Constant(DataStreamElementType.EndOfObject)),
                 Break(breakTarget)
             ),
             Assign(propertyIndex, Read(
@@ -158,11 +121,10 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
     }
 
     private Expression ReadValue(
-        ParameterExpression reader, 
-        Type valueType,
-        DataStreamSerializerContext context)
+        ParameterExpression reader,
+        Type valueType)
     {
-        if(valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
+        if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
             return Condition(
                 Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
@@ -183,34 +145,15 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
             return ReadSimpleValue(reader, valueType);
         }
         ParameterExpression objectResult = Expression.Variable(valueType);
+        Expression deserialize = Call<DataStreamSerializer>(
+            nameof(DataStreamSerializer.Deserialize),
+            [typeof(DataStreamReader), typeof(Type)],
+            null,
+            reader, Constant(valueType));
         return Condition(
             Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
             Constant(null, valueType),
-            Invoke(Lambda(
-                Block(
-                    [objectResult],
-                    IfThen(
-                        NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.StartOfObject)),
-                        Throw(
-                            New(
-                                typeof(FormatException).GetConstructor([typeof(string)])!,
-                                Constant("Must be start of object")
-                            )
-                        )
-                    ),
-                    Assign(objectResult, ReadObjectExpression(valueType, reader, context, false)),
-                    IfThen(
-                        NotEqual(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.EndOfObject)),
-                        Throw(
-                            New(
-                                typeof(FormatException).GetConstructor([typeof(string)])!,
-                                Constant("Must be end of object")
-                            )
-                        )
-                    ),
-                    objectResult
-                ), reader), 
-            reader)
+            Convert(deserialize, valueType)
         );
     }
 

@@ -22,7 +22,7 @@ internal abstract class DataStreamCompilerBase
     {
         MethodInfo? method = typeof(T).GetMethod(
             methodName,
-            BindingFlags.Public | BindingFlags.Instance,
+            BindingFlags.Public | BindingFlags.NonPublic | (instance == null ? BindingFlags.Static : BindingFlags.Instance),
             parameterTypes) ?? throw new ArgumentException("undefined method", nameof(methodName));
         if (instance is null)
         {

@@ -9,7 +9,7 @@ public class DataStreamSerializerContext
 {
     public required DataStreamSerializationOptions Options { get; init; }
 
-    internal PropertyMap PropertyMap { get; set; } = null!;
+    internal StreamIndexMap StreamIndexMap { get; set; } = new StreamIndexMap();
 
-    internal StreamIndexMap StreamIndexMap { get; set; } = null!;
+    internal Stack<Type> TypeStack { get; } = new();
 }

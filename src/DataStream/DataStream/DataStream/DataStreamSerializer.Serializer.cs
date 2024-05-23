@@ -3,6 +3,7 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Collections;
 using System.Text;
 
 namespace DataStream;
@@ -21,18 +22,28 @@ public sealed partial class DataStreamSerializer
         DataStreamSerializerContext context = new()
         {
             Options = DefaultOptions,
-            PropertyMap = PropertyMap.GetInstance(typeof(TItem))
         };
         using DataStreamWriter writer = new(stream, context);
-        s_writerCompiler.TryAdd(item.GetType(), context);
-
-        context.StreamIndexMap = new StreamIndexMap(context.PropertyMap);
-        Serialize(writer, item, context);
+        writer.Write(DataStreamElementType.StartOfStream);
+        Serialize(writer, item);
+        writer.Write(DataStreamElementType.EndOfStream);
     }
 
-    internal static void Serialize(DataStreamWriter writer, object item, DataStreamSerializerContext context)
+    internal static void Serialize(DataStreamWriter writer, object item)
     {
-        Action<DataStreamWriter, object> serializeAction = s_writerCompiler.Get(item.GetType());
+        Action<DataStreamWriter, object> serializeAction = s_writerCompiler.GetOrAdd(item.GetType());
+        writer.Write(DataStreamElementType.StartOfObject);
         serializeAction(writer, item);
+        writer.Write(DataStreamElementType.EndOfObject);
+    }
+
+    internal static void Serialize(DataStreamWriter writer, IEnumerable items)
+    {
+        writer.Write(DataStreamElementType.ArrayOf | DataStreamElementType.Object);
+        foreach (object? item in items)
+        {
+            Serialize(writer, item);
+        }
+        writer.Write(DataStreamElementType.EndOfArray);
     }
 }

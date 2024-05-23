@@ -14,11 +14,8 @@ public sealed partial class DataStreamSerializer
         ArgumentNullException.ThrowIfNull(stream);
         DataStreamSerializerContext context = new()
         {
-            Options = DefaultOptions,
-            PropertyMap = PropertyMap.GetInstance(typeof(TItem))
+            Options = DefaultOptions
         };
-
-        s_readerCompiler.TryAdd(typeof(TItem), context);
 
         if (stream is MemoryStream memory && memory.TryGetBuffer(out ArraySegment<byte> buffer))
         {
@@ -27,15 +24,42 @@ public sealed partial class DataStreamSerializer
                         ? new SequenceReaderLittleEndian(buffer.Slice(checked((int)stream.Position)))
                         : throw new InvalidOperationException(),
                     context);
-            context.StreamIndexMap = new StreamIndexMap(context.PropertyMap);
-            return (TItem)Deserialize(typeof(TItem), reader);
+            return (TItem)DeserializeCore(reader, typeof(TItem));
         }
         throw new NotImplementedException();
     }
 
-    private static object Deserialize(Type type, DataStreamReader reader)
+    private static object DeserializeCore(DataStreamReader reader, Type type)
     {
-        Func<DataStreamReader, object> deserializeAction = s_readerCompiler.Get(type);
-        return deserializeAction(reader);
+        reader.ReadElementType();
+        if (reader.ElementType != DataStreamElementType.StartOfStream)
+        {
+            throw new FormatException();
+        }
+        reader.ReadElementType();
+
+        object value = Deserialize(reader, type);
+
+        reader.ReadElementType();
+        if (reader.ElementType != DataStreamElementType.EndOfStream)
+        {
+            throw new FormatException();
+        }
+        return value;
+    }
+
+    private static object Deserialize(DataStreamReader reader, Type type)
+    {
+        if (reader.ElementType != DataStreamElementType.StartOfObject)
+        {
+            throw new FormatException();
+        }
+        Func<DataStreamReader, object> deserializeAction = s_readerCompiler.GetOrAdd(type);
+        object value = deserializeAction(reader);
+        if (reader.ElementType != DataStreamElementType.EndOfObject)
+        {
+            throw new FormatException();
+        }
+        return value;
     }
 }

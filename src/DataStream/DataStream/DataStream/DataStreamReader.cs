@@ -25,9 +25,7 @@ internal class DataStreamReader
 
     public int PropertyIndex => _propertyIndex;
 
-    public string? PropertyName => PropertyMap.FindProperty(PropertyIndex);
-
-    internal PropertyMap PropertyMap => _context.PropertyMap!;
+    public string? PropertyName => PropertyMap.Instance.FindProperty(PropertyIndex);
 
     internal StreamIndexMap StreamIndexMap => _context.StreamIndexMap;
 
@@ -57,7 +55,7 @@ internal class DataStreamReader
         }
         else
         {
-            throw new FormatException("unexpected tag");
+            throw new FormatException($"unexpected tag {_elementType}, must be {nameof(DataStreamElementType.PropertyIndex)} or {nameof(DataStreamElementType.PropertyName)}");
         }
         return _propertyIndex;
     }
@@ -69,7 +67,7 @@ internal class DataStreamReader
         {
             DataStreamElementType.True => true,
             DataStreamElementType.False => false,
-            _ => throw new FormatException()
+            _ => throw new FormatException("must be boolean")
         };
     }
 

@@ -4,7 +4,6 @@
 // </copyright>
 
 using System.Buffers;
-using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,6 +26,8 @@ internal partial class DataStreamWriter : IDisposable
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
+    public DataStreamSerializerContext Context => _context;
+
     public void Dispose()
     {
         _stream.Flush();
@@ -40,7 +41,7 @@ internal partial class DataStreamWriter : IDisposable
         {
             _stream.WriteByte((byte)DataStreamElementType.PropertyName);
             Write7BitEncodedInt32(propertyIndex);
-            Utf8String propertyName = _context.PropertyMap.GetProperty(propertyIndex);
+            Utf8String propertyName = PropertyMap.Instance.GetProperty(propertyIndex);
             Write7BitEncodedInt32(propertyName.Length);
             _stream.Write(propertyName.AsSpan());
         }
@@ -49,6 +50,12 @@ internal partial class DataStreamWriter : IDisposable
             _stream.WriteByte((byte)DataStreamElementType.PropertyIndex);
             Write7BitEncodedInt32(propertyIndex);
         }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Write(DataStreamElementType elementType)
+    {
+        _stream.WriteByte((byte)elementType);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -287,23 +294,5 @@ internal partial class DataStreamWriter : IDisposable
         }
 
         _stream.WriteByte((byte)uValue);
-    }
-
-    public void Write(IEnumerable? value)
-    {
-        if(value is null)
-        {
-            WriteNull();
-        }
-        else
-        {
-            Write((byte)DataStreamElementType.ArrayOf);
-            Write((byte)DataStreamElementType.Object);
-            foreach (object item in value)
-            {
-                DataStreamSerializer.Serialize(this, item, _context);
-            }
-            Write((byte)DataStreamElementType.EndOfArray);
-        }
     }
 }
