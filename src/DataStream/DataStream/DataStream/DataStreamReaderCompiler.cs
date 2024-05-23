@@ -14,28 +14,12 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 {
     private readonly ConcurrentDictionary<Type, Func<DataStreamReader, object>> _readers = new();
 
-    public bool TryAdd(Type type)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-        if (_readers.ContainsKey(type))
-        {
-            return false;
-        }
-        return _readers.TryAdd(type, Create(type));
-    }
-
     public Func<DataStreamReader, object> GetOrAdd(Type type)
     {
         ArgumentNullException.ThrowIfNull(type);
-        return _readers.GetOrAdd(type, t => Create(t));
+        return _readers.GetOrAdd(type, Create);
     }
 
-
-    public Func<DataStreamReader, object> Get(Type type)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-        return _readers[type];
-    }
 
     private Func<DataStreamReader, object> Create(Type type)
     {

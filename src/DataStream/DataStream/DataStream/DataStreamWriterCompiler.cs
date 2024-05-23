@@ -20,27 +20,10 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
     {
     }
 
-    public bool TryAdd(Type type)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-        if (_writers.ContainsKey(type))
-        {
-            return false;
-        }
-        _writers.TryAdd(type, Create(type));
-        return true;
-    }
-
     public Action<DataStreamWriter, object> GetOrAdd(Type type)
     {
         ArgumentNullException.ThrowIfNull(type);
-        return _writers.GetOrAdd(type, t => Create(t));
-    }
-
-    public Action<DataStreamWriter, object> Get(Type type)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-        return _writers[type];
+        return _writers.GetOrAdd(type, Create);
     }
 
     private Action<DataStreamWriter, object> Create(Type type)
