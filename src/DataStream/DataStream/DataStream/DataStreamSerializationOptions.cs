@@ -22,11 +22,7 @@ public enum DateTimeSerializationMode
     //     Treat as a local time if a System.DateTime is being converted to a string. If
     //     a string is being converted to System.DateTime, convert to a local time if a
     //     time zone is specified.
-    Unspecified = 2,
-    //
-    // Summary:
-    //     Time zone information should be preserved when converting.
-    RoundtripKind = 3
+    Unspecified = 2
 }
 
 public class DataStreamSerializationOptions

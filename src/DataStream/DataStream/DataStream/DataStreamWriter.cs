@@ -199,12 +199,13 @@ internal partial class DataStreamWriter : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Write(DateTime item)
+    public void Write(DateTime value)
     {
         _stream.WriteByte((byte)DataStreamElementType.DateTime);
-        long data = item.ToBinary();
+        long data = value.Ticks;
         _stream.Write(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref data, 1)));
     }
+
 
     public void Write(string? value)
     {

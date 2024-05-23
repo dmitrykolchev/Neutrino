@@ -139,7 +139,13 @@ internal class DataStreamReader
             throw new FormatException();
         }
         long value = _reader.ReadInt64();
-        return DateTime.FromBinary(value);
+        return _context.Options.DateTimeSerializationMode switch
+        {
+            DateTimeSerializationMode.Utc => new DateTime(value, DateTimeKind.Utc),
+            DateTimeSerializationMode.Local => new DateTime(value, DateTimeKind.Local),
+            DateTimeSerializationMode.Unspecified => new DateTime(value, DateTimeKind.Unspecified),
+            _ => throw new InvalidOperationException()
+        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
