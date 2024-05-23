@@ -108,7 +108,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         ParameterExpression reader,
         Type valueType)
     {
-        if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
+        if (valueType.IsNullable())
         {
             return Condition(
                 Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
@@ -124,11 +124,11 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                 Read(reader, nameof(DataStreamReader.ReadBinary)),
                 valueType);
         }
-        if (IsScalar(valueType) || valueType.IsEnum || valueType == typeof(Guid))
+        if (valueType.IsScalar() || valueType == typeof(Guid))
         {
             return ReadSimpleValue(reader, valueType);
         }
-        ParameterExpression objectResult = Expression.Variable(valueType);
+        ParameterExpression objectResult = Variable(valueType);
         Expression deserialize = Call<DataStreamSerializer>(
             nameof(DataStreamSerializer.Deserialize),
             [typeof(DataStreamReader), typeof(Type)],
@@ -175,7 +175,7 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
             case TypeCode.Single:
                 return Read(reader, nameof(DataStreamReader.ReadSingle));
             default:
-                return Convert(Constant(null), valueType);
+                throw new InvalidOperationException($"unsupported type {typeCode} - {valueType}");
         }
     }
 

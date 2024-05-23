@@ -22,7 +22,9 @@ internal abstract class DataStreamCompilerBase
     {
         MethodInfo? method = typeof(T).GetMethod(
             methodName,
-            BindingFlags.Public | BindingFlags.NonPublic | (instance == null ? BindingFlags.Static : BindingFlags.Instance),
+            BindingFlags.Public | 
+            BindingFlags.NonPublic | 
+            (instance == null ? BindingFlags.Static : BindingFlags.Instance),
             parameterTypes) ?? throw new ArgumentException("undefined method", nameof(methodName));
         if (instance is null)
         {
@@ -36,21 +38,4 @@ internal abstract class DataStreamCompilerBase
             parameters);
     }
 
-    protected bool IsScalar(Type type)
-    {
-        return Type.GetTypeCode(type) switch
-        {
-            TypeCode.Int32 or
-            TypeCode.Int16 or
-            TypeCode.Boolean or
-            TypeCode.String or
-            TypeCode.DateTime or
-            TypeCode.Byte or
-            TypeCode.Int64 or
-            TypeCode.Decimal or
-            TypeCode.Double or
-            TypeCode.Single => true,
-            _ => false
-        };
-    }
 }

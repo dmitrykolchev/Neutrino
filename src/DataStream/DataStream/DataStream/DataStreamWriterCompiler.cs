@@ -1,14 +1,13 @@
-﻿// <copyright file="DataStreamResolver.cs" company="Division By Zero">
+﻿// <copyright file="DataStreamWriterCompiler.cs" company="Division By Zero">
 // Copyright (c) 2024 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
 
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
-using static System.Linq.Expressions.Expression;
 using System.Reflection;
 using System.Text;
-using System.Collections;
+using static System.Linq.Expressions.Expression;
 
 namespace DataStream;
 
@@ -35,22 +34,6 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
 
         LambdaExpression lambda = Lambda(body, writer, item);
         return (Action<DataStreamWriter, object>)lambda.Compile();
-    }
-
-    private Expression GetArrayExpression(
-        Type itemType,
-        Expression item,
-        ParameterExpression writer)
-    {
-        if (typeof(IEnumerable).IsAssignableFrom(itemType))
-        {
-            return Call<DataStreamWriter>(
-                    nameof(DataStreamWriter.Write),
-                    [typeof(IEnumerable)],
-                    writer,
-                    item);
-        }
-        return GetExpression(itemType, item, writer);
     }
 
     private BlockExpression GetExpression(
@@ -84,7 +67,7 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
                 Expression itemPropertyExpression = Property(item, property.Name);
                 Type propertyType = property.PropertyType;
 
-                if (IsScalar(propertyType) || propertyType == typeof(Guid))
+                if (propertyType.IsScalar() || propertyType == typeof(Guid))
                 {
                     expressions.Add(Block(
                         writePropertyNameExpression,
@@ -111,10 +94,10 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
                             )
                     ));
                 }
-                else if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                else if (propertyType.IsNullable())
                 {
                     Type genericArgumentType = propertyType.GetGenericArguments()[0];
-                    if (IsScalar(genericArgumentType) || genericArgumentType == typeof(Guid))
+                    if (genericArgumentType.IsScalar() || genericArgumentType == typeof(Guid))
                     {
                         expressions.Add(Block(
                             writePropertyNameExpression,
