@@ -90,6 +90,8 @@ internal class Program
         Console.WriteLine($"LittleEndian = {BitConverter.IsLittleEndian}");
         Benchmarks b = new();
         b.GlobalSetup();
+        b.DataStreamSerializeBenchmark();
+        b.DataStreamDeserializeBenchmark();
 
         //for (int index = 0; index < 1_000_000; ++index)
         //{
@@ -109,7 +111,7 @@ internal class Program
         //Console.WriteLine($"{sw.ElapsedMilliseconds * 1000000.0 / 10_000_000} ns");
 
         Stopwatch sw = Stopwatch.StartNew();
-        for (int index = 0; index < 1_000_000; ++index)
+        for (int index = 0; index < 10_000_000; ++index)
         {
             b.DataStreamDeserializeBenchmark();
         }

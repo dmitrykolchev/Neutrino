@@ -18,6 +18,8 @@ internal ref struct InternableUtf8String
         _hashCode = HashByteArray(_value);
     }
 
+    public ReadOnlySpan<byte> Span => _value;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override int GetHashCode()
     {

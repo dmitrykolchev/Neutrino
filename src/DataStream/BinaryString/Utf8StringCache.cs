@@ -26,7 +26,7 @@ internal class Utf8StringCache
         {
             if (WeakHandle.IsAllocated && WeakHandle.Target is byte[] value)
             {
-                if (internable.Equals(value))
+                if (InternableUtf8String.Equals(internable.Span, value))
                 {
                     return value;
                 }

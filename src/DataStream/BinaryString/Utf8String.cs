@@ -37,7 +37,7 @@ public struct Utf8String : IEquatable<Utf8String>
     {
         if (obj is Utf8String s)
         {
-            return object.ReferenceEquals(_value, s._value);
+            return Equals(s);
         }
         return false;
     }
@@ -51,7 +51,24 @@ public struct Utf8String : IEquatable<Utf8String>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Utf8String other)
     {
-        return object.ReferenceEquals(_value, other._value);
+        if (object.ReferenceEquals(_value, other._value))
+        {
+            return true;
+        }
+        byte[] left = _value;
+        byte[] right = other._value;
+        if (left.Length != right.Length)
+        {
+            return false;
+        }
+        for (int i = 0, len = right.Length; i < len; ++i)
+        {
+            if (left[i] != right[i])
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public override string ToString()
