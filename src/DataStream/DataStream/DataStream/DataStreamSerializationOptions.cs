@@ -28,4 +28,6 @@ public enum DateTimeSerializationMode
 public class DataStreamSerializationOptions
 {
     public DateTimeSerializationMode DateTimeSerializationMode { get; init; } = DateTimeSerializationMode.Utc;
+
+    public int MaximumCollectionLength { get; init; } = 1024 * 1024;
 }

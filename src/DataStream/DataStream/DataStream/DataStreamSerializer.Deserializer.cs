@@ -50,16 +50,43 @@ public sealed partial class DataStreamSerializer
 
     private static object Deserialize(DataStreamReader reader, Type type)
     {
-        if (reader.ElementType != DataStreamElementType.StartOfObject)
+        if (reader.ElementType == DataStreamElementType.StartOfObject)
+        {
+            Func<DataStreamReader, object> deserializeAction = s_readerCompiler.GetOrAdd(type);
+            object value = deserializeAction(reader);
+            if (reader.ElementType != DataStreamElementType.EndOfObject)
+            {
+                throw new FormatException();
+            }
+            return value;
+        }
+        else if(reader.ElementType == (DataStreamElementType.ArrayOf | DataStreamElementType.Object))
+        {
+            Type elementType = type.FindElementType();
+            System.Collections.IList list = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType))!;
+            for (int i = 0, maxLength = reader.Context.Options.MaximumCollectionLength; i < maxLength  ; ++i)
+            {
+                reader.ReadElementType();
+                if (reader.ElementType == DataStreamElementType.StartOfObject)
+                {
+                    list.Add(Deserialize(reader, elementType));
+                }
+                else if (reader.ElementType == DataStreamElementType.EndOfArray)
+                {
+                    Array array = Array.CreateInstance(elementType, list.Count);
+                    list.CopyTo(array, 0);
+                    return array;
+                }
+                else
+                {
+                    throw new FormatException($"unexpected tag {reader.ElementType}");
+                }
+            }
+            throw new InvalidOperationException("collection too long");
+        }
+        else
         {
             throw new FormatException();
         }
-        Func<DataStreamReader, object> deserializeAction = s_readerCompiler.GetOrAdd(type);
-        object value = deserializeAction(reader);
-        if (reader.ElementType != DataStreamElementType.EndOfObject)
-        {
-            throw new FormatException();
-        }
-        return value;
     }
 }

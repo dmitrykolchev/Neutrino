@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.StringTools" Version="17.10.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BinaryString\BinaryString.csproj" />
   </ItemGroup>
 

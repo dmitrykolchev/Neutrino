@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 using System.Reflection;
+using Microsoft.NET.StringTools;
 
 namespace DataStream;
 
@@ -55,7 +56,15 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         {
             if (property.GetCustomAttribute<IgnoreAttribute>() == null)
             {
-                ReadOnlySpan<byte> data = DataStreamSerializer.UTF8.GetBytes(property.Name);
+                PropertyAttribute? propertyAttribute = property.GetCustomAttribute<PropertyAttribute>();
+                string propertyName = property.Name;
+                bool internable = false;
+                if (propertyAttribute != null)
+                {
+                    propertyName = propertyAttribute.Name ?? propertyName;
+                    internable = propertyAttribute.Internable;
+                }
+                ReadOnlySpan<byte> data = DataStreamSerializer.UTF8.GetBytes(propertyName);
                 Utf8String propertyNameUtf8 = Utf8String.Intern(data);
 
                 PropertyMap.Instance.TryAdd(propertyNameUtf8, out int internalIndex);

@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace DataStream;
@@ -31,10 +32,17 @@ public sealed partial class DataStreamSerializer
 
     internal static void Serialize(DataStreamWriter writer, object item)
     {
-        Action<DataStreamWriter, object> serializeAction = s_writerCompiler.GetOrAdd(item.GetType());
-        writer.Write(DataStreamElementType.StartOfObject);
-        serializeAction(writer, item);
-        writer.Write(DataStreamElementType.EndOfObject);
+        if (item is IEnumerable items)
+        {
+            Serialize(writer, items);
+        }
+        else
+        {
+            Action<DataStreamWriter, object> write = s_writerCompiler.GetOrAdd(item.GetType());
+            writer.Write(DataStreamElementType.StartOfObject);
+            write(writer, item);
+            writer.Write(DataStreamElementType.EndOfObject);
+        }
     }
 
     internal static void Serialize(DataStreamWriter writer, IEnumerable items)

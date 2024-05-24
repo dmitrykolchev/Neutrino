@@ -16,6 +16,8 @@ initialize().then(() => { console.log("initialization successfully completed"); 
 async function initialize() {
     const button = document.getElementById("button1");
     button.addEventListener("click", handleClick);
+    const button2 = document.getElementById("button2");
+    button2.addEventListener("click", loadPartial);
     connection = new HubConnectionBuilder()
         .withUrl("/EventHandlerHub")
         .withHubProtocol(new MessagePackHubProtocol())
@@ -30,6 +32,21 @@ function notifyCurrentTime(currentTime) {
     }
     catch (ex) {
         console.log(ex);
+    }
+}
+async function loadPartial() {
+    const client = new DefaultHttpClient(NullLogger.instance);
+    const response = await client.get("/Home/Partial");
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(response.content, "text/html");
+    const contentElement = document.getElementById("partialView");
+    const root = doc.querySelector("#root");
+    //contentElement.insertAdjacentElement("afterbegin", root);
+    contentElement.appendChild(root);
+    const scripts = doc.querySelectorAll("script");
+    for (let i = 0; i < scripts.length; ++i) {
+        const { default: initialize, sayHello } = await import(scripts[i].src);
+        initialize(root);
     }
 }
 async function handleClick() {

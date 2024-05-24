@@ -5,6 +5,7 @@
 
 using System.Diagnostics;
 using BenchmarkDotNet.Running;
+using DataStream;
 using MessagePack;
 
 namespace DataStreamBenchmarks;
@@ -23,6 +24,7 @@ public class Organization
     public int Id { get; set; }
 
     [Key(nameof(Name))]
+    [DataStream.Property(Internable = true)]
     public string? Name { get; set; }
 }
 
@@ -52,6 +54,7 @@ public class Employee
     public decimal SalaryDecimal { get; set; }
 
     [Key(nameof(Name))]
+    [DataStream.Property(Internable = true)]
     public string? Name { get; set; }
 
     [Key(nameof(DateOfBirth))]
@@ -90,8 +93,15 @@ internal class Program
         Console.WriteLine($"LittleEndian = {BitConverter.IsLittleEndian}");
         Benchmarks b = new();
         b.GlobalSetup();
-        b.DataStreamSerializeBenchmark();
-        b.DataStreamDeserializeBenchmark();
+        b.DataStreamSerializeArrayBenchmark();
+        var result = b.DataStreamDeserializeArrayBenchmark();
+
+        b.MessagePackSerializeArrayBenchmark();
+        b.MessagePackDeserializeArrayBenchmark();
+
+        //b.MessagePackSerializeArrayBenchmark();
+
+        //b.DataStreamDeserializeBenchmark();
 
         //for (int index = 0; index < 1_000_000; ++index)
         //{
@@ -110,12 +120,12 @@ internal class Program
         //sw.Stop();
         //Console.WriteLine($"{sw.ElapsedMilliseconds * 1000000.0 / 10_000_000} ns");
 
-        Stopwatch sw = Stopwatch.StartNew();
-        for (int index = 0; index < 10_000_000; ++index)
-        {
-            b.DataStreamDeserializeBenchmark();
-        }
-        sw.Stop();
-        Console.WriteLine($"{sw.ElapsedMilliseconds} ns");
+        //Stopwatch sw = Stopwatch.StartNew();
+        //for (int index = 0; index < 10_000_000; ++index)
+        //{
+        //    b.DataStreamDeserializeBenchmark();
+        //}
+        //sw.Stop();
+        //Console.WriteLine($"{sw.ElapsedMilliseconds} ns");
     }
 }

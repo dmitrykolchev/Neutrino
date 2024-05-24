@@ -17,6 +17,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Partial()
+    {
+        return View();
+    }
+
     [HttpPost()]
     public IActionResult Index(string id)
     {

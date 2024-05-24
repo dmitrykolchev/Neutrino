@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Runtime.CompilerServices;
+using Microsoft.NET.StringTools;
 
 namespace DataStream;
 
@@ -20,6 +21,8 @@ internal class DataStreamReader
         _reader = sequence;
         _context = context;
     }
+
+    public DataStreamSerializerContext Context => _context;
 
     public DataStreamElementType ElementType => _elementType;
 
@@ -49,7 +52,7 @@ internal class DataStreamReader
         {
             _propertyIndex = StreamIndexMap.GetInternalIndex(streamIndex);
         }
-        else if(_elementType == DataStreamElementType.PropertyName)
+        else if (_elementType == DataStreamElementType.PropertyName)
         {
             _propertyIndex = StreamIndexMap.GetInternalIndex(_reader.ReadProperty(), streamIndex);
         }

@@ -26,14 +26,14 @@ public class Benchmarks
             _employee[i] = new()
             {
                 Gid = Guid.NewGuid(),
-                Id = 1,
+                Id = i,
                 State = EmployeeState.Active,
                 OficeWorker = true,
                 Salary = 23423.33,
                 Name = "Dmitry Kolchev",
                 DateOfBirth = new DateTime(1968, 6, 4),
                 FireDate = null,
-                Organization = new() { Id = 2, Name = "ООО \"Василёк\"" },
+                Organization = new() { Id = i * 3, Name = "ООО \"Василёк\"" },
                 SalaryDecimal = 7473737,
                 CreatedDate = DateTime.UtcNow,
                 Avatar = [
@@ -42,38 +42,65 @@ public class Benchmarks
                 ]
             };
         }
-
         _stream0 = new();
-        DataStreamSerializer.Serialize(_stream0, _employee[0]);
+        DataStreamSerializeArrayBenchmark();
         _stream1 = new();
-        MessagePackSerializer.Serialize(_stream1, _employee[0]);
+        MessagePackSerializeArrayBenchmark();
     }
 
     [Benchmark]
-    public void DataStreamSerializeBenchmark()
+    public void DataStreamSerializeArrayBenchmark()
     {
         _stream0.Position = 0;
-        DataStreamSerializer.Serialize(_stream0, _employee[0]);
+        DataStreamSerializer.Serialize(_stream0, _employee);
     }
 
     [Benchmark]
-    public void MessagePackSerializeBenchmark()
-    {
-        _stream1.Position = 0;
-        MessagePackSerializer.Serialize(_stream1, _employee[0]);
-    }
-
-    [Benchmark]
-    public Employee DataStreamDeserializeBenchmark()
+    public Employee[] DataStreamDeserializeArrayBenchmark()
     {
         _stream0.Position = 0;
-        return DataStreamSerializer.Deserialize<Employee>(_stream0);
+        return DataStreamSerializer.Deserialize<Employee[]>(_stream0);
     }
 
     [Benchmark]
-    public Employee MessagePackDeserializeBenchmark()
+    public void MessagePackSerializeArrayBenchmark()
     {
         _stream1.Position = 0;
-        return MessagePackSerializer.Deserialize<Employee>(_stream1);
+        MessagePackSerializer.Serialize(_stream1, _employee);
     }
+
+    [Benchmark]
+    public Employee[] MessagePackDeserializeArrayBenchmark()
+    {
+        _stream1.Position = 0;
+        return MessagePackSerializer.Deserialize<Employee[]>(_stream1);
+    }
+
+    //[Benchmark]
+    //public void DataStreamSerializeBenchmark()
+    //{
+    //    _stream0.Position = 0;
+    //    DataStreamSerializer.Serialize(_stream0, _employee[0]);
+    //}
+
+    //[Benchmark]
+    //public void MessagePackSerializeBenchmark()
+    //{
+    //    _stream1.Position = 0;
+    //    MessagePackSerializer.Serialize(_stream1, _employee[0]);
+    //}
+
+    //[Benchmark]
+    //public Employee DataStreamDeserializeBenchmark()
+    //{
+    //    _stream0.Position = 0;
+    //    return DataStreamSerializer.Deserialize<Employee>(_stream0);
+    //}
+
+    //[Benchmark]
+    //public Employee MessagePackDeserializeBenchmark()
+    //{
+    //    _stream1.Position = 0;
+    //    return MessagePackSerializer.Deserialize<Employee>(_stream1);
+    //}
 }

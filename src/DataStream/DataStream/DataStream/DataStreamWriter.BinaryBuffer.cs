@@ -3,16 +3,11 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataStream;
 
-partial class DataStreamWriter
+internal partial class DataStreamWriter
 {
     private class BinaryBuffer
     {
@@ -75,6 +70,7 @@ partial class DataStreamWriter
                 _stream.Write(_buffer, 0, _position);
                 _position = 0;
             }
+            _stream.Flush();
         }
     }
 }
