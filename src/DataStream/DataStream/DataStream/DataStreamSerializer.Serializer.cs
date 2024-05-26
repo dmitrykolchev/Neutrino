@@ -20,7 +20,7 @@ public sealed partial class DataStreamSerializer
     {
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(item);
-        DataStreamSerializerContext context = new()
+        using DataStreamSerializerContext context = new()
         {
             Options = DefaultOptions,
         };

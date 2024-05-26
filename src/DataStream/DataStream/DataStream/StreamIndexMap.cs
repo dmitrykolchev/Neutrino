@@ -3,11 +3,12 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace DataStream;
 
-internal class StreamIndexMap
+internal class StreamIndexMap: IDisposable
 {
     public const int InvalidPropertyIndex = 0;
 
@@ -15,7 +16,13 @@ internal class StreamIndexMap
 
     public StreamIndexMap()
     {
-        _streamIndex = new int[32];
+        _streamIndex = ArrayPool<int>.Shared.Rent(32);
+        Array.Clear(_streamIndex, 0, _streamIndex.Length);
+    }
+
+    public void Dispose()
+    {
+        ArrayPool<int>.Shared.Return(_streamIndex);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -52,7 +59,11 @@ internal class StreamIndexMap
     {
         if (streamIndex > _streamIndex.Length)
         {
-            Array.Resize<int>(ref _streamIndex, (streamIndex + 32) & ~0x1F);
+            int[] buffer = ArrayPool<int>.Shared.Rent((streamIndex + 32) & ~0x1F);
+            Array.Clear(buffer, _streamIndex.Length, buffer.Length - _streamIndex.Length);
+            Array.Copy(_streamIndex, 0, buffer, 0, _streamIndex.Length);
+            ArrayPool<int>.Shared.Return(_streamIndex);
+            _streamIndex = buffer;
         }
     }
 }

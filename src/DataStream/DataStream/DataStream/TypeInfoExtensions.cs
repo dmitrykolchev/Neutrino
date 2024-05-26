@@ -11,20 +11,7 @@ internal static class TypeInfoExtensions
 {
     public static bool IsScalar(this Type type)
     {
-        return Type.GetTypeCode(type) switch
-        {
-            TypeCode.Int32 or
-            TypeCode.Int16 or
-            TypeCode.Boolean or
-            TypeCode.String or
-            TypeCode.DateTime or
-            TypeCode.Byte or
-            TypeCode.Int64 or
-            TypeCode.Decimal or
-            TypeCode.Double or
-            TypeCode.Single => true,
-            _ => false
-        };
+        return Type.GetTypeCode(type) > TypeCode.Object;
     }
 
     public static bool IsNullable(this Type type)

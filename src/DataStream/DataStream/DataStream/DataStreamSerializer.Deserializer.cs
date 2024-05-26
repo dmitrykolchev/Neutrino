@@ -12,7 +12,7 @@ public sealed partial class DataStreamSerializer
     public static TItem Deserialize<TItem>(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
-        DataStreamSerializerContext context = new()
+        using DataStreamSerializerContext context = new()
         {
             Options = DefaultOptions
         };
@@ -31,8 +31,7 @@ public sealed partial class DataStreamSerializer
 
     private static object DeserializeCore(DataStreamReader reader, Type type)
     {
-        reader.ReadElementType();
-        if (reader.ElementType != DataStreamElementType.StartOfStream)
+        if (reader.ReadElementType() != DataStreamElementType.StartOfStream)
         {
             throw new FormatException();
         }
@@ -40,8 +39,7 @@ public sealed partial class DataStreamSerializer
 
         object value = Deserialize(reader, type);
 
-        reader.ReadElementType();
-        if (reader.ElementType != DataStreamElementType.EndOfStream)
+        if (reader.ReadElementType() != DataStreamElementType.EndOfStream)
         {
             throw new FormatException();
         }
@@ -52,8 +50,7 @@ public sealed partial class DataStreamSerializer
     {
         if (reader.ElementType == DataStreamElementType.StartOfObject)
         {
-            Func<DataStreamReader, object> deserializeAction = s_readerCompiler.GetOrAdd(type);
-            object value = deserializeAction(reader);
+            object value = s_readerCompiler.Invoke(type, reader);
             if (reader.ElementType != DataStreamElementType.EndOfObject)
             {
                 throw new FormatException();

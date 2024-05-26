@@ -5,29 +5,35 @@
 
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
-using static System.Linq.Expressions.Expression;
 using System.Reflection;
-using Microsoft.NET.StringTools;
+using static System.Linq.Expressions.Expression;
 
 namespace DataStream;
 
 internal class DataStreamReaderCompiler : DataStreamCompilerBase
 {
-    private readonly ConcurrentDictionary<Type, Func<DataStreamReader, object>> _readers = new();
+    internal delegate object ReadDelegate(DataStreamReader reader);
 
-    public Func<DataStreamReader, object> GetOrAdd(Type type)
+    private readonly ConcurrentDictionary<Type, ReadDelegate> _readers = new();
+
+    public ReadDelegate GetOrAdd(Type type)
     {
         ArgumentNullException.ThrowIfNull(type);
         return _readers.GetOrAdd(type, Create);
     }
 
+    public object Invoke(Type type, DataStreamReader reader)
+    {
+        ReadDelegate read = GetOrAdd(type);
+        return read(reader);
+    }
 
-    private Func<DataStreamReader, object> Create(Type type)
+    private ReadDelegate Create(Type type)
     {
         ParameterExpression readerParameter = Parameter(typeof(DataStreamReader), "reader");
         Expression body = GetExpression(type, readerParameter);
-        LambdaExpression lambda = Lambda(body, readerParameter);
-        return (Func<DataStreamReader, object>)lambda.Compile();
+        LambdaExpression lambda = Lambda<ReadDelegate>(body, readerParameter);
+        return (ReadDelegate)lambda.Compile();
     }
 
     private Expression GetExpression(

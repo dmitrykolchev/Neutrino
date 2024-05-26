@@ -15,6 +15,8 @@ public class Benchmarks
     private Employee[] _employee = null!;
     private MemoryStream _stream0 = null!;
     private MemoryStream _stream1 = null!;
+    private MemoryStream _stream00 = null!;
+    private MemoryStream _stream01 = null!;
 
 
     [GlobalSetup]
@@ -46,6 +48,11 @@ public class Benchmarks
         DataStreamSerializeArrayBenchmark();
         _stream1 = new();
         MessagePackSerializeArrayBenchmark();
+
+        _stream00 = new();
+        DataStreamSerializeBenchmark();
+        _stream01 = new();
+        MessagePackSerializeBenchmark();
     }
 
     [Benchmark]
@@ -76,31 +83,32 @@ public class Benchmarks
         return MessagePackSerializer.Deserialize<Employee[]>(_stream1);
     }
 
-    //[Benchmark]
-    //public void DataStreamSerializeBenchmark()
-    //{
-    //    _stream0.Position = 0;
-    //    DataStreamSerializer.Serialize(_stream0, _employee[0]);
-    //}
+    [Benchmark]
+    public void DataStreamSerializeBenchmark()
+    {
+        _stream00.Position = 0;
+        DataStreamSerializer.Serialize(_stream00, _employee[0]);
+    }
 
-    //[Benchmark]
-    //public void MessagePackSerializeBenchmark()
-    //{
-    //    _stream1.Position = 0;
-    //    MessagePackSerializer.Serialize(_stream1, _employee[0]);
-    //}
+    [Benchmark]
+    public Employee DataStreamDeserializeBenchmark()
+    {
+        _stream00.Position = 0;
+        return DataStreamSerializer.Deserialize<Employee>(_stream00);
+    }
 
-    //[Benchmark]
-    //public Employee DataStreamDeserializeBenchmark()
-    //{
-    //    _stream0.Position = 0;
-    //    return DataStreamSerializer.Deserialize<Employee>(_stream0);
-    //}
 
-    //[Benchmark]
-    //public Employee MessagePackDeserializeBenchmark()
-    //{
-    //    _stream1.Position = 0;
-    //    return MessagePackSerializer.Deserialize<Employee>(_stream1);
-    //}
+    [Benchmark]
+    public void MessagePackSerializeBenchmark()
+    {
+        _stream01.Position = 0;
+        MessagePackSerializer.Serialize(_stream01, _employee[0]);
+    }
+
+    [Benchmark]
+    public Employee MessagePackDeserializeBenchmark()
+    {
+        _stream01.Position = 0;
+        return MessagePackSerializer.Deserialize<Employee>(_stream01);
+    }
 }

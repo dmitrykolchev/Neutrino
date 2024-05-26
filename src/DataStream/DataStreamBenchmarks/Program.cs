@@ -120,12 +120,12 @@ internal class Program
         //sw.Stop();
         //Console.WriteLine($"{sw.ElapsedMilliseconds * 1000000.0 / 10_000_000} ns");
 
-        //Stopwatch sw = Stopwatch.StartNew();
-        //for (int index = 0; index < 10_000_000; ++index)
-        //{
-        //    b.DataStreamDeserializeBenchmark();
-        //}
-        //sw.Stop();
-        //Console.WriteLine($"{sw.ElapsedMilliseconds} ns");
+        Stopwatch sw = Stopwatch.StartNew();
+        for (int index = 0; index < 10_000_000; ++index)
+        {
+            b.DataStreamDeserializeBenchmark();
+        }
+        sw.Stop();
+        Console.WriteLine($"{sw.ElapsedMilliseconds} ns");
     }
 }

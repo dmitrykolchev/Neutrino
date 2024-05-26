@@ -30,4 +30,8 @@
     <Folder Include="logs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataStream\DataStream\DataStream.csproj" />
+  </ItemGroup>
+
 </Project>

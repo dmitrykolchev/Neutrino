@@ -5,11 +5,16 @@
 
 namespace DataStream;
 
-public class DataStreamSerializerContext
+public class DataStreamSerializerContext: IDisposable
 {
     public required DataStreamSerializationOptions Options { get; init; }
 
     internal StreamIndexMap StreamIndexMap { get; set; } = new StreamIndexMap();
 
     internal Stack<Type> TypeStack { get; } = new();
+
+    public void Dispose()
+    {
+        StreamIndexMap.Dispose();
+    }
 }
