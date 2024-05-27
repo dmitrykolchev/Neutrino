@@ -2,6 +2,9 @@
 import { MessagePackHubProtocol } from '/lib/signalr/signalr-protocol-msgpack.js';
 import { Encoder, Decoder, encode } from "/lib/msgpack/msgpack.js";
 
+export function sayHello(): string {
+    return "Hello, World!";
+}
 
 let connection: HubConnection = null;
 
@@ -53,7 +56,7 @@ function notifyCurrentTime(currentTime: { CurrentTime: Date }) {
 
 async function loadPartial() {
     const client = new DefaultHttpClient(NullLogger.instance);
-    const response = await client.get("/Administration/Home/Partial");
+    const response = await client.get("/Core/Home/Partial");
     const parser = new DOMParser();
     const doc = parser.parseFromString(<string>response.content, "text/html");
     const contentElement = <HTMLDivElement>document.getElementById("partialView");

@@ -66,13 +66,13 @@ public class Program
         app.UseAuthorization();
 
         app.MapAreaControllerRoute(
-            name: "Administration",
-            areaName: "Administration",
-            pattern: "Administration/{controller=Home}/{action=Index}/{id?}");
+            name: "Core",
+            areaName: "Core",
+            pattern: "Core/{controller=Home}/{action=Index}/{id?}");
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{area=Administration}/{controller=Home}/{action=Index}/{id?}");
+            pattern: "{area=Core}/{controller=Home}/{action=Index}/{id?}");
 
         app.MapHub<EventHandlerHub>("/EventHandlerHub");
         app.Run();

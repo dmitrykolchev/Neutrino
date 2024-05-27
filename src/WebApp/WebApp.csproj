@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Areas\Administration\Home\Index.cshtml.ts" />
+    <None Remove="Areas\Core\Home\Index.cshtml.ts" />
   </ItemGroup>
 
   <ItemGroup>
