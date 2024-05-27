@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStream", "src\DataStrea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStreamBenchmarks", "src\DataStream\DataStreamBenchmarks\DataStreamBenchmarks.csproj", "{0074C674-AA74-47DA-A6A1-2EC5E195FD10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryString", "src\DataStream\BinaryString\BinaryString.csproj", "{5589D038-2391-4C67-B852-A2CF5B060531}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryString", "src\DataStream\BinaryString\BinaryString.csproj", "{5589D038-2391-4C67-B852-A2CF5B060531}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Sample", "src\samples\DataAccess.Sample\DataAccess.Sample.csproj", "{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +117,14 @@ Global
 		{5589D038-2391-4C67-B852-A2CF5B060531}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5589D038-2391-4C67-B852-A2CF5B060531}.Release|x64.ActiveCfg = Release|x64
 		{5589D038-2391-4C67-B852-A2CF5B060531}.Release|x64.Build.0 = Release|x64
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +142,7 @@ Global
 		{DD4989A1-A644-46CE-996D-69E4C4D972C6} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
 		{0074C674-AA74-47DA-A6A1-2EC5E195FD10} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
 		{5589D038-2391-4C67-B852-A2CF5B060531} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
+		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE} = {451B49BB-21A4-4184-8801-AA878A1AAAC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB655AAD-9761-4D41-A290-85A0E5EAA593}

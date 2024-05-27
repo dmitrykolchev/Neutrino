@@ -60,24 +60,17 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         List<SwitchCase> cases = new();
         foreach (PropertyInfo property in properties)
         {
-            if (property.GetCustomAttribute<IgnoreAttribute>() == null)
+            PropertyMetadata metadata = new PropertyMetadata(property);
+            if (!metadata.Ignore)
             {
-                PropertyAttribute? propertyAttribute = property.GetCustomAttribute<PropertyAttribute>();
-                string propertyName = property.Name;
-                bool internable = false;
-                if (propertyAttribute != null)
-                {
-                    propertyName = propertyAttribute.Name ?? propertyName;
-                    internable = propertyAttribute.Internable;
-                }
-                ReadOnlySpan<byte> data = DataStreamSerializer.UTF8.GetBytes(propertyName);
+                ReadOnlySpan<byte> data = DataStreamSerializer.UTF8.GetBytes(metadata.StreamName);
                 Utf8String propertyNameUtf8 = Utf8String.Intern(data);
 
                 PropertyMap.Instance.TryAdd(propertyNameUtf8, out int internalIndex);
 
                 Expression switchCaseBody = Assign(
-                    Property(result, property.Name),
-                    ReadValue(reader, property.PropertyType)
+                    Property(result, metadata.Property.Name),
+                    ReadValue(reader, metadata)
                 );
                 cases.Add(SwitchCase(switchCaseBody, Constant(internalIndex)));
             }
@@ -121,17 +114,19 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
 
     private Expression ReadValue(
         ParameterExpression reader,
-        Type valueType)
+        PropertyMetadata propertyMetadata)
     {
-        if (valueType.IsNullable())
+        Type valueType = propertyMetadata.Property.PropertyType;
+
+        if (propertyMetadata.IsNullable())
         {
             return Condition(
                 Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
                 Constant(null, valueType),
-                Convert(ReadSimpleValue(reader, valueType.GetGenericArguments()[0]), valueType),
+                Convert(ReadScalar(reader, valueType.GetGenericArguments()[0]), valueType),
                 valueType);
         }
-        if (valueType == typeof(byte[]))
+        if (propertyMetadata.IsBinary())
         {
             return Condition(
                 Equal(Property(reader, nameof(DataStreamReader.ElementType)), Constant(DataStreamElementType.Null)),
@@ -139,9 +134,9 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
                 Read(reader, nameof(DataStreamReader.ReadBinary)),
                 valueType);
         }
-        if (valueType.IsScalar() || valueType == typeof(Guid))
+        if (propertyMetadata.IsSimple())
         {
-            return ReadSimpleValue(reader, valueType);
+            return ReadSimpleValue(reader, propertyMetadata);
         }
         ParameterExpression objectResult = Variable(valueType);
         Expression deserialize = Call<DataStreamSerializer>(
@@ -156,42 +151,44 @@ internal class DataStreamReaderCompiler : DataStreamCompilerBase
         );
     }
 
-    private Expression ReadSimpleValue(Expression reader, Type valueType)
+    private Expression ReadSimpleValue(Expression reader, PropertyMetadata property)
     {
+        Type valueType = property.Property.PropertyType;
         if (valueType.IsEnum)
         {
-            return Convert(ReadSimpleValue(reader, valueType.GetEnumUnderlyingType()), valueType);
+            return Convert(ReadScalar(reader, valueType.GetEnumUnderlyingType()), valueType);
         }
         if (valueType == typeof(Guid))
         {
             return Read(reader, nameof(DataStreamReader.ReadGuid));
         }
-        TypeCode typeCode = Type.GetTypeCode(valueType);
-        switch (typeCode)
+        if(valueType == typeof(string))
         {
-            case TypeCode.Int32:
-                return Read(reader, nameof(DataStreamReader.ReadInt32));
-            case TypeCode.Int16:
-                return Read(reader, nameof(DataStreamReader.ReadInt16));
-            case TypeCode.Boolean:
-                return Read(reader, nameof(DataStreamReader.GetBoolean));
-            case TypeCode.String:
-                return Read(reader, nameof(DataStreamReader.ReadString));
-            case TypeCode.DateTime:
-                return Read(reader, nameof(DataStreamReader.ReadDateTime));
-            case TypeCode.Byte:
-                return Read(reader, nameof(DataStreamReader.ReadByte));
-            case TypeCode.Int64:
-                return Read(reader, nameof(DataStreamReader.ReadInt64));
-            case TypeCode.Decimal:
-                return Read(reader, nameof(DataStreamReader.ReadDecimal));
-            case TypeCode.Double:
-                return Read(reader, nameof(DataStreamReader.ReadDouble));
-            case TypeCode.Single:
-                return Read(reader, nameof(DataStreamReader.ReadSingle));
-            default:
-                throw new InvalidOperationException($"unsupported type {typeCode} - {valueType}");
+            if (property.Internable)
+            {
+                return Read(reader, nameof(DataStreamReader.ReadStringIntern));
+            }
+            return Read(reader, nameof(DataStreamReader.ReadString));
         }
+        return ReadScalar(reader, valueType);
+    }
+
+    private Expression ReadScalar(Expression reader, Type valueType)
+    {
+        TypeCode typeCode = Type.GetTypeCode(valueType);
+        return typeCode switch
+        {
+            TypeCode.Int32 => Read(reader, nameof(DataStreamReader.ReadInt32)),
+            TypeCode.Int16 => Read(reader, nameof(DataStreamReader.ReadInt16)),
+            TypeCode.Boolean => Read(reader, nameof(DataStreamReader.GetBoolean)),
+            TypeCode.DateTime => Read(reader, nameof(DataStreamReader.ReadDateTime)),
+            TypeCode.Byte => Read(reader, nameof(DataStreamReader.ReadByte)),
+            TypeCode.Int64 => Read(reader, nameof(DataStreamReader.ReadInt64)),
+            TypeCode.Decimal => Read(reader, nameof(DataStreamReader.ReadDecimal)),
+            TypeCode.Double => Read(reader, nameof(DataStreamReader.ReadDouble)),
+            TypeCode.Single => Read(reader, nameof(DataStreamReader.ReadSingle)),
+            _ => throw new InvalidOperationException($"unsupported type {typeCode} - {valueType}"),
+        };
     }
 
     private Expression Read(Expression reader, string methodName)

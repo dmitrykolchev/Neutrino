@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\samples\DataAccess.Sample\DataAccess.Sample.csproj" />
     <ProjectReference Include="..\DataStream\DataStream.csproj" />
   </ItemGroup>
 

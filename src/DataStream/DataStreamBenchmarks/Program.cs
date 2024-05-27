@@ -5,75 +5,8 @@
 
 using System.Diagnostics;
 using BenchmarkDotNet.Running;
-using DataStream;
-using MessagePack;
 
 namespace DataStreamBenchmarks;
-
-public enum EmployeeState : short
-{
-    Unknown,
-    Active,
-    Inactive
-}
-
-[MessagePackObject]
-public class Organization
-{
-    [Key(nameof(Id))]
-    public int Id { get; set; }
-
-    [Key(nameof(Name))]
-    [DataStream.Property(Internable = true)]
-    public string? Name { get; set; }
-}
-
-
-[MessagePackObject]
-public class Employee
-{
-    [Key(nameof(Gid))]
-    public Guid Gid { get; set; }
-
-    [Key(nameof(Id))]
-    public int Id { get; set; }
-
-    [Key(nameof(State))]
-    public EmployeeState State { get; set; }
-
-    [Key(nameof(State1))]
-    public Nullable<EmployeeState> State1 { get; set; }
-
-    [Key(nameof(OficeWorker))]
-    public bool OficeWorker { get; set; }
-
-    [Key(nameof(Salary))]
-    public double Salary { get; set; }
-
-    [Key(nameof(SalaryDecimal))]
-    public decimal SalaryDecimal { get; set; }
-
-    [Key(nameof(Name))]
-    [DataStream.Property(Internable = true)]
-    public string? Name { get; set; }
-
-    [Key(nameof(DateOfBirth))]
-    public DateTime? DateOfBirth { get; set; }
-
-    [Key(nameof(FireDate))]
-    public DateTime? FireDate { get; set; }
-    [Key(nameof(Avatar))]
-    public byte[]? Avatar { get; set; }
-
-    [Key(nameof(Organization))]
-    public Organization? Organization { get; set; }
-
-    [Key(nameof(ParentOrganization))]
-    public Organization? ParentOrganization { get; set; }
-
-    [Key(nameof(CreatedDate))]
-    public DateTime CreatedDate { get; set; }
-}
 
 
 internal class Program

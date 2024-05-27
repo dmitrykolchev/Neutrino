@@ -6,6 +6,7 @@
 using BenchmarkDotNet.Attributes;
 using DataStream;
 using MessagePack;
+using DataAccess.Sample;
 
 namespace DataStreamBenchmarks;
 

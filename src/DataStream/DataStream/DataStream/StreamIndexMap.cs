@@ -4,25 +4,43 @@
 // </copyright>
 
 using System.Buffers;
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 
 namespace DataStream;
 
-internal class StreamIndexMap: IDisposable
+internal class StreamIndexMap
 {
+    private static readonly ConcurrentStack<StreamIndexMap> s_streamIndexPool = new();
+
     public const int InvalidPropertyIndex = 0;
 
     private int[] _streamIndex;
 
-    public StreamIndexMap()
+    private StreamIndexMap()
     {
         _streamIndex = ArrayPool<int>.Shared.Rent(32);
+        Reset();
+    }
+
+    private void Reset()
+    {
         Array.Clear(_streamIndex, 0, _streamIndex.Length);
     }
 
-    public void Dispose()
+    public static StreamIndexMap Rent()
     {
-        ArrayPool<int>.Shared.Return(_streamIndex);
+        if(s_streamIndexPool.TryPop(out StreamIndexMap? result))
+        {
+            result.Reset();
+            return result;
+        }
+        return new StreamIndexMap();
+    }
+
+    public static void Return(StreamIndexMap streamIndexMap)
+    {
+        s_streamIndexPool.Push(streamIndexMap);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

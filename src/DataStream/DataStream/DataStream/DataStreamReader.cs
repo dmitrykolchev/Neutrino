@@ -4,7 +4,6 @@
 // </copyright>
 
 using System.Runtime.CompilerServices;
-using Microsoft.NET.StringTools;
 
 namespace DataStream;
 
@@ -192,5 +191,15 @@ internal class DataStreamReader
             throw new FormatException();
         }
         return _reader.ReadString();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ReadStringIntern()
+    {
+        if (_elementType != DataStreamElementType.String)
+        {
+            throw new FormatException();
+        }
+        return _reader.ReadStringIntern();
     }
 }

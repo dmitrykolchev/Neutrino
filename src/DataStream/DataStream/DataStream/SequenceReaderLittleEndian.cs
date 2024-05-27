@@ -5,6 +5,7 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Microsoft.NET.StringTools;
 
 namespace DataStream;
 
@@ -98,6 +99,18 @@ internal class SequenceReaderLittleEndian : ISequenceReader
         string value = DataStreamSerializer.UTF8.GetString(_data.Slice(_position, length));
         _position += length;
         return value;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ReadStringIntern()
+    {
+        int length = Read7BitEncodedInt32();
+        ArraySegment<byte> utf8bytes = _data.Slice(_position, length);
+        _position += length;
+        int charCount = DataStreamSerializer.UTF8.GetCharCount(utf8bytes);
+        Span<char> chars = stackalloc char[charCount];
+        DataStreamSerializer.UTF8.GetChars(utf8bytes, chars);
+        return Strings.WeakIntern(chars);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -52,12 +52,14 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
         {
             PropertyInfo property = properties[index];
 
-            if (property.GetCustomAttribute<IgnoreAttribute>() == null)
+            PropertyMetadata propertyMetadata = new (property);
+            if (!propertyMetadata.Ignore)
             {
                 Expression writePropertyNameExpression;
-                ReadOnlySpan<byte> span = Encoding.UTF8.GetBytes(property.Name);
+                ReadOnlySpan<byte> span = Encoding.UTF8.GetBytes(propertyMetadata.StreamName);
                 Utf8String propertyNameUtf8 = Utf8String.Intern(span);
                 propertyMap.TryAdd(propertyNameUtf8, out int internalIndex);
+
                 writePropertyNameExpression = Call<DataStreamWriter>(
                     nameof(DataStreamWriter.WriteProperty),
                     [typeof(int)],
@@ -67,23 +69,23 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
                 Expression itemPropertyExpression = Property(item, property.Name);
                 Type propertyType = property.PropertyType;
 
-                if (propertyType.IsScalar() || propertyType == typeof(Guid))
+                if (propertyMetadata.IsSimple())
                 {
                     expressions.Add(Block(
                         writePropertyNameExpression,
-                        WriteScalarPropertyExpression(
+                        WriteSimplePropertyExpression(
                             writer,
                             itemPropertyExpression,
                             propertyType)));
                 }
-                else if (propertyType == typeof(byte[]))
+                else if (propertyMetadata.IsBinary())
                 {
                     expressions.Add(
                         Block(
                             writePropertyNameExpression,
                             IfThenElse(
                                 NotEqual(itemPropertyExpression, Constant(null)),
-                                WriteScalarPropertyExpression(
+                                WriteSimplePropertyExpression(
                                     writer,
                                     itemPropertyExpression,
                                     propertyType),
@@ -97,27 +99,20 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
                 else if (propertyType.IsNullable())
                 {
                     Type genericArgumentType = propertyType.GetGenericArguments()[0];
-                    if (genericArgumentType.IsScalar() || genericArgumentType == typeof(Guid))
-                    {
-                        expressions.Add(Block(
-                            writePropertyNameExpression,
-                            IfThenElse(
-                                NotEqual(itemPropertyExpression, Constant(null)),
-                                WriteScalarPropertyExpression(
-                                    writer,
-                                    Property(itemPropertyExpression, "Value"),
-                                    genericArgumentType
-                                ),
-                                Call<DataStreamWriter>(
-                                    nameof(DataStreamWriter.WriteNull),
-                                    [],
-                                    writer))
-                            ));
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException($"cannot serialize {propertyType}");
-                    }
+                    expressions.Add(Block(
+                        writePropertyNameExpression,
+                        IfThenElse(
+                            NotEqual(itemPropertyExpression, Constant(null)),
+                            WriteSimplePropertyExpression(
+                                writer,
+                                Property(itemPropertyExpression, "Value"),
+                                genericArgumentType
+                            ),
+                            Call<DataStreamWriter>(
+                                nameof(DataStreamWriter.WriteNull),
+                                [],
+                                writer))
+                        ));
                 }
                 else
                 {
@@ -144,7 +139,7 @@ internal class DataStreamWriterCompiler : DataStreamCompilerBase
         return Block(expressions);
     }
 
-    private Expression WriteScalarPropertyExpression(
+    private Expression WriteSimplePropertyExpression(
         ParameterExpression writerParameter,
         Expression getPropertyValueExpression,
         Type propertyType)
