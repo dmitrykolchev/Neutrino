@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using System.Diagnostics;
 
-namespace WebApp.Controllers;
+namespace WebApp.Areas.Administration.Home;
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

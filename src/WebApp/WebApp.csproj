@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Home\Index.cshtml.ts" />
+    <None Remove="Areas\Administration\Home\Index.cshtml.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,10 +20,6 @@
     </PackageReference>
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="Views\Home\Index.cshtml.ts" />
   </ItemGroup>
 
   <ItemGroup>
