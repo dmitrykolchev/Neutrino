@@ -2,10 +2,6 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +12,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Photino.NET" Version="2.3.0" />
+    <PackageReference Include="Photino.NET" Version="2.6.0" />
   </ItemGroup>
 
 </Project>

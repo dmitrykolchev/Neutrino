@@ -44,7 +44,7 @@ public class Program
         ;
         builder.Services.AddSignalR().AddMessagePackProtocol();
         builder.Services.AddHostedService<NotificationWorker>();
-
+        builder.Services.AddEndpointsApiExplorer();
 
         WebApplication app = builder.Build();
 
