@@ -39,10 +39,11 @@ dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:sil
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:silent
 dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:silent
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
-dotnet_style_qualification_for_field = false:warning
-dotnet_style_qualification_for_property = false:warning
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
-dotnet_style_qualification_for_event = false:warning
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_prefer_collection_expression = when_types_loosely_match:suggestion
 
 # C# files
 [*.cs]
@@ -155,9 +156,9 @@ dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_null_propagation = true:suggestion
 
 # Expression-bodied members
-csharp_style_expression_bodied_methods = false:suggestion
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
 csharp_style_expression_bodied_constructors = false:suggestion
-csharp_style_expression_bodied_operators = false:suggestion
+csharp_style_expression_bodied_operators = when_on_single_line:suggestion
 csharp_style_expression_bodied_properties = true:suggestion
 csharp_style_expression_bodied_indexers = true:suggestion
 csharp_style_expression_bodied_accessors = true:suggestion
@@ -199,8 +200,8 @@ csharp_prefer_simple_using_statement = true:suggestion
 csharp_style_namespace_declarations = file_scoped:warning
 csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_expression_bodied_lambdas = true:silent
-csharp_style_expression_bodied_local_functions = false:silent
-csharp_style_prefer_top_level_statements = true:silent
+csharp_style_expression_bodied_local_functions = when_on_single_line:silent
+csharp_style_prefer_top_level_statements = false:silent
 csharp_style_prefer_null_check_over_type_check = true:suggestion
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_style_prefer_local_over_anonymous_function = true:suggestion
@@ -221,7 +222,11 @@ csharp_style_prefer_switch_expression = true:suggestion
 csharp_style_prefer_pattern_matching = true:silent
 csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
-csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_prefer_primary_constructors = false:suggestion
+csharp_prefer_static_anonymous_function = true:suggestion
+csharp_style_prefer_readonly_struct_member = true:suggestion
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:silent
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
 
 # C++ Files
 [*.{cpp,h,in}]

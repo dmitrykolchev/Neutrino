@@ -44,9 +44,25 @@ public class Program
         ;
         builder.Services.AddSignalR().AddMessagePackProtocol();
         builder.Services.AddHostedService<NotificationWorker>();
-        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddOpenApi(options =>
+        {
+            options.ShouldInclude = (desc) =>
+            {
+                return true;
+            };
+        });
 
         WebApplication app = builder.Build();
+
+        app.MapOpenApi();
+
+        app.MapScalarApiReference(options =>
+        {
+            options.DarkMode = true;
+            options.Title = "Xobex WebApp API Explorer";
+            options.EndpointPathPrefix = "/scalar";
+        });
+
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())

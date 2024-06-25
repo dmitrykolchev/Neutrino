@@ -36,9 +36,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStreamBenchmarks", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryString", "src\DataStream\BinaryString\BinaryString.csproj", "{5589D038-2391-4C67-B852-A2CF5B060531}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Sample", "src\samples\DataAccess.Sample\DataAccess.Sample.csproj", "{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Sample", "src\samples\DataAccess.Sample\DataAccess.Sample.csproj", "{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xobex.AspNetCore.Mvc", "src\Core\Xobex.AspNetCore.Mvc\Xobex.AspNetCore.Mvc.csproj", "{6FEAD1E1-EC82-468B-94E8-24B2B9436C40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xobex.AspNetCore.Mvc", "src\Core\Xobex.AspNetCore.Mvc\Xobex.AspNetCore.Mvc.csproj", "{6FEAD1E1-EC82-468B-94E8-24B2B9436C40}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStream.SourceGeneration", "src\DataStream\DataStream.SourceGeneration\DataStream.SourceGeneration.csproj", "{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "devextreme", "src\submodules\devextreme\devextreme.njsproj", "{2D9EC98C-8BC5-462A-96D0-F430B8806837}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +140,22 @@ Global
 		{6FEAD1E1-EC82-468B-94E8-24B2B9436C40}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FEAD1E1-EC82-468B-94E8-24B2B9436C40}.Release|x64.ActiveCfg = Release|Any CPU
 		{6FEAD1E1-EC82-468B-94E8-24B2B9436C40}.Release|x64.Build.0 = Release|Any CPU
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Debug|x64.ActiveCfg = Debug|x64
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Debug|x64.Build.0 = Debug|x64
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Release|x64.ActiveCfg = Release|x64
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500}.Release|x64.Build.0 = Release|x64
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Debug|x64.Build.0 = Debug|Any CPU
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Release|x64.ActiveCfg = Release|Any CPU
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +174,8 @@ Global
 		{0074C674-AA74-47DA-A6A1-2EC5E195FD10} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
 		{5589D038-2391-4C67-B852-A2CF5B060531} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
 		{E03CEFB0-9A64-4229-9A6F-5D8934D2B3FE} = {451B49BB-21A4-4184-8801-AA878A1AAAC7}
+		{2A4CDAF4-AD45-4DB5-8F1D-8546DCEE0500} = {7059FE9A-3C5C-490C-84A1-6FE910450B92}
+		{2D9EC98C-8BC5-462A-96D0-F430B8806837} = {D507D5DD-529D-4F06-9008-9402EB163597}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB655AAD-9761-4D41-A290-85A0E5EAA593}

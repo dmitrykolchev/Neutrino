@@ -4,6 +4,7 @@ using DataStream;
 namespace DataAccess.Sample;
 
 [MessagePackObject]
+[DataStreamSerializable]
 public class Organization
 {
     [Key(nameof(Id))]

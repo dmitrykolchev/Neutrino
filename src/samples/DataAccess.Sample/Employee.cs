@@ -16,6 +16,7 @@ public enum EmployeeState : short
 }
 
 [MessagePackObject]
+[DataStreamSerializable]
 public class Employee
 {
     [Key(nameof(Gid))]
