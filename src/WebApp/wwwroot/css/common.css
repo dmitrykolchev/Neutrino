@@ -1,0 +1,15 @@
+:root {
+    --default-background-color: #222;
+    --default-text-color: #FFFFFF;
+    --default-font: "Segoe UI",Tahoma,"Helvetica Neue","Open Sans",Helvetica,sans-serif;
+    --default-font-size: 12px;
+}
+
+
+body
+{
+    background-color: var(--default-background-color);
+    color: var(--default-text-color);
+    font-family: var(--default-font);
+    font-size: var(--default-font-size);
+}

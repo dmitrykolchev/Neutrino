@@ -1,6 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <Compile Remove="logs\**" />
+    <Content Remove="logs\**" />
+    <EmbeddedResource Remove="logs\**" />
+    <None Remove="logs\**" />
+    <TypeScriptCompile Remove="logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\cldr\cldr.de.js" />
+    <None Include="wwwroot\js\cldr\cldr.de.js.map" />
+    <None Include="wwwroot\js\cldr\cldr.de.min.js" />
+    <None Include="wwwroot\js\cldr\cldr.en.js" />
+    <None Include="wwwroot\js\cldr\cldr.en.js.map" />
+    <None Include="wwwroot\js\cldr\cldr.en.min.js" />
+    <None Include="wwwroot\js\cldr\cldr.ru.js" />
+    <None Include="wwwroot\js\cldr\cldr.ru.js.map" />
+    <None Include="wwwroot\js\cldr\cldr.ru.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MessagePack" Version="2.5.140" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-preview.4.24267.6" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0-preview.4.24267.6" />
@@ -11,10 +31,6 @@
     <PackageReference Include="Scalar.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="logs\" />
   </ItemGroup>
 
   <ItemGroup>

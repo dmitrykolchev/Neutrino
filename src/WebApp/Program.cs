@@ -59,7 +59,7 @@ public class Program
         app.MapScalarApiReference(options =>
         {
             options.DarkMode = true;
-            options.Title = "Xobex WebApp API Explorer";
+            options.Title = "Neutrino API Explorer";
             options.EndpointPathPrefix = "/scalar";
         });
 

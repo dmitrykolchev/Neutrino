@@ -1,1 +1,0 @@
-../packages/devextreme/.eslintrc.js

@@ -15,9 +15,9 @@
     "module": "ES2020"
   },
   "include": [ "./**/*.ts" ],
-  //"files": [
-  //  "../lib/devextreme/ts/dx.all.d.ts"
-  //],
+  "files": [
+    "../lib/devextreme/ts/dx.all.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "wwwroot"

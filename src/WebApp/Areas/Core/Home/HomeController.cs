@@ -29,6 +29,11 @@ public class HomeController : Controller
         return Ok();
     }
 
+    public IActionResult Controls()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
