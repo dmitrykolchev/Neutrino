@@ -22,8 +22,8 @@
 
   <ItemGroup>
     <PackageReference Include="MessagePack" Version="2.5.140" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-preview.4.24267.6" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0-preview.4.24267.6" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-preview.5.24306.11" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0-preview.5.24306.11" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.4.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -35,6 +35,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataStream\DataStream\DataStream.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\fluent\web-components\" />
   </ItemGroup>
 
 </Project>
