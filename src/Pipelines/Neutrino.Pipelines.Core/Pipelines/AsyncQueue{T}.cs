@@ -17,38 +17,28 @@ public class AsyncQueue<T>
     {
     }
 
-    public AsyncQueue(int size)
+    public AsyncQueue(int maxSize)
     {
-        if (size <= 0)
+        if (maxSize <= 0)
         {
-            size = Environment.ProcessorCount;
+            maxSize = Environment.ProcessorCount;
         }
-        _inputSemaphore = new SemaphoreSlim(size, size);
-        _outputSemaphore = new SemaphoreSlim(0, size);
+        _inputSemaphore = new SemaphoreSlim(maxSize, maxSize);
+        _outputSemaphore = new SemaphoreSlim(0, maxSize);
     }
 
     public int Count => _items.Count;
 
     public bool IsEmpty => _items.IsEmpty;
 
-    public Task EnqueueAsync(T item)
-    {
-        return EnqueueAsync(item, default);
-    }
-
-    public async Task EnqueueAsync(T item, CancellationToken cancellationToken)
+    public async Task EnqueueAsync(T item, CancellationToken cancellationToken = default)
     {
         await _inputSemaphore.WaitAsync(cancellationToken);
         _items.Enqueue(item);
         _outputSemaphore.Release();
     }
 
-    public Task<T> DequeueAsync()
-    {
-        return DequeueAsync(default);
-    }
-
-    public async Task<T> DequeueAsync(CancellationToken cancellationToken)
+    public async Task<T> DequeueAsync(CancellationToken cancellationToken = default)
     {
         await _outputSemaphore.WaitAsync(cancellationToken);
         if (!_items.TryDequeue(out T? item))

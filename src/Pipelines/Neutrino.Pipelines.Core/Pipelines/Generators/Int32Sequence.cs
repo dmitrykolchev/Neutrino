@@ -35,7 +35,7 @@ public class Int32Sequence : IProducer<int>
         if (result < _maxValue)
         {
             _value += _step;
-            await Out.PostAsync(_value, cancellationToken);
+            await Out.PostAsync(result, cancellationToken);
             return true;
         }
         return false;

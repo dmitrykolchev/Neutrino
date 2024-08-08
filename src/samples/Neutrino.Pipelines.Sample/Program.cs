@@ -14,6 +14,17 @@ internal class Program
 
     private static async Task Main(string[] args)
     {
+        AsyncQueue<int> queue = new(10);
+        for(int index = 0; index < 10; ++index)
+        {
+            await queue.EnqueueAsync(index);
+        }
+        for(int index = 0; index < 4; ++index)
+        {
+            var item = await queue.DequeueAsync();
+        }
+
+
         Console.CancelKeyPress += Console_CancelKeyPress;
 
         ImmutableArray<object> test = [];
@@ -60,7 +71,6 @@ internal class Program
         protected override async Task OnReceive(Message<int> message, CancellationToken cancellationToken)
         {
             int result = message.Data * 2;
-            await Task.Delay(1);
             await Out.PostAsync(result, cancellationToken);
         }
     }
