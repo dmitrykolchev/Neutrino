@@ -29,16 +29,16 @@ public class Int32Sequence : IProducer<int>
 
     public Emitter<int> Out => _out ??= _pipeline.CreateEmitter<int>(this, GenerateAsync);
 
-    private Task<Message<int>> GenerateAsync(CancellationToken cancellationToken)
+    private async Task<bool> GenerateAsync(CancellationToken cancellationToken)
     {
         int result = _value;
         if (result < _maxValue)
         {
             _value += _step;
-            Message<int> message = new Message<int>(result);
-            return Task.FromResult(message);
+            await Out.PostAsync(_value, cancellationToken);
+            return true;
         }
-        return Task.FromResult(Message<int>.EndOfStream);
+        return false;
     }
 }
 

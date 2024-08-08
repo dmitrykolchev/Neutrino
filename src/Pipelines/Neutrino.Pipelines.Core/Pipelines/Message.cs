@@ -21,7 +21,5 @@ public abstract class Message
 
     public int Id { get; }
 
-    public bool IsEndOfStream => Id == int.MaxValue;
-
     public abstract object? GetData();
 }

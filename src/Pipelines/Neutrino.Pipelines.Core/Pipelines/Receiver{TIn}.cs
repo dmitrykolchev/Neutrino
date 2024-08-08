@@ -5,15 +5,15 @@
 
 namespace Neutrino.Pipelines;
 
-public class Receiver<TIn> : IReceiver<TIn> 
+public class Receiver<TIn> : IReceiver<TIn>
 {
     private readonly AsyncQueue<Message<TIn>> _queue;
 
     public Receiver(
-        object owner, 
-        Pipeline pipeline, 
-        Func<Message<TIn>, CancellationToken, Task>? receiveCallback = null, 
-        int queueSize = 1, 
+        object owner,
+        Pipeline pipeline,
+        Func<Message<TIn>, CancellationToken, Task>? receiveCallback = null,
+        int queueSize = -1,
         string name = nameof(Receiver<TIn>))
     {
         Id = pipeline.GenerateId();
@@ -45,14 +45,18 @@ public class Receiver<TIn> : IReceiver<TIn>
 
     public virtual async Task RunAsync(CancellationToken cancellationToken)
     {
-        while(!cancellationToken.IsCancellationRequested)
+        try
         {
-            Message<TIn> message = await Queue.DequeueAsync(cancellationToken);
-            await ReceiveCallback(message, cancellationToken);
-            if (message.IsEndOfStream)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                break;
+                Message<TIn> message = await Queue.DequeueAsync(cancellationToken);
+                await ReceiveCallback(message, cancellationToken);
             }
         }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine($"Stoping signal received: {Owner}");
+        }
+        Console.WriteLine($"Receiver {Owner} completed");
     }
 }

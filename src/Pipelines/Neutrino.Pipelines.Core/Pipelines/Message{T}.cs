@@ -7,16 +7,9 @@ namespace Neutrino.Pipelines;
 
 public class Message<T> : Message
 {
-    public static readonly Message<T> EndOfStream = new(true);
-
     public Message(T data)
     {
         Data = data;
-    }
-
-    private Message(bool endOfStream) : base(endOfStream)
-    {
-        Data = default!;
     }
 
     public T Data { get; }

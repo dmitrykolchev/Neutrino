@@ -19,6 +19,10 @@ public class AsyncQueue<T>
 
     public AsyncQueue(int size)
     {
+        if (size <= 0)
+        {
+            size = Environment.ProcessorCount;
+        }
         _inputSemaphore = new SemaphoreSlim(size, size);
         _outputSemaphore = new SemaphoreSlim(0, size);
     }

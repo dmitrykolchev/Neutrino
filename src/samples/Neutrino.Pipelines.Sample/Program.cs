@@ -10,8 +10,12 @@ namespace Neutrino.Pipelines.Sample;
 
 internal class Program
 {
+    private static readonly PipelineLifetime lifetime = new PipelineLifetime();
+
     private static async Task Main(string[] args)
     {
+        Console.CancelKeyPress += Console_CancelKeyPress;
+
         ImmutableArray<object> test = [];
         object obj1 = new();
         object obj2 = new();
@@ -19,37 +23,45 @@ internal class Program
         test = test.Add(obj2);
         test = test.Add(obj1);
 
+        using Pipeline pipeline = Pipeline.Create(lifetime);
+
         CancellationTokenSource source = new();
-        using Pipeline pipeline = Pipeline.Create();
         Int32Sequence sequence = new(pipeline, 0, 100);
         Transformer transformer = new(pipeline);
         ConsoleLogger logger = new(pipeline);
-        IConnection<int> sequenceToTransformerConnection = pipeline.CreateConnection(sequence.Out, transformer.In);
-        IConnection<int> transformerToLoggerConnection = pipeline.CreateConnection(transformer.Out, logger.In);
-        await pipeline.RunAsync(source.Token);
 
-        await Task.Delay(1000);
+        sequence.PipeTo(transformer);
 
-        source.Cancel();
+        sequence.PipeTo(logger);
+
+        transformer.PipeTo(logger);
+
+        pipeline.Run();
+
+        Console.WriteLine("Press enter to exit");
+        Console.ReadLine();
+
+        await pipeline.StopAsync();
+    }
+
+    private static void Console_CancelKeyPress(object? sender, ConsoleCancelEventArgs e)
+    {
+        Console.WriteLine("Ctrl-C pressed...");
+        lifetime.Stop();
+        e.Cancel = true;
     }
 
     public class Transformer : ConsumerProducer<int, int>
     {
-        public Transformer(Pipeline pipeline): base(pipeline, nameof(Transformer))
+        public Transformer(Pipeline pipeline) : base(pipeline, nameof(Transformer))
         {
         }
 
         protected override async Task OnReceive(Message<int> message, CancellationToken cancellationToken)
         {
-            if (!message.IsEndOfStream)
-            {
-                int result = message.Data * 2;
-                await Out.PostAsync(new Message<int>(result), cancellationToken);
-            }
-            else
-            {
-                await Out.PostAsync(Message<int>.EndOfStream, cancellationToken);
-            }
+            int result = message.Data * 2;
+            await Task.Delay(1);
+            await Out.PostAsync(result, cancellationToken);
         }
     }
 
@@ -62,14 +74,7 @@ internal class Program
 
         private Task ReceiveAsync(Message<int> value, CancellationToken cancellation)
         {
-            if (!value.IsEndOfStream)
-            {
-                Console.WriteLine($"Message received at {DateTime.Now} is {value.Data}");
-            }
-            else
-            {
-                Console.WriteLine("EOS");
-            }
+            Console.WriteLine($"Message received at {DateTime.Now} is {value.Data}");
             return Task.CompletedTask;
         }
 

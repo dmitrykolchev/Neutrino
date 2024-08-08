@@ -7,12 +7,18 @@ namespace Neutrino.Pipelines;
 
 public class Pipeline : IDisposable
 {
-    private int _componentId;
-    private readonly List<IPipelineComponent> _components = [];
     private readonly object _syncObject = new();
+    private readonly List<IPipelineComponent> _components = [];
+    private List<Task>? _tasks;
+    private CancellationTokenSource? _cts;
 
-    private Pipeline()
+    private readonly IPipelineLifetime _pipelineLifetime;
+
+    private int _componentId;
+
+    private Pipeline(IPipelineLifetime pipelineLifetime)
     {
+        _pipelineLifetime = pipelineLifetime ?? throw new ArgumentNullException(nameof(pipelineLifetime));
     }
 
     internal int GenerateId()
@@ -20,24 +26,26 @@ public class Pipeline : IDisposable
         return Interlocked.Increment(ref _componentId);
     }
 
-    public static Pipeline Create()
+    public static Pipeline Create(IPipelineLifetime pipelineLifetime)
     {
-        return new Pipeline();
+        return new Pipeline(pipelineLifetime);
     }
 
-    public async Task RunAsync(CancellationToken cancellationToken)
+    public IPipelineLifetime Lifetime => _pipelineLifetime;
+
+    public void Run()
     {
-        List<Task> items = _components.Select(t => t.RunAsync(cancellationToken)).ToList();
-        await Task.WhenAll(items);
-        //while (items.Count > 0)
-        //{
-        //    Task delay = Task.Delay(1000);
-        //    items.Add(delay);
-        //    await Task.WhenAny(items);
-        //    items = items.Where(t => !t.IsCompleted).ToList();
-        //    items.Remove(delay);
-        //    Console.WriteLine($"Active tasks: {items.Count}");
-        //}
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(_pipelineLifetime.Stopping);
+        _tasks = _components.Select(t => t.RunAsync(_cts.Token)).ToList();
+    }
+
+    public async Task StopAsync()
+    {
+        if (_tasks is not null && _tasks.Any(t => !t.IsCompleted))
+        {
+            _pipelineLifetime.Stop();
+            await Task.WhenAll(_tasks.Where(t => !t.IsCompleted));
+        }
     }
 
     public Emitter<TOut> CreateEmitter<TOut>(object owner)
@@ -52,7 +60,7 @@ public class Pipeline : IDisposable
         return emitter;
     }
 
-    public Emitter<TOut> CreateEmitter<TOut>(object owner, Func<CancellationToken, Task<Message<TOut>>> generateCallback)
+    public Emitter<TOut> CreateEmitter<TOut>(object owner, Func<CancellationToken, Task<bool>> generateCallback)
     {
         ArgumentNullException.ThrowIfNull(owner);
         ArgumentNullException.ThrowIfNull(generateCallback);
@@ -91,6 +99,6 @@ public class Pipeline : IDisposable
 
     public void Dispose()
     {
-
+        _cts?.Dispose();
     }
 }

@@ -11,12 +11,12 @@ public class Emitter<TOut> : IEmitter<TOut>
 {
     private readonly object _syncObject = new();
     private ImmutableArray<Receiver<TOut>> _subscriptions = [];
-    private readonly Func<CancellationToken, Task<Message<TOut>>>? _generateCallback;
+    private readonly Func<CancellationToken, Task<bool>>? _generateCallback;
 
     internal Emitter(
         object owner,
         Pipeline pipeline,
-        Func<CancellationToken, Task<Message<TOut>>> generateCallback,
+        Func<CancellationToken, Task<bool>> generateCallback,
         string name = nameof(Emitter<TOut>))
     {
         Id = pipeline.GenerateId();
@@ -65,29 +65,36 @@ public class Emitter<TOut> : IEmitter<TOut>
         }
     }
 
-    public async Task PostAsync(Message<TOut> message, CancellationToken cancellationToken)
+    public async Task PostAsync(TOut data, CancellationToken cancellationToken)
     {
-        await DeliverAsync(message, cancellationToken);
+        await DeliverAsync(data, cancellationToken);
     }
 
     public virtual async Task RunAsync(CancellationToken cancellationToken)
     {
         if (_generateCallback != null)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                Message<TOut> message = await _generateCallback(cancellationToken);
-                await PostAsync(message, cancellationToken);
-                if (message.IsEndOfStream)
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    break;
+                    if (!await _generateCallback(cancellationToken))
+                    {
+                        break;
+                    }
                 }
             }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine($"Stoping signal received: {Owner}");
+            }
         }
+        Console.WriteLine($"Emitter {Owner} completed");
     }
 
-    private async Task DeliverAsync(Message<TOut> message, CancellationToken cancellationToken)
+    private async Task DeliverAsync(TOut data, CancellationToken cancellationToken)
     {
+        Message<TOut> message = new(data);
         foreach (Receiver<TOut> receiver in _subscriptions)
         {
             await receiver.EnqueueAsync(message, cancellationToken);
