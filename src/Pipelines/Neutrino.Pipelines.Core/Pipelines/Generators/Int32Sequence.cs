@@ -3,8 +3,6 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-
-
 namespace Neutrino.Pipelines.Generators;
 
 public class Int32Sequence : IProducer<int>
@@ -29,16 +27,16 @@ public class Int32Sequence : IProducer<int>
 
     public Emitter<int> Out => _out ??= _pipeline.CreateEmitter<int>(this, GenerateAsync);
 
-    private async Task<bool> GenerateAsync(CancellationToken cancellationToken)
+    private async Task<PipelineComponentState> GenerateAsync(CancellationToken cancellationToken)
     {
         int result = _value;
         if (result < _maxValue)
         {
             _value += _step;
-            await Out.PostAsync(result, cancellationToken);
-            return true;
+            await Out.PostAsync(new Message<int>(result, this), cancellationToken);
+            return PipelineComponentState.Active;
         }
-        return false;
+        return PipelineComponentState.Completed;
     }
 }
 

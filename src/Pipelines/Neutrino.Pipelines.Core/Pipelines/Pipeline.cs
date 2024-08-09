@@ -60,7 +60,7 @@ public class Pipeline : IDisposable
         return emitter;
     }
 
-    public Emitter<TOut> CreateEmitter<TOut>(object owner, Func<CancellationToken, Task<bool>> generateCallback)
+    public Emitter<TOut> CreateEmitter<TOut>(object owner, Func<CancellationToken, Task<PipelineComponentState>> generateCallback)
     {
         ArgumentNullException.ThrowIfNull(owner);
         ArgumentNullException.ThrowIfNull(generateCallback);
@@ -73,7 +73,7 @@ public class Pipeline : IDisposable
         return emitter;
     }
 
-    public Receiver<TIn> CreateReceiver<TIn>(object owner, Func<Message<TIn>, CancellationToken, Task> receiveCallback)
+    public Receiver<TIn> CreateReceiver<TIn>(object owner, Func<CancellationToken, Task<PipelineComponentState>> receiveCallback)
     {
         ArgumentNullException.ThrowIfNull(owner);
         ArgumentNullException.ThrowIfNull(receiveCallback);

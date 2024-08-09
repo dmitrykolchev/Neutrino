@@ -9,32 +9,22 @@ namespace Neutrino.Pipelines;
 
 public class Emitter<TOut> : IEmitter<TOut>
 {
+    private static readonly Task<PipelineComponentState> CompletedResult = Task.FromResult(PipelineComponentState.Completed);
+
     private readonly object _syncObject = new();
     private ImmutableArray<Receiver<TOut>> _subscriptions = [];
-    private readonly Func<CancellationToken, Task<bool>>? _generateCallback;
 
     internal Emitter(
         object owner,
         Pipeline pipeline,
-        Func<CancellationToken, Task<bool>> generateCallback,
+        Func<CancellationToken, Task<PipelineComponentState>>? generateCallback = null,
         string name = nameof(Emitter<TOut>))
     {
         Id = pipeline.GenerateId();
         Name = name;
         Owner = owner ?? throw new ArgumentNullException(nameof(owner));
         Pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
-        _generateCallback = generateCallback ?? throw new ArgumentNullException(nameof(generateCallback));
-    }
-
-    internal Emitter(
-        object owner,
-        Pipeline pipeline,
-        string name = nameof(Emitter<TOut>))
-    {
-        Id = pipeline.GenerateId();
-        Name = name;
-        Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-        Pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
+        GenerateCallback = generateCallback ?? (_ => CompletedResult);
     }
 
     public int Id { get; }
@@ -46,6 +36,8 @@ public class Emitter<TOut> : IEmitter<TOut>
     public Pipeline Pipeline { get; }
 
     public Type OutType => typeof(TOut);
+
+    public Func<CancellationToken, Task<PipelineComponentState>> GenerateCallback { get; }
 
     public void Subscribe(IConnection<TOut> connector)
     {
@@ -65,39 +57,37 @@ public class Emitter<TOut> : IEmitter<TOut>
         }
     }
 
-    public async Task PostAsync(TOut data, CancellationToken cancellationToken)
+    public async Task PostAsync(Message<TOut> data, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(data);
         await DeliverAsync(data, cancellationToken);
     }
 
     public virtual async Task RunAsync(CancellationToken cancellationToken)
     {
-        if (_generateCallback != null)
+        try
         {
-            try
+            while (!cancellationToken.IsCancellationRequested)
             {
-                while (!cancellationToken.IsCancellationRequested)
+                if (await GenerateCallback(cancellationToken) == PipelineComponentState.Completed)
                 {
-                    if (!await _generateCallback(cancellationToken))
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
-            catch (OperationCanceledException)
-            {
-                Console.WriteLine($"Stoping signal received: {Owner}");
-            }
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine($"Stoping signal received: {Owner}");
         }
         Console.WriteLine($"Emitter {Owner} completed");
     }
 
-    private async Task DeliverAsync(TOut data, CancellationToken cancellationToken)
+    private async Task DeliverAsync(Message<TOut> message, CancellationToken cancellationToken)
     {
-        Message<TOut> message = new(data);
-        foreach (Receiver<TOut> receiver in _subscriptions)
+        if (_subscriptions.Length > 0)
         {
-            await receiver.EnqueueAsync(message, cancellationToken);
+            IEnumerable<Task> tasks = _subscriptions.Select(t => t.EnqueueAsync(message, cancellationToken));
+            await Task.WhenAll(tasks);
         }
     }
 }

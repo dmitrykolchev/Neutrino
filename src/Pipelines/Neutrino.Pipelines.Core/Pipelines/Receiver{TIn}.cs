@@ -5,14 +5,18 @@
 
 namespace Neutrino.Pipelines;
 
+public enum PipelineComponentState
+{
+    Active,
+    Completed
+}
+
 public class Receiver<TIn> : IReceiver<TIn>
 {
-    private readonly AsyncQueue<Message<TIn>> _queue;
-
     public Receiver(
         object owner,
         Pipeline pipeline,
-        Func<Message<TIn>, CancellationToken, Task>? receiveCallback = null,
+        Func<CancellationToken, Task<PipelineComponentState>> receiveCallback,
         int queueSize = -1,
         string name = nameof(Receiver<TIn>))
     {
@@ -20,8 +24,8 @@ public class Receiver<TIn> : IReceiver<TIn>
         Name = name;
         Owner = owner ?? throw new ArgumentNullException(nameof(owner));
         Pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
-        ReceiveCallback = receiveCallback ?? EnqueueAsync;
-        _queue = new(queueSize);
+        ReceiveCallback = receiveCallback;
+        Queue = new(queueSize);
     }
 
     public int Id { get; }
@@ -34,13 +38,18 @@ public class Receiver<TIn> : IReceiver<TIn>
 
     public Type InType => typeof(TIn);
 
-    public Func<Message<TIn>, CancellationToken, Task> ReceiveCallback { get; }
+    public Func<CancellationToken, Task<PipelineComponentState>> ReceiveCallback { get; }
 
-    protected AsyncQueue<Message<TIn>> Queue => _queue;
+    protected AsyncQueue<Message<TIn>> Queue { get; }
 
-    public async Task EnqueueAsync(Message<TIn> message, CancellationToken cancellationToken)
+    public Task EnqueueAsync(Message<TIn> message, CancellationToken cancellationToken)
     {
-        await Queue.EnqueueAsync(message, cancellationToken);
+        return Queue.EnqueueAsync(message, cancellationToken);
+    }
+
+    public async Task<Message<TIn>> GetMessageAsync(CancellationToken cancellationToken)
+    {
+        return await Queue.DequeueAsync(cancellationToken);
     }
 
     public virtual async Task RunAsync(CancellationToken cancellationToken)
@@ -49,8 +58,10 @@ public class Receiver<TIn> : IReceiver<TIn>
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                Message<TIn> message = await Queue.DequeueAsync(cancellationToken);
-                await ReceiveCallback(message, cancellationToken);
+                if(await ReceiveCallback(cancellationToken) == PipelineComponentState.Completed)
+                {
+                    break;
+                }
             }
         }
         catch (OperationCanceledException)

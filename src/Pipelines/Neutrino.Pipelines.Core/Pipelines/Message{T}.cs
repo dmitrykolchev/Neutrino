@@ -7,10 +7,13 @@ namespace Neutrino.Pipelines;
 
 public class Message<T> : Message
 {
-    public Message(T data)
+    public Message(T data, object sender)
     {
         Data = data;
+        Sender = sender;
     }
+
+    public object Sender { get; }
 
     public T Data { get; }
 

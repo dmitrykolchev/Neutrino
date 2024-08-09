@@ -17,5 +17,5 @@ public abstract class ConsumerProducer<TIn, TOut> : IConsumerProducer<TIn, TOut>
 
     public Emitter<TOut> Out { get; }
 
-    protected abstract Task OnReceiveAsync(Message<TIn> message, CancellationToken cancellationToken);
+    protected abstract Task<PipelineComponentState> OnReceiveAsync(CancellationToken cancellationToken);
 }
