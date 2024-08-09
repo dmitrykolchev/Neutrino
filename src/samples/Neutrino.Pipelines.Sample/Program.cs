@@ -14,17 +14,6 @@ internal class Program
 
     private static async Task Main(string[] args)
     {
-        AsyncQueue<int> queue = new(10);
-        for(int index = 0; index < 10; ++index)
-        {
-            await queue.EnqueueAsync(index);
-        }
-        for(int index = 0; index < 4; ++index)
-        {
-            var item = await queue.DequeueAsync();
-        }
-
-
         Console.CancelKeyPress += Console_CancelKeyPress;
 
         ImmutableArray<object> test = [];
@@ -42,9 +31,7 @@ internal class Program
         ConsoleLogger logger = new(pipeline);
 
         sequence.PipeTo(transformer);
-
         sequence.PipeTo(logger);
-
         transformer.PipeTo(logger);
 
         pipeline.Run();
@@ -68,7 +55,7 @@ internal class Program
         {
         }
 
-        protected override async Task OnReceive(Message<int> message, CancellationToken cancellationToken)
+        protected override async Task OnReceiveAsync(Message<int> message, CancellationToken cancellationToken)
         {
             int result = message.Data * 2;
             await Out.PostAsync(result, cancellationToken);
@@ -79,10 +66,10 @@ internal class Program
     {
         public ConsoleLogger(Pipeline pipeline)
         {
-            In = pipeline.CreateReceiver<int>(this, ReceiveAsync);
+            In = pipeline.CreateReceiver<int>(this, OnReceiveAsync);
         }
 
-        private Task ReceiveAsync(Message<int> value, CancellationToken cancellation)
+        private Task OnReceiveAsync(Message<int> value, CancellationToken cancellation)
         {
             Console.WriteLine($"Message received at {DateTime.Now} is {value.Data}");
             return Task.CompletedTask;
