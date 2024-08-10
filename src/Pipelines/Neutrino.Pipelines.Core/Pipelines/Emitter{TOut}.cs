@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 
 namespace Neutrino.Pipelines;
 
-public class Emitter<TOut> : IEmitter<TOut>
+public class Emitter<TOut> : IEmitter
 {
     private static readonly Task<PipelineComponentState> CompletedResult = Task.FromResult(PipelineComponentState.Completed);
 

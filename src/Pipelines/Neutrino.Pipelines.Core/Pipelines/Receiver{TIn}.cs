@@ -11,7 +11,7 @@ public enum PipelineComponentState
     Completed
 }
 
-public class Receiver<TIn> : IReceiver<TIn>
+public class Receiver<TIn> : IReceiver
 {
     public Receiver(
         object owner,
