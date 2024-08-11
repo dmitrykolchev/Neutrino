@@ -52,7 +52,7 @@ public class Pipeline : IDisposable
     {
         ArgumentNullException.ThrowIfNull(owner);
 
-        Emitter<TOut> emitter = new(owner, this);
+        Emitter<TOut> emitter = new BypassEmitter<TOut>(owner, this);
         lock (_syncObject)
         {
             _components.Add(emitter);
@@ -65,7 +65,7 @@ public class Pipeline : IDisposable
         ArgumentNullException.ThrowIfNull(owner);
         ArgumentNullException.ThrowIfNull(generateCallback);
 
-        Emitter<TOut> emitter = new(owner, this, generateCallback);
+        Emitter<TOut> emitter = new ProcessingEmitter<TOut>(owner, this, generateCallback);
         lock (_syncObject)
         {
             _components.Add(emitter);
@@ -73,28 +73,29 @@ public class Pipeline : IDisposable
         return emitter;
     }
 
+    public Receiver<TIn> CreateReceiver<TIn>(object owner)
+    {
+        ArgumentNullException.ThrowIfNull(owner);
+
+        Receiver<TIn> receiver = new BypassReceiver<TIn>(owner, this);
+        lock (_syncObject)
+        {
+            _components.Add(receiver);
+        }
+        return receiver;
+    }
+
     public Receiver<TIn> CreateReceiver<TIn>(object owner, Func<Message<TIn>, CancellationToken, Task> receiveCallback)
     {
         ArgumentNullException.ThrowIfNull(owner);
         ArgumentNullException.ThrowIfNull(receiveCallback);
 
-        Receiver<TIn> receiver = new(owner, this, receiveCallback);
+        Receiver<TIn> receiver = new ProcessingReceiver<TIn>(owner, this, receiveCallback);
         lock (_syncObject)
         {
             _components.Add(receiver);
         }
-
         return receiver;
-    }
-
-    public IConnection<TData> CreateConnection<TData>(Emitter<TData> from, Receiver<TData> to)
-    {
-        ArgumentNullException.ThrowIfNull(from);
-        ArgumentNullException.ThrowIfNull(to);
-
-        Connection<TData> connection = new(this, from, to);
-        from.Subscribe(connection);
-        return connection;
     }
 
     public void Dispose()

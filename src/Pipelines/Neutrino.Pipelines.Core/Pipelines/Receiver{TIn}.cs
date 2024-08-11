@@ -5,43 +5,58 @@
 
 namespace Neutrino.Pipelines;
 
-public class Receiver<TIn> : IReceiver
+public abstract class Receiver<TIn> : PipelineComponent, IReceiver
 {
-    public Receiver(
+    protected Receiver(
+        object owner,
+        Pipeline pipeline,
+        int queueSize = -1,
+        string name = nameof(Receiver<TIn>)): base(owner, pipeline, name)
+    {
+        Queue = new(queueSize);
+    }
+
+    public Type InType => typeof(TIn);
+
+    protected AsyncQueue<Message<TIn>> Queue { get; }
+
+    public Task EnqueueAsync(Message<TIn> message, CancellationToken cancellationToken) 
+        => Queue.EnqueueAsync(message, cancellationToken);
+
+    public Task<Message<TIn>> DequeueAsync(CancellationToken cancellationToken) 
+        => Queue.DequeueAsync(cancellationToken);
+}
+
+
+internal class BypassReceiver<TIn>: Receiver<TIn>
+{
+    public BypassReceiver(
+        object owner,
+        Pipeline pipeline,
+        int queueSize = -1,
+        string name = nameof(BypassReceiver<TIn>)) : base(owner, pipeline, queueSize, name)
+    {
+    }
+
+    public override Task RunAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+}
+
+internal class ProcessingReceiver<TIn>: Receiver<TIn>
+{
+    public ProcessingReceiver(
         object owner,
         Pipeline pipeline,
         Func<Message<TIn>, CancellationToken, Task> receiveCallback,
         int queueSize = -1,
-        string name = nameof(Receiver<TIn>))
+        string name = nameof(ProcessingReceiver<TIn>)):
+        base(owner, pipeline, queueSize, name)
     {
-        Id = pipeline.GenerateId();
-        Name = name;
-        Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-        Pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
-        ReceiveCallback = receiveCallback;
-        Queue = new(queueSize);
+        ReceiveCallback = receiveCallback ?? throw new ArgumentNullException(nameof(receiveCallback));
     }
-
-    public int Id { get; }
-
-    public string Name { get; }
-
-    public object Owner { get; }
-
-    public Pipeline Pipeline { get; }
-
-    public Type InType => typeof(TIn);
 
     public Func<Message<TIn>, CancellationToken, Task> ReceiveCallback { get; }
 
-    protected AsyncQueue<Message<TIn>> Queue { get; }
-
-    public Task EnqueueAsync(Message<TIn> message, CancellationToken cancellationToken)
-    {
-        return Queue.EnqueueAsync(message, cancellationToken);
-    }
-
-    public virtual async Task RunAsync(CancellationToken cancellationToken)
+    public override async Task RunAsync(CancellationToken cancellationToken)
     {
         try
         {

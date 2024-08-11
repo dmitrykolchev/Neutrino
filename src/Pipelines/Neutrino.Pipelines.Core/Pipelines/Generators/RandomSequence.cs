@@ -5,39 +5,35 @@
 
 namespace Neutrino.Pipelines.Generators;
 
-public class Int32Sequence : IProducer<int>, IStatefull
+public class RandomSequence : IProducer<int>, IStatefull
 {
-    private readonly int _minValue;
-    private readonly int _maxValue;
-    private readonly int _step;
-    private int _value;
+    private readonly Random _random;
+    private int _count;
 
-    public Int32Sequence(Pipeline pipeline, int minValue = 0, int maxValue = int.MaxValue, int step = 1)
+    public RandomSequence(Pipeline pipeline, int count, int seed = 0)
     {
         Pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
+        _random = seed == 0 ? new Random() : new Random(seed); 
+        _count = count; 
         Out = pipeline.CreateEmitter<int>(this, GenerateAsync);
-        _minValue = minValue;
-        _maxValue = maxValue;
-        _step = step;
-        _value = _minValue;
     }
 
     public Pipeline Pipeline { get; }
 
     public Emitter<int> Out { get; }
 
-    public PipelineComponentState State => _value < _maxValue 
+    public PipelineComponentState State => _count > 0
         ? PipelineComponentState.Active 
         : PipelineComponentState.Completed;
 
     private Task<int> GenerateAsync(CancellationToken cancellationToken)
     {
-        int result = _value;
-        if (result < _maxValue)
+        int result = _random.Next();
+        if (_count > 0)
         {
-            _value += _step;
+            _count--;
         }
-        return Task.FromResult(_value);
+        return Task.FromResult(result);
     }
 }
 

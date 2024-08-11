@@ -7,61 +7,80 @@ using System.Collections.Immutable;
 
 namespace Neutrino.Pipelines;
 
-public class Emitter<TOut> : IEmitter
+public abstract class Emitter<TOut> : PipelineComponent, IEmitter
 {
     private readonly object _syncObject = new();
     private ImmutableArray<Receiver<TOut>> _subscriptions = [];
 
-    internal Emitter(
+    protected Emitter(
         object owner,
         Pipeline pipeline,
-        Func<CancellationToken, Task<TOut>>? generateCallback = null,
-        string name = nameof(Emitter<TOut>))
+        string name = nameof(Emitter<TOut>)): base(owner, pipeline, name)
     {
-        Id = pipeline.GenerateId();
-        Name = name;
-        Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-        Pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
-        GenerateCallback = generateCallback;
     }
-
-    public int Id { get; }
-
-    public string Name { get; }
-
-    public object Owner { get; }
-
-    public Pipeline Pipeline { get; }
 
     public Type OutType => typeof(TOut);
 
-    public Func<CancellationToken, Task<TOut>>? GenerateCallback { get; }
-
-    public void Subscribe(IConnection<TOut> connector)
+    public void Subscribe(Receiver<TOut> receiver)
     {
-        ArgumentNullException.ThrowIfNull(connector);
+        ArgumentNullException.ThrowIfNull(receiver);
         lock (_syncObject)
         {
-            _subscriptions = _subscriptions.Add(connector.To);
+            _subscriptions = _subscriptions.Add(receiver);
         }
     }
 
-    public void Unsubscribe(IConnection<TOut> connector)
+    public void Unsubscribe(Receiver<TOut> receiver)
     {
-        ArgumentNullException.ThrowIfNull(connector);
+        ArgumentNullException.ThrowIfNull(receiver);
         lock (_syncObject)
         {
-            _subscriptions = _subscriptions.Remove(connector.To);
+            _subscriptions = _subscriptions.Remove(receiver);
         }
     }
 
-    public async Task PostAsync(Message<TOut> data, CancellationToken cancellationToken)
+    public virtual async Task PostAsync(Message<TOut> data, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(data);
         await DeliverAsync(data, cancellationToken);
     }
 
-    public virtual async Task RunAsync(CancellationToken cancellationToken)
+    private async Task DeliverAsync(Message<TOut> message, CancellationToken cancellationToken)
+    {
+        if (_subscriptions.Length > 0)
+        {
+            IEnumerable<Task> tasks = _subscriptions.Select(t => t.EnqueueAsync(message, cancellationToken));
+            await Task.WhenAll(tasks);
+        }
+    }
+}
+
+internal class BypassEmitter<TOut>: Emitter<TOut>
+{
+    public BypassEmitter(
+        object owner,
+        Pipeline pipeline,
+        string name = nameof(BypassEmitter<TOut>)) : base(owner, pipeline, name)
+    {
+    }
+
+    public override Task RunAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+}
+
+internal class ProcessingEmitter<TOut> : Emitter<TOut>
+{
+    public ProcessingEmitter(
+        object owner,
+        Pipeline pipeline,
+        Func<CancellationToken, Task<TOut>> generateCallback,
+        string name = nameof(ProcessingEmitter<TOut>)): base(owner, pipeline, name)
+    {
+        GenerateCallback = generateCallback ?? throw new ArgumentNullException(nameof(generateCallback));
+    }
+
+    public Func<CancellationToken, Task<TOut>> GenerateCallback { get; }
+
+    public override async Task RunAsync(CancellationToken cancellationToken)
     {
         if (GenerateCallback is not null)
         {
@@ -89,13 +108,5 @@ public class Emitter<TOut> : IEmitter
         }
         Console.WriteLine($"Emitter {Owner} completed");
     }
-
-    private async Task DeliverAsync(Message<TOut> message, CancellationToken cancellationToken)
-    {
-        if (_subscriptions.Length > 0)
-        {
-            IEnumerable<Task> tasks = _subscriptions.Select(t => t.EnqueueAsync(message, cancellationToken));
-            await Task.WhenAll(tasks);
-        }
-    }
 }
+
