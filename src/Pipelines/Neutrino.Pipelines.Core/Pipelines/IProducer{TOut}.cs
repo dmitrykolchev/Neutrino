@@ -5,7 +5,7 @@
 
 namespace Neutrino.Pipelines;
 
-public interface IProducer<TOut>
+public interface IProducer<TOut>: IStatefull
 {
     Emitter<TOut> Out { get; }
 }

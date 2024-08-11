@@ -9,7 +9,7 @@ public abstract class ConsumerProducer<TIn, TOut> : IConsumerProducer<TIn, TOut>
 {
     protected ConsumerProducer(Pipeline pipeline, string name = nameof(ConsumerProducer<TIn, TOut>))
     {
-        In = pipeline.CreateReceiver<TIn>(this, OnReceiveAsync);
+        In = pipeline.CreateReceiver<TIn>(this, OnReceiveInternalAsync);
         Out = pipeline.CreateEmitter<TOut>(this);
     }
 
@@ -17,5 +17,13 @@ public abstract class ConsumerProducer<TIn, TOut> : IConsumerProducer<TIn, TOut>
 
     public Emitter<TOut> Out { get; }
 
-    protected abstract Task<PipelineComponentState> OnReceiveAsync(CancellationToken cancellationToken);
+    public PipelineComponentState State { get; protected set; } = PipelineComponentState.Active;
+
+    protected abstract Task<TOut> OnReceiveAsync(Message<TIn> data, CancellationToken cancellationToken);
+
+    private async Task OnReceiveInternalAsync(Message<TIn> data, CancellationToken cancellationToken)
+    {
+        TOut result = await OnReceiveAsync(data, cancellationToken).ConfigureAwait(false);
+        await Out.PostAsync(new Message<TOut>(result, this), cancellationToken).ConfigureAwait(false);
+    }
 }

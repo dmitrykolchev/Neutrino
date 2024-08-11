@@ -5,18 +5,12 @@
 
 namespace Neutrino.Pipelines;
 
-public enum PipelineComponentState
-{
-    Active,
-    Completed
-}
-
 public class Receiver<TIn> : IReceiver
 {
     public Receiver(
         object owner,
         Pipeline pipeline,
-        Func<CancellationToken, Task<PipelineComponentState>> receiveCallback,
+        Func<Message<TIn>, CancellationToken, Task> receiveCallback,
         int queueSize = -1,
         string name = nameof(Receiver<TIn>))
     {
@@ -38,7 +32,7 @@ public class Receiver<TIn> : IReceiver
 
     public Type InType => typeof(TIn);
 
-    public Func<CancellationToken, Task<PipelineComponentState>> ReceiveCallback { get; }
+    public Func<Message<TIn>, CancellationToken, Task> ReceiveCallback { get; }
 
     protected AsyncQueue<Message<TIn>> Queue { get; }
 
@@ -47,21 +41,23 @@ public class Receiver<TIn> : IReceiver
         return Queue.EnqueueAsync(message, cancellationToken);
     }
 
-    public async Task<Message<TIn>> GetMessageAsync(CancellationToken cancellationToken)
-    {
-        return await Queue.DequeueAsync(cancellationToken);
-    }
-
     public virtual async Task RunAsync(CancellationToken cancellationToken)
     {
         try
         {
-            while (!cancellationToken.IsCancellationRequested)
+            Func<PipelineComponentState> getState = Owner switch
             {
-                if(await ReceiveCallback(cancellationToken) == PipelineComponentState.Completed)
+                IStatefull statefull => () => statefull.State,
+                _ => static () => PipelineComponentState.Active
+            };
+            while (getState() == PipelineComponentState.Active)
+            {
+                if (cancellationToken.IsCancellationRequested)
                 {
                     break;
                 }
+                Message<TIn> message = await Queue.DequeueAsync(cancellationToken);
+                await ReceiveCallback(message, cancellationToken);
             }
         }
         catch (OperationCanceledException)

@@ -5,6 +5,6 @@
 
 namespace Neutrino.Pipelines;
 
-public interface IConsumerProducer<TIn, TOut> : IConsumer<TIn>, IProducer<TOut>
+public interface IConsumerProducer<TIn, TOut> : IConsumer<TIn>, IProducer<TOut>, IStatefull
 {
 }

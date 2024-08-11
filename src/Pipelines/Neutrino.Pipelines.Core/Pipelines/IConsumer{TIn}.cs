@@ -5,7 +5,7 @@
 
 namespace Neutrino.Pipelines;
 
-public interface IConsumer<TIn>
+public interface IConsumer<TIn>: IStatefull
 {
     Receiver<TIn> In { get; }
 }

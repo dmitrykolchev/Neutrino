@@ -53,15 +53,11 @@ internal class Program
     {
         public Transformer(Pipeline pipeline) : base(pipeline, nameof(Transformer))
         {
+            State = PipelineComponentState.Active;
         }
 
-        protected override async Task<PipelineComponentState> OnReceiveAsync(CancellationToken cancellationToken)
-        {
-            Message<int> message = await In.GetMessageAsync(cancellationToken);
-            int result = message.Data * 2;
-            await Out.PostAsync(new Message<int>(result, this), cancellationToken);
-            return PipelineComponentState.Active;
-        }
+        protected override Task<int> OnReceiveAsync(Message<int> message, CancellationToken cancellationToken) 
+            => Task.FromResult(message.Data * 2);
     }
 
     public class ConsoleLogger : IConsumer<int>
@@ -73,11 +69,12 @@ internal class Program
             In = pipeline.CreateReceiver<int>(this, OnReceiveAsync);
         }
 
-        private async Task<PipelineComponentState> OnReceiveAsync(CancellationToken cancellationToken)
+        public PipelineComponentState State { get; private set; } = PipelineComponentState.Active;
+
+        private Task OnReceiveAsync(Message<int> message, CancellationToken cancellationToken)
         {
-            Message<int> message = await In.GetMessageAsync(cancellationToken);
             Console.WriteLine($"{++_count,4}: message received at {DateTime.Now} is {message.Data} from {message.Sender}");
-            return PipelineComponentState.Active;
+            return Task.CompletedTask;
         }
 
         public Receiver<int> In { get; }
