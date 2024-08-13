@@ -32,13 +32,17 @@ public class TimeSequence : IProducer<DateTimeOffset>, IStatefull
 
     private async Task<DateTimeOffset> GenerateAsync(CancellationToken cancellationToken)
     {
-        TimeSpan delayTimeout = _interval / 10;
+        TimeSpan delayTimeout = _interval - TimeSpan.FromMilliseconds(1);
         DateTimeOffset result = _nextEvent;
         while(State == PipelineComponentState.Active)
         {
-            await Task.Delay(delayTimeout, cancellationToken);
+            if(delayTimeout.TotalMilliseconds > 1)
+            {
+                await Task.Delay(delayTimeout);
+            }
+            SpinWait.SpinUntil(() => DateTimeOffset.UtcNow > _nextEvent, TimeSpan.FromMilliseconds(-1));
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            if(now > _nextEvent)
+            if (now > _nextEvent)
             {
                 _nextEvent += _interval;
                 return now;
@@ -46,5 +50,4 @@ public class TimeSequence : IProducer<DateTimeOffset>, IStatefull
         }
         return DateTimeOffset.MinValue;
     }
-
 }

@@ -45,6 +45,7 @@ internal class Program
         sequence
             .Join(sequence2)
             .PipeTo(transformer)
+            .Where(t => (t.Data % 2) == 1)
             .PipeTo(movingAverage)
             .Zip(timer)
             .PipeTo(logger);
@@ -72,7 +73,7 @@ internal class Program
         }
 
         protected override Task<int> OnReceiveAsync(Message<int> message, CancellationToken cancellationToken) 
-            => Task.FromResult(message.Data * 2);
+            => Task.FromResult(message.Data * 3);
     }
 
     public class MovingAverage: ConsumerProducer<int, double>
@@ -86,9 +87,9 @@ internal class Program
             _count = 0;
         }
 
-        protected override Task<double> OnReceiveAsync(Message<int> data, CancellationToken cancellationToken)
+        protected override Task<double> OnReceiveAsync(Message<int> message, CancellationToken cancellationToken)
         {
-            _window[_count % _window.Length] = data.Data;
+            _window[_count % _window.Length] = message.Data;
             _count++;
             double result;
             if (_count < _window.Length)

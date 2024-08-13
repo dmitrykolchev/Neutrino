@@ -5,7 +5,7 @@
 
 namespace Neutrino.Pipelines.Operators;
 
-public class Zip<TOut1, TOut2> : IProducer<(TOut1, TOut2)>
+internal class Zip<TOut1, TOut2> : IProducer<(TOut1, TOut2)>
 {
     public Zip(IProducer<TOut1> out1, IProducer<TOut2> out2)
     {

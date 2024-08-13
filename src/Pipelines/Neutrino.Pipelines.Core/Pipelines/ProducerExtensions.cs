@@ -30,4 +30,11 @@ public static class ProducerExtensions
         ArgumentNullException.ThrowIfNull(p2);
         return new Join<T>(p1, p2);
     }
+
+    public static IProducer<T> Where<T>(this IProducer<T> producer, Predicate<Message<T>> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(producer);
+        ArgumentNullException.ThrowIfNull(predicate);
+        return new Where<T>(producer, predicate);
+    }
 }

@@ -72,6 +72,25 @@ public class Pipeline : IDisposable
         }
         return emitter;
     }
+    /// <summary>
+    /// Creates passive emitter
+    /// </summary>
+    /// <typeparam name="TOut"></typeparam>
+    /// <param name="owner"></param>
+    /// <param name="generateCallback"></param>
+    /// <returns></returns>
+    public Emitter<TOut> CreateEmitter<TOut>(object owner, Func<CancellationToken, Task> generateCallback)
+    {
+        ArgumentNullException.ThrowIfNull(owner);
+        ArgumentNullException.ThrowIfNull(generateCallback);
+
+        Emitter<TOut> emitter = new PassiveEmitter<TOut>(owner, this, generateCallback);
+        lock (_syncObject)
+        {
+            _components.Add(emitter);
+        }
+        return emitter;
+    }
 
     public Receiver<TIn> CreateReceiver<TIn>(object owner)
     {

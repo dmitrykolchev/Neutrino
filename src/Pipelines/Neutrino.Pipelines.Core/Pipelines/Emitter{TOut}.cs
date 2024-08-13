@@ -110,3 +110,45 @@ internal class ProcessingEmitter<TOut> : Emitter<TOut>
     }
 }
 
+internal class PassiveEmitter<TOut> : Emitter<TOut>
+{
+    public PassiveEmitter(
+        object owner,
+        Pipeline pipeline,
+        Func<CancellationToken, Task> generateCallback,
+        string name = nameof(PassiveEmitter<TOut>)) : base(owner, pipeline, name)
+    {
+        GenerateCallback = generateCallback ?? throw new ArgumentNullException(nameof(generateCallback));
+    }
+
+    public Func<CancellationToken, Task> GenerateCallback { get; }
+
+    public override async Task RunAsync(CancellationToken cancellationToken)
+    {
+        if (GenerateCallback is not null)
+        {
+            try
+            {
+                Func<PipelineComponentState> getState = Owner switch
+                {
+                    IStatefull statefull => () => statefull.State,
+                    _ => static () => PipelineComponentState.Active
+                };
+                while (getState() == PipelineComponentState.Active)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
+                    await GenerateCallback(cancellationToken);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine($"Stoping signal received: {Owner}");
+            }
+        }
+        Console.WriteLine($"Emitter {Owner} completed");
+    }
+}
+

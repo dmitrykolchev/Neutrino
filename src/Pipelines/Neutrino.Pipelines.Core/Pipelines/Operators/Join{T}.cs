@@ -5,7 +5,7 @@
 
 namespace Neutrino.Pipelines.Operators;
 
-public class Join<T> : IProducer<T>
+internal class Join<T> : IProducer<T>
 {
     private Task<Message<T>>? _message1;
     private Task<Message<T>>? _message2;
@@ -48,6 +48,5 @@ public class Join<T> : IProducer<T>
             _message2 ??= Consumer2.In.DequeueAsync(cancellationToken);
             await Task.WhenAny(_message1, _message2);
         }
-        throw new InvalidOperationException();
     }
 }
