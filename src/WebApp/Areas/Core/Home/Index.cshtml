@@ -1,6 +1,9 @@
-﻿@{
+﻿@using Neutrino.Areas.Core.Home
+
+@inherits IndexView
+
+@{
     ViewData["Title"] = "Home Page";
-    
 }
 
 <div class="text-center">
@@ -13,7 +16,7 @@
         00:00:00
     </div>
     <div id="partialView">
-
+        @Html.Raw(DefaultData.ToString())
     </div>
 </div>
 

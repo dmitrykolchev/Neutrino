@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SchemaCompare</RootNamespace>
+    <LangVersion>Latest</LangVersion>
+  </PropertyGroup>
+
+</Project>

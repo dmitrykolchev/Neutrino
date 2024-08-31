@@ -1,5 +1,16 @@
-﻿namespace WebApp.Views.Home;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
 
-public class Index
+namespace Neutrino.Areas.Core.Home;
+
+public record IndexData(int Id, string Name);
+
+public abstract class IndexView : RazorPage<IndexData>
 {
+    protected IndexView()
+    {
+    }
+
+    public IndexData DefaultData { get; } = new IndexData(0, "John Doe");
 }
+
+

@@ -44,17 +44,17 @@ public class Program
         ;
         builder.Services.AddSignalR().AddMessagePackProtocol();
         builder.Services.AddHostedService<NotificationWorker>();
-        builder.Services.AddOpenApi(options =>
-        {
-            options.ShouldInclude = (desc) =>
-            {
-                return true;
-            };
-        });
+        //builder.Services.AddOpenApi(options =>
+        //{
+        //    options.ShouldInclude = (desc) =>
+        //    {
+        //        return true;
+        //    };
+        //});
 
         WebApplication app = builder.Build();
 
-        app.MapOpenApi();
+        //app.MapOpenApi();
 
         app.MapScalarApiReference(options =>
         {

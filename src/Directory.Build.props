@@ -15,4 +15,8 @@
     <FileVersion>0.1.0.0</FileVersion>
     <Version>0.1.0</Version>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <NpgsqlDriverVersion>8.0.3</NpgsqlDriverVersion>
+  </PropertyGroup>
 </Project>

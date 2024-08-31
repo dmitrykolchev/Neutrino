@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--  Licensed to the .NET Foundation under one or more agreements. -->
+<!-- The .NET Foundation licenses this file to you under the MIT license. -->
+<html>
+
+<head>
+  <title>Neutrino.Pictoris</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type='module' src="./main.js"></script>
+</head>
+
+<body>
+    <span id="out"></span>
+    <input type="range" id="value" min="1" max="255" step="1" value="128" />
+    <label for="value">Value</label>
+    <button id="flipHorizontal" type="button">Flip Horizontal</button>
+    <button id="flipVertical" type="button">Flip Vertical</button>
+    <br />
+    <img id="jpeg" src="images/3M6A5816_R.JPG" style="width: 800px; height: 1200px;" />
+    <canvas id="editor" width="800" height="1200" style="background-color:black">
+    </canvas>
+</body>
+
+</html>

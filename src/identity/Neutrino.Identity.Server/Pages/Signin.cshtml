@@ -1,0 +1,14 @@
+﻿@page
+@model Neutrino.Identity.Server.Pages.SigninModel
+@{
+}
+
+<form method="post" asp-antiforgery="true">
+    <label for="userName">User name:</label>
+    <input id="userName" type="text" name="userName" />
+    <br /><br />
+    <label for="password">Password:</label>
+    <input id="password" type="password" name="password" />
+    <br /><br />
+    <button type="submit">Signin</button>
+</form>
