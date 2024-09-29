@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Buffers;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -12,10 +13,12 @@ namespace Neutrino.Pictoris;
 
 public enum RGBAChannel
 {
+    First = R,
     R = 0,
     G = 1,
     B = 2,
     A = 3,
+    Last = A
 }
 
 public unsafe class Buffer2D
@@ -91,33 +94,42 @@ public unsafe class Buffer2D
 
     public void FlipVertical()
     {
-        for (int row = 0; row < _height; ++row)
+        using SecondoMeter secondoMeter = new(nameof(FlipVertical));
+        for (RGBAChannel channel = RGBAChannel.First; channel != RGBAChannel.Last; channel++)
         {
-            for (RGBAChannel channel = RGBAChannel.R; channel <= RGBAChannel.A; ++channel)
+            for (int row = 0; row < _height; ++row)
             {
-                Span<float> r = GetScalarRow(channel, row);
+                Span<float> r = GetScalarRow((RGBAChannel)channel, row);
                 r.Reverse();
             }
-        }
+        };
     }
+
     public void FlipHorizontal()
     {
+        using SecondoMeter secondoMeter = new (nameof(FlipHorizontal));
         float[] buffer = ArrayPool<float>.Shared.Rent(_width);
-
-        Span<float> temp = buffer.AsSpan(0, _width);
-
-        for (int frow = 0; frow < _height / 2; ++frow)
+        try
         {
-            int lrow = _height - frow - 1;
-            for(RGBAChannel channel = RGBAChannel.R; channel <= RGBAChannel.A; ++channel)
+            Span<float> temp = buffer.AsSpan(0, _width);
+
+            for (RGBAChannel channel = RGBAChannel.R; channel <= RGBAChannel.A; ++channel)
             {
-                Span<float> first = GetScalarRow(channel, frow);
-                Span<float> last = GetScalarRow(channel, lrow);
-                first.CopyTo(temp);
-                last.CopyTo(first);
-                temp.CopyTo(last);
+                for (int frow = 0; frow < _height / 2; ++frow)
+                {
+                    int lrow = _height - frow - 1;
+                    Span<float> first = GetScalarRow(channel, frow);
+                    Span<float> last = GetScalarRow(channel, lrow);
+                    first.CopyTo(temp);
+                    last.CopyTo(first);
+                    temp.CopyTo(last);
+                }
             }
         }
-        ArrayPool<float>.Shared.Return(buffer);
+        finally
+        {
+            ArrayPool<float>.Shared.Return(buffer);
+        }
+
     }
 }

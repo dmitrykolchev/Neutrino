@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <simple-greeting name="Dmitry"></simple-greeting>
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form id="form1" method="post">
+        <neu-button id="button1" text="Hello World!">
+            <span slot="inner-text">Hello</span>
+            <span slot="button-text">Someone</span>
+        </neu-button>
+        <button type="button" id="changeTextButton">Change Text</button>
+        <neu-button id="button2" text="My Button 2">
+            <span slot="inner-text">Dmitry Kolchev</span>
+            <span slot="button-text">Hello</span>
+        </neu-button>
+        <br />
+        <br />
+        <neu-checkbox id="checkbox1" name="checkbox1" checked ></neu-checkbox>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script type="module" src="~/js/bundle.js"></script>
+
+<script type="module">
+    const button = document.getElementById("changeTextButton");
+    button.addEventListener("click", handleChangeText);
+
+    function handleChangeText() {
+        var button = document.getElementById("button1");
+        button.setAttribute("text", "Hello, Dmitry!");
+        console.log(button.text);
+        console.log(button.getAttribute("text"));
+        button.text = "Hello, Someone!";
+        console.log(button.text);
+        console.log(button.getAttribute("text"));
+    }
+</script>

@@ -1,0 +1,41 @@
+{
+    "name": "neu",
+    "version": "0.0.0",
+    "description": "neu",
+    "type": "module",
+    "main": ".\\dist\\neu-element.debug.js",
+    "author": {
+        "name": ""
+    },
+    "scripts": {
+        "build": "tsc --build && rollup -c",
+        "clean": "tsc --build --clean",
+        "start": "node .\\dist\\neu-element.debug.js"
+    },
+    "devDependencies": {
+        "@microsoft/fast-element": "^2.0.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@types/node": "^22.5.4",
+        "@typescript-eslint/eslint-plugin": "^5.33.0",
+        "@typescript-eslint/parser": "^5.33.0",
+        "eslint": "^8.21.0",
+        "rollup": "^4.21.3",
+        "rollup-plugin-filesize": "^10.0.0",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.6.2",
+        "undici-types": "^6.19.8"
+    },
+    "eslintConfig": {
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+            "ecmaVersion": "latest",
+            "sourceType": "module"
+        },
+        "plugins": [
+            "@typescript-eslint"
+        ]
+    }
+}

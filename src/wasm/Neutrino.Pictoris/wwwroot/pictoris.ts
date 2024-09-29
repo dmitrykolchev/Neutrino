@@ -16,7 +16,7 @@ let _editor: HTMLCanvasElement
 let _context: CanvasRenderingContext2D;
 
 export function refresh() {
-    const result = _pictorisGlobal.setBrightness(128);
+    const result = _pictorisGlobal.setBrightness(0);
     try {
         setImageData(result);
     }
@@ -51,8 +51,6 @@ export function initialize(pictoris: IPictorisOperations, width: number, height:
     
     const buttonFH = <HTMLButtonElement>document.getElementById("flipHorizontal");
     buttonFH.addEventListener("click", handleFlipHorizontal);
-
-    setBrightness(128);
 }
 
 function handleFlipHorizontal() {
@@ -94,5 +92,5 @@ function setImageData(buffer: IMemoryView) {
 
 function handleValueChange(e: Event) {
     const range = <HTMLInputElement>e.target;
-    setBrightness(parseInt(range.value, 10));
+    setBrightness(parseFloat(range.value));
 }

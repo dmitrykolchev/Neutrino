@@ -341,7 +341,7 @@ ORDER BY
             case "tinyint":
                 return DataType.SmallInt;
             case "xml":
-                return DataType.Text;
+                return DataType.Xml;
             case "text":
             case "ntext":
                 return DataType.Text;

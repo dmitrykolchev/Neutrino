@@ -16,5 +16,6 @@ public enum DataType
     Uuid,
     Text,
     DoublePrecision,
-    ByteArray
+    ByteArray,
+    Xml
 }

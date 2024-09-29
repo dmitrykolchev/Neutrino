@@ -58,6 +58,8 @@ public class PgSqlSyntaxProvider : SyntaxProvider
                 return "double precision";
             case DataType.ByteArray:
                 return "bytea";
+            case DataType.Xml:
+                return "xml";
 
         }
         throw new InvalidOperationException($"unsupperted data type: {column.DataType}");

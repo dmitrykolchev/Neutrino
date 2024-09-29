@@ -25,13 +25,25 @@ public partial class PictorisGlobal
 
     [JSExport]
     [return: JSMarshalAs<JSType.MemoryView>]
-    internal static ArraySegment<byte> SetBrightness([JSMarshalAs<JSType.Number>] int c)
+    internal static ArraySegment<byte> SetBrightness([JSMarshalAs<JSType.Number>] float factor)
     {
         if (_picture == null)
         {
             throw new InvalidOperationException();
         }
-        NativeImage nativeImage = _picture.PreProcess(c);
+        NativeImage nativeImage = _picture.AdjustBrightness(factor);
+        return nativeImage.Data;
+    }
+
+    [JSExport]
+    [return: JSMarshalAs<JSType.MemoryView>]
+    internal static ArraySegment<byte> AdjustGamma([JSMarshalAs<JSType.Number>] float factor)
+    {
+        if (_picture == null)
+        {
+            throw new InvalidOperationException();
+        }
+        NativeImage nativeImage = _picture.AdjustGamma(factor);
         return nativeImage.Data;
     }
 

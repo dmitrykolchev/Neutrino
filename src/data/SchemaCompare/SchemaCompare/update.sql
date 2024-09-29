@@ -62,7 +62,7 @@ create table dbo.account
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__account primary key (id)
 );
 
@@ -96,7 +96,7 @@ create table dbo.acquaint
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__acquaint primary key (id)
 );
 
@@ -106,7 +106,7 @@ create table dbo.acquaint_assign
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__acquaint_assign primary key (id)
 );
 
@@ -153,7 +153,7 @@ create table dbo.action_report
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__action_report primary key (id)
 );
 
@@ -183,7 +183,7 @@ create table dbo.active_learning
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__active_learning primary key (id)
 );
 
@@ -258,7 +258,7 @@ create table dbo.active_notification
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__active_notification primary key (id)
 );
 
@@ -271,7 +271,7 @@ create table dbo.active_notifications
     create_date                      timestamp        null,
     last_send_date                   timestamp        null,
     send_date                        timestamp        null,
-    recipient_person_id              text             null,
+    recipient_person_id              xml              null,
     is_custom                        boolean          null,
     status                           varchar(900)     null,
     send_counter                     bigint           null,
@@ -290,7 +290,7 @@ create table dbo.active_test_learning
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__active_test_learning primary key (id)
 );
 
@@ -370,7 +370,7 @@ create table dbo.active_web_template
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__active_web_template primary key (id)
 );
 
@@ -397,7 +397,7 @@ create table dbo.activity
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__activity primary key (id)
 );
 
@@ -407,7 +407,7 @@ create table dbo.activity_state
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__activity_state primary key (id)
 );
 
@@ -463,7 +463,7 @@ create table dbo.article
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__article primary key (id)
 );
 
@@ -498,7 +498,7 @@ create table dbo.assessment
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__assessment primary key (id)
 );
 
@@ -508,7 +508,7 @@ create table dbo.assessment_appraise
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__assessment_appraise primary key (id)
 );
 
@@ -518,7 +518,7 @@ create table dbo.assessment_appraise_matrix
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__assessment_appraise_matrix primary key (id)
 );
 
@@ -549,7 +549,7 @@ create table dbo.assessment_appraises
     end_date                         timestamp        null,
     person_id                        bigint           null,
     workflow_id                      bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     user_access_role                 text             null,
@@ -584,7 +584,7 @@ create table dbo.assessment_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__assessment_plan primary key (id)
 );
 
@@ -633,7 +633,7 @@ create table dbo.assessment_result_recommend
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__assessment_result_recommend primary key (id)
 );
 
@@ -667,19 +667,19 @@ create table dbo.assessments
     knowledge_parts                  text             null,
     tags                             text             null,
     experts                          text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
     use_proctoring                   boolean          null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__assessments primary key (id)
 );
 
@@ -697,7 +697,7 @@ create table dbo.availability_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__availability_plan primary key (id)
 );
 
@@ -723,7 +723,7 @@ create table dbo.banner
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__banner primary key (id)
 );
 
@@ -749,7 +749,7 @@ create table dbo.basket
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__basket primary key (id)
 );
 
@@ -784,7 +784,7 @@ create table dbo.benefit
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__benefit primary key (id)
 );
 
@@ -794,7 +794,7 @@ create table dbo.benefit_item
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__benefit_item primary key (id)
 );
 
@@ -851,7 +851,7 @@ create table dbo.blog
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__blog primary key (id)
 );
 
@@ -877,7 +877,7 @@ create table dbo.blog_entry
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__blog_entry primary key (id)
 );
 
@@ -887,7 +887,7 @@ create table dbo.blog_entry_comment
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__blog_entry_comment primary key (id)
 );
 
@@ -933,10 +933,10 @@ create table dbo.blog_entrys
     comment_num                      bigint           null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
     modification_date                timestamp        null,
@@ -1005,7 +1005,7 @@ create table dbo.bonus_item
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__bonus_item primary key (id)
 );
 
@@ -1030,7 +1030,7 @@ create table dbo.bonus_profile
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__bonus_profile primary key (id)
 );
 
@@ -1052,7 +1052,7 @@ create table dbo.book
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__book primary key (id)
 );
 
@@ -1079,7 +1079,7 @@ create table dbo.boss_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__boss_type primary key (id)
 );
 
@@ -1093,8 +1093,8 @@ create table dbo.boss_types
     changed                          boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    object_type                      text             null,
-    operation_id                     text             null,
+    object_type                      xml              null,
+    operation_id                     xml              null,
     constraint pk__boss_types primary key (id)
 );
 
@@ -1106,7 +1106,7 @@ create table dbo.bp
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__bp primary key (id)
 );
 
@@ -1116,7 +1116,7 @@ create table dbo.bp_role
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__bp_role primary key (id)
 );
 
@@ -1179,7 +1179,7 @@ create table dbo.budget
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__budget primary key (id)
 );
 
@@ -1207,7 +1207,7 @@ create table dbo.budget_period
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__budget_period primary key (id)
 );
 
@@ -1245,7 +1245,7 @@ create table dbo.budget_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__budget_type primary key (id)
 );
 
@@ -1373,7 +1373,7 @@ create table dbo.candidate_source
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__candidate_source primary key (id)
 );
 
@@ -1395,7 +1395,7 @@ create table dbo.candidate_status_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__candidate_status_type primary key (id)
 );
 
@@ -1425,7 +1425,7 @@ create table dbo.career_reserve
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__career_reserve primary key (id)
 );
 
@@ -1463,7 +1463,7 @@ create table dbo.career_reserve_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__career_reserve_type primary key (id)
 );
 
@@ -1537,7 +1537,7 @@ create table dbo.cc_access_divison
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_access_divison primary key (id)
 );
 
@@ -1559,7 +1559,7 @@ create table dbo.cc_access_element
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_access_element primary key (id)
 );
 
@@ -1592,7 +1592,7 @@ create table dbo.cc_access_period
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_access_period primary key (id)
 );
 
@@ -1615,7 +1615,7 @@ create table dbo.cc_access_template
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_access_template primary key (id)
 );
 
@@ -1642,7 +1642,7 @@ create table dbo.cc_app_course
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_app_course primary key (id)
 );
 
@@ -1671,7 +1671,7 @@ create table dbo.cc_attestation
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_attestation primary key (id)
 );
 
@@ -1696,7 +1696,7 @@ create table dbo.cc_collaborator
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_collaborator primary key (id)
 );
 
@@ -1722,7 +1722,7 @@ create table dbo.cc_contragent_import
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_contragent_import primary key (id)
 );
 
@@ -1748,7 +1748,7 @@ create table dbo.cc_cost_history
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_cost_history primary key (id)
 );
 
@@ -1777,7 +1777,7 @@ create table dbo.cc_course_date
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_course_date primary key (id)
 );
 
@@ -1800,7 +1800,7 @@ create table dbo.cc_course_org
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_course_org primary key (id)
 );
 
@@ -1826,7 +1826,7 @@ create table dbo.cc_direct
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_direct primary key (id)
 );
 
@@ -1861,7 +1861,7 @@ create table dbo.cc_doc_field
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_doc_field primary key (id)
 );
 
@@ -1890,7 +1890,7 @@ create table dbo.cc_doc_setting
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_doc_setting primary key (id)
 );
 
@@ -1916,7 +1916,7 @@ create table dbo.cc_edit_log
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_edit_log primary key (id)
 );
 
@@ -1951,7 +1951,7 @@ create table dbo.cc_edu_field
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_edu_field primary key (id)
 );
 
@@ -1961,7 +1961,7 @@ create table dbo.cc_edu_field_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_edu_field_type primary key (id)
 );
 
@@ -1997,7 +1997,7 @@ create table dbo.cc_edu_org_code
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_edu_org_code primary key (id)
 );
 
@@ -2026,7 +2026,7 @@ create table dbo.cc_edu_theme
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_edu_theme primary key (id)
 );
 
@@ -2067,7 +2067,7 @@ create table dbo.cc_edu_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_edu_type primary key (id)
 );
 
@@ -2095,7 +2095,7 @@ create table dbo.cc_eduapp
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_eduapp primary key (id)
 );
 
@@ -2123,7 +2123,7 @@ create table dbo.cc_education
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_education primary key (id)
 );
 
@@ -2151,7 +2151,7 @@ create table dbo.cc_edufield_app
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_edufield_app primary key (id)
 );
 
@@ -2175,7 +2175,7 @@ create table dbo.cc_event_presence
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_event_presence primary key (id)
 );
 
@@ -2197,7 +2197,7 @@ create table dbo.cc_event_theme
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_event_theme primary key (id)
 );
 
@@ -2207,7 +2207,7 @@ create table dbo.cc_event_theme_compl
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_event_theme_compl primary key (id)
 );
 
@@ -2250,7 +2250,7 @@ create table dbo.cc_flow
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_flow primary key (id)
 );
 
@@ -2273,7 +2273,7 @@ create table dbo.cc_group_count
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_group_count primary key (id)
 );
 
@@ -2297,7 +2297,7 @@ create table dbo.cc_ind_program_theme
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_ind_program_theme primary key (id)
 );
 
@@ -2330,7 +2330,7 @@ create table dbo.cc_inout_control
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_inout_control primary key (id)
 );
 
@@ -2358,7 +2358,7 @@ create table dbo.cc_kc_person
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_kc_person primary key (id)
 );
 
@@ -2385,7 +2385,7 @@ create table dbo.cc_knowledge_classifier
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_knowledge_classifier primary key (id)
 );
 
@@ -2417,7 +2417,7 @@ create table dbo.cc_local_storage
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_local_storage primary key (id)
 );
 
@@ -2440,7 +2440,7 @@ create table dbo.cc_log_export
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_log_export primary key (id)
 );
 
@@ -2462,7 +2462,7 @@ create table dbo.cc_log_import
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_log_import primary key (id)
 );
 
@@ -2482,7 +2482,7 @@ create table dbo.cc_org
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_org primary key (id)
 );
 
@@ -2517,7 +2517,7 @@ create table dbo.cc_oss_import
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_oss_import primary key (id)
 );
 
@@ -2541,7 +2541,7 @@ create table dbo.cc_period_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_period_type primary key (id)
 );
 
@@ -2564,7 +2564,7 @@ create table dbo.cc_pfo_assessment_criteria
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_assessment_criteria primary key (id)
 );
 
@@ -2588,7 +2588,7 @@ create table dbo.cc_pfo_div
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_div primary key (id)
 );
 
@@ -2618,7 +2618,7 @@ create table dbo.cc_pfo_grafic
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_grafic primary key (id)
 );
 
@@ -2666,7 +2666,7 @@ create table dbo.cc_pfo_method
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_method primary key (id)
 );
 
@@ -2676,7 +2676,7 @@ create table dbo.cc_pfo_method_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_method_result primary key (id)
 );
 
@@ -2711,7 +2711,7 @@ create table dbo.cc_pfo_method_scale
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_method_scale primary key (id)
 );
 
@@ -2757,7 +2757,7 @@ create table dbo.cc_pfo_password
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_password primary key (id)
 );
 
@@ -2782,7 +2782,7 @@ create table dbo.cc_pfo_poll
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_poll primary key (id)
 );
 
@@ -2792,7 +2792,7 @@ create table dbo.cc_pfo_poll_procedure
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_poll_procedure primary key (id)
 );
 
@@ -2829,7 +2829,7 @@ create table dbo.cc_pfo_poll_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_poll_result primary key (id)
 );
 
@@ -2875,7 +2875,7 @@ create table dbo.cc_pfo_position_group
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_position_group primary key (id)
 );
 
@@ -2902,7 +2902,7 @@ create table dbo.cc_pfo_qual_course_order
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_qual_course_order primary key (id)
 );
 
@@ -2931,7 +2931,7 @@ create table dbo.cc_pfo_qualification_course
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_qualification_course primary key (id)
 );
 
@@ -2966,7 +2966,7 @@ create table dbo.cc_pfo_qualification_position
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_qualification_position primary key (id)
 );
 
@@ -3001,7 +3001,7 @@ create table dbo.cc_pfo_request
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_request primary key (id)
 );
 
@@ -3011,7 +3011,7 @@ create table dbo.cc_pfo_request_method
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_request_method primary key (id)
 );
 
@@ -3056,7 +3056,7 @@ create table dbo.cc_pfo_request_to_learning
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_request_to_learning primary key (id)
 );
 
@@ -3089,7 +3089,7 @@ create table dbo.cc_pfo_request_transfer
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_request_transfer primary key (id)
 );
 
@@ -3174,7 +3174,7 @@ create table dbo.cc_pfo_result_group
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_result_group primary key (id)
 );
 
@@ -3200,7 +3200,7 @@ create table dbo.cc_pfo_scale_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pfo_scale_result primary key (id)
 );
 
@@ -3229,7 +3229,7 @@ create table dbo.cc_pmto_npp_block
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_npp_block primary key (id)
 );
 
@@ -3254,7 +3254,7 @@ create table dbo.cc_pmto_observation
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_observation primary key (id)
 );
 
@@ -3264,7 +3264,7 @@ create table dbo.cc_pmto_observation_director
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_observation_director primary key (id)
 );
 
@@ -3290,7 +3290,7 @@ create table dbo.cc_pmto_observation_employee
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_observation_employee primary key (id)
 );
 
@@ -3322,7 +3322,7 @@ create table dbo.cc_pmto_observation_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_observation_result primary key (id)
 );
 
@@ -3350,7 +3350,7 @@ create table dbo.cc_pmto_observation_specialist
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_observation_specialist primary key (id)
 );
 
@@ -3399,7 +3399,7 @@ create table dbo.cc_pmto_position
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_position primary key (id)
 );
 
@@ -3409,7 +3409,7 @@ create table dbo.cc_pmto_position_short
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_position_short primary key (id)
 );
 
@@ -3448,7 +3448,7 @@ create table dbo.cc_pmto_shift
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_pmto_shift primary key (id)
 );
 
@@ -3472,7 +3472,7 @@ create table dbo.cc_poll_procedure
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_poll_procedure primary key (id)
 );
 
@@ -3501,7 +3501,7 @@ create table dbo.cc_prev_work
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_prev_work primary key (id)
 );
 
@@ -3527,7 +3527,7 @@ create table dbo.cc_program_date
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_program_date primary key (id)
 );
 
@@ -3548,7 +3548,7 @@ create table dbo.cc_qualification
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_qualification primary key (id)
 );
 
@@ -3580,7 +3580,7 @@ create table dbo.cc_quiz
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_quiz primary key (id)
 );
 
@@ -3612,7 +3612,7 @@ create table dbo.cc_reject_reason
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_reject_reason primary key (id)
 );
 
@@ -3644,7 +3644,7 @@ create table dbo.cc_req_date_history
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_req_date_history primary key (id)
 );
 
@@ -3674,7 +3674,7 @@ create table dbo.cc_request_reason
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_request_reason primary key (id)
 );
 
@@ -3700,7 +3700,7 @@ create table dbo.cc_result_history
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_result_history primary key (id)
 );
 
@@ -3746,7 +3746,7 @@ create table dbo.cc_rtn
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn primary key (id)
 );
 
@@ -3756,7 +3756,7 @@ create table dbo.cc_rtn_activity
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_activity primary key (id)
 );
 
@@ -3781,7 +3781,7 @@ create table dbo.cc_rtn_application
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_application primary key (id)
 );
 
@@ -3791,7 +3791,7 @@ create table dbo.cc_rtn_application_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_application_type primary key (id)
 );
 
@@ -3846,7 +3846,7 @@ create table dbo.cc_rtn_control_kind
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_control_kind primary key (id)
 );
 
@@ -3868,7 +3868,7 @@ create table dbo.cc_rtn_control_result_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_control_result_type primary key (id)
 );
 
@@ -3889,7 +3889,7 @@ create table dbo.cc_rtn_control_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_control_type primary key (id)
 );
 
@@ -3911,7 +3911,7 @@ create table dbo.cc_rtn_duty
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_duty primary key (id)
 );
 
@@ -3939,7 +3939,7 @@ create table dbo.cc_rtn_exam_medical
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_exam_medical primary key (id)
 );
 
@@ -3968,7 +3968,7 @@ create table dbo.cc_rtn_exam_psychical
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_exam_psychical primary key (id)
 );
 
@@ -3997,7 +3997,7 @@ create table dbo.cc_rtn_fault
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_fault primary key (id)
 );
 
@@ -4022,7 +4022,7 @@ create table dbo.cc_rtn_knowledge
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_knowledge primary key (id)
 );
 
@@ -4032,7 +4032,7 @@ create table dbo.cc_rtn_knowledge_safety
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_knowledge_safety primary key (id)
 );
 
@@ -4064,7 +4064,7 @@ create table dbo.cc_rtn_knowledge_theory
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_knowledge_theory primary key (id)
 );
 
@@ -4115,7 +4115,7 @@ create table dbo.cc_rtn_license
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license primary key (id)
 );
 
@@ -4125,7 +4125,7 @@ create table dbo.cc_rtn_license_activity
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_activity primary key (id)
 );
 
@@ -4135,7 +4135,7 @@ create table dbo.cc_rtn_license_activity_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_activity_result primary key (id)
 );
 
@@ -4189,7 +4189,7 @@ create table dbo.cc_rtn_license_control
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_control primary key (id)
 );
 
@@ -4199,7 +4199,7 @@ create table dbo.cc_rtn_license_control_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_control_result primary key (id)
 );
 
@@ -4253,7 +4253,7 @@ create table dbo.cc_rtn_license_doubling
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_doubling primary key (id)
 );
 
@@ -4280,7 +4280,7 @@ create table dbo.cc_rtn_license_fault
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_fault primary key (id)
 );
 
@@ -4303,7 +4303,7 @@ create table dbo.cc_rtn_license_holder
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_holder primary key (id)
 );
 
@@ -4313,7 +4313,7 @@ create table dbo.cc_rtn_license_holder_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_holder_type primary key (id)
 );
 
@@ -4353,7 +4353,7 @@ create table dbo.cc_rtn_license_perm
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_perm primary key (id)
 );
 
@@ -4363,7 +4363,7 @@ create table dbo.cc_rtn_license_perm_state
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_perm_state primary key (id)
 );
 
@@ -4400,7 +4400,7 @@ create table dbo.cc_rtn_license_post
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_post primary key (id)
 );
 
@@ -4410,7 +4410,7 @@ create table dbo.cc_rtn_license_post_history
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_post_history primary key (id)
 );
 
@@ -4442,7 +4442,7 @@ create table dbo.cc_rtn_license_post2
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_post2 primary key (id)
 );
 
@@ -4492,7 +4492,7 @@ create table dbo.cc_rtn_license_prepare_state
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_prepare_state primary key (id)
 );
 
@@ -4514,7 +4514,7 @@ create table dbo.cc_rtn_license_qual
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_qual primary key (id)
 );
 
@@ -4551,7 +4551,7 @@ create table dbo.cc_rtn_license_skill
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_skill primary key (id)
 );
 
@@ -4561,7 +4561,7 @@ create table dbo.cc_rtn_license_skill_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_skill_result primary key (id)
 );
 
@@ -4609,7 +4609,7 @@ create table dbo.cc_rtn_license_state
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_state primary key (id)
 );
 
@@ -4631,7 +4631,7 @@ create table dbo.cc_rtn_license_training
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_training primary key (id)
 );
 
@@ -4641,7 +4641,7 @@ create table dbo.cc_rtn_license_training2
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license_training2 primary key (id)
 );
 
@@ -4706,7 +4706,7 @@ create table dbo.cc_rtn_license2
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_license2 primary key (id)
 );
 
@@ -4784,7 +4784,7 @@ create table dbo.cc_rtn_npp_block
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_npp_block primary key (id)
 );
 
@@ -4794,7 +4794,7 @@ create table dbo.cc_rtn_npp_block_stage
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_npp_block_stage primary key (id)
 );
 
@@ -4837,7 +4837,7 @@ create table dbo.cc_rtn_permission
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_permission primary key (id)
 );
 
@@ -4847,7 +4847,7 @@ create table dbo.cc_rtn_permission_status_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_permission_status_type primary key (id)
 );
 
@@ -4869,7 +4869,7 @@ create table dbo.cc_rtn_permission_stop
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_permission_stop primary key (id)
 );
 
@@ -4915,7 +4915,7 @@ create table dbo.cc_rtn_post_approved
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_approved primary key (id)
 );
 
@@ -4946,7 +4946,7 @@ create table dbo.cc_rtn_post_category
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_category primary key (id)
 );
 
@@ -4967,7 +4967,7 @@ create table dbo.cc_rtn_post_licensed
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_licensed primary key (id)
 );
 
@@ -4989,7 +4989,7 @@ create table dbo.cc_rtn_post_operative
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_operative primary key (id)
 );
 
@@ -4999,7 +4999,7 @@ create table dbo.cc_rtn_post_operative_block
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_operative_block primary key (id)
 );
 
@@ -5041,7 +5041,7 @@ create table dbo.cc_rtn_post_station
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_station primary key (id)
 );
 
@@ -5051,7 +5051,7 @@ create table dbo.cc_rtn_post_station_activity
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_station_activity primary key (id)
 );
 
@@ -5078,7 +5078,7 @@ create table dbo.cc_rtn_post_station_licensed
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_station_licensed primary key (id)
 );
 
@@ -5122,7 +5122,7 @@ create table dbo.cc_rtn_post_structure
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_structure primary key (id)
 );
 
@@ -5132,7 +5132,7 @@ create table dbo.cc_rtn_post_structure_control
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_structure_control primary key (id)
 );
 
@@ -5180,7 +5180,7 @@ create table dbo.cc_rtn_post_subcategory
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_post_subcategory primary key (id)
 );
 
@@ -5202,7 +5202,7 @@ create table dbo.cc_rtn_skill
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_rtn_skill primary key (id)
 );
 
@@ -5248,7 +5248,7 @@ create table dbo.cc_scmt_assign
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_scmt_assign primary key (id)
 );
 
@@ -5258,7 +5258,7 @@ create table dbo.cc_scmt_assign_answer
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_scmt_assign_answer primary key (id)
 );
 
@@ -5287,7 +5287,7 @@ create table dbo.cc_scmt_assign_group
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_scmt_assign_group primary key (id)
 );
 
@@ -5297,7 +5297,7 @@ create table dbo.cc_scmt_assign_group_list
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_scmt_assign_group_list primary key (id)
 );
 
@@ -5365,7 +5365,7 @@ create table dbo.cc_scmt_option
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_scmt_option primary key (id)
 );
 
@@ -5393,7 +5393,7 @@ create table dbo.cc_selftest_code
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_selftest_code primary key (id)
 );
 
@@ -5418,7 +5418,7 @@ create table dbo.cc_selftest_db
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_selftest_db primary key (id)
 );
 
@@ -5453,7 +5453,7 @@ create table dbo.cc_selftest_expert
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_selftest_expert primary key (id)
 );
 
@@ -5478,7 +5478,7 @@ create table dbo.cc_selftest_model
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_selftest_model primary key (id)
 );
 
@@ -5506,7 +5506,7 @@ create table dbo.cc_skvz_activity
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_activity primary key (id)
 );
 
@@ -5527,7 +5527,7 @@ create table dbo.cc_skvz_bp_approved_object
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_bp_approved_object primary key (id)
 );
 
@@ -5563,7 +5563,7 @@ create table dbo.cc_skvz_council_member
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_council_member primary key (id)
 );
 
@@ -5573,7 +5573,7 @@ create table dbo.cc_skvz_council_member_div
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_council_member_div primary key (id)
 );
 
@@ -5630,7 +5630,7 @@ create table dbo.cc_skvz_crit_position
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_crit_position primary key (id)
 );
 
@@ -5662,7 +5662,7 @@ create table dbo.cc_skvz_criteria_activity
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_criteria_activity primary key (id)
 );
 
@@ -5683,7 +5683,7 @@ create table dbo.cc_skvz_criticality_pos_factor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_criticality_pos_factor primary key (id)
 );
 
@@ -5709,7 +5709,7 @@ create table dbo.cc_skvz_div
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_div primary key (id)
 );
 
@@ -5745,7 +5745,7 @@ create table dbo.cc_skvz_ev
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_ev primary key (id)
 );
 
@@ -5777,7 +5777,7 @@ create table dbo.cc_skvz_extract_kvz_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_extract_kvz_type primary key (id)
 );
 
@@ -5803,7 +5803,7 @@ create table dbo.cc_skvz_kmap
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_kmap primary key (id)
 );
 
@@ -5813,7 +5813,7 @@ create table dbo.cc_skvz_kmap_item
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_kmap_item primary key (id)
 );
 
@@ -5870,7 +5870,7 @@ create table dbo.cc_skvz_knowledge_docs_factor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_knowledge_docs_factor primary key (id)
 );
 
@@ -5896,7 +5896,7 @@ create table dbo.cc_skvz_moved_stage
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_moved_stage primary key (id)
 );
 
@@ -5920,7 +5920,7 @@ create table dbo.cc_skvz_plan_ev
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_plan_ev primary key (id)
 );
 
@@ -5930,7 +5930,7 @@ create table dbo.cc_skvz_plan_ev_event
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_plan_ev_event primary key (id)
 );
 
@@ -6007,7 +6007,7 @@ create table dbo.cc_skvz_plan_extract_kvz
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_plan_extract_kvz primary key (id)
 );
 
@@ -6017,7 +6017,7 @@ create table dbo.cc_skvz_plan_extract_kvz_exp
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_plan_extract_kvz_exp primary key (id)
 );
 
@@ -6044,7 +6044,7 @@ create table dbo.cc_skvz_plan_extract_kvz_file
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_plan_extract_kvz_file primary key (id)
 );
 
@@ -6071,7 +6071,7 @@ create table dbo.cc_skvz_plan_extract_kvz_wg
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_plan_extract_kvz_wg primary key (id)
 );
 
@@ -6139,7 +6139,7 @@ create table dbo.cc_skvz_plan_install_kvz
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_plan_install_kvz primary key (id)
 );
 
@@ -6191,7 +6191,7 @@ create table dbo.cc_skvz_poll_activity
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_poll_activity primary key (id)
 );
 
@@ -6201,7 +6201,7 @@ create table dbo.cc_skvz_poll_activity_cr
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_poll_activity_cr primary key (id)
 );
 
@@ -6251,7 +6251,7 @@ create table dbo.cc_skvz_poll_kvz_person_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_poll_kvz_person_result primary key (id)
 );
 
@@ -6356,7 +6356,7 @@ create table dbo.cc_skvz_poll_sp_final_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_poll_sp_final_result primary key (id)
 );
 
@@ -6383,7 +6383,7 @@ create table dbo.cc_skvz_poll_sp_first_cr
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_poll_sp_first_cr primary key (id)
 );
 
@@ -6410,7 +6410,7 @@ create table dbo.cc_skvz_poll_sp_first_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_poll_sp_first_result primary key (id)
 );
 
@@ -6437,7 +6437,7 @@ create table dbo.cc_skvz_ready_reserv_factor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_ready_reserv_factor primary key (id)
 );
 
@@ -6463,7 +6463,7 @@ create table dbo.cc_skvz_risk_free_pos_factor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_risk_free_pos_factor primary key (id)
 );
 
@@ -6489,7 +6489,7 @@ create table dbo.cc_skvz_sp
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_sp primary key (id)
 );
 
@@ -6499,7 +6499,7 @@ create table dbo.cc_skvz_sp_activity_cr
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_sp_activity_cr primary key (id)
 );
 
@@ -6550,7 +6550,7 @@ create table dbo.cc_skvz_station
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_station primary key (id)
 );
 
@@ -6560,7 +6560,7 @@ create table dbo.cc_skvz_station_block
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_station_block primary key (id)
 );
 
@@ -6570,7 +6570,7 @@ create table dbo.cc_skvz_station_block_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_station_block_type primary key (id)
 );
 
@@ -6627,7 +6627,7 @@ create table dbo.cc_skvz_successor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_successor primary key (id)
 );
 
@@ -6654,7 +6654,7 @@ create table dbo.cc_skvz_wg_member
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_wg_member primary key (id)
 );
 
@@ -6664,7 +6664,7 @@ create table dbo.cc_skvz_wg_member_to_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_wg_member_to_type primary key (id)
 );
 
@@ -6691,7 +6691,7 @@ create table dbo.cc_skvz_wg_member_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_wg_member_type primary key (id)
 );
 
@@ -6734,7 +6734,7 @@ create table dbo.cc_skvz_year_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_year_plan primary key (id)
 );
 
@@ -6744,7 +6744,7 @@ create table dbo.cc_skvz_year_plan_event
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_skvz_year_plan_event primary key (id)
 );
 
@@ -6802,7 +6802,7 @@ create table dbo.cc_staffeval_agent_managment
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_agent_managment primary key (id)
 );
 
@@ -6834,7 +6834,7 @@ create table dbo.cc_staffeval_attestation
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_attestation primary key (id)
 );
 
@@ -6866,7 +6866,7 @@ create table dbo.cc_staffeval_cols_categorie
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_cols_categorie primary key (id)
 );
 
@@ -6885,7 +6885,7 @@ create table dbo.cc_staffeval_correction
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_correction primary key (id)
 );
 
@@ -6895,7 +6895,7 @@ create table dbo.cc_staffeval_correction_div
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_correction_div primary key (id)
 );
 
@@ -6973,7 +6973,7 @@ create table dbo.cc_staffeval_curator
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_curator primary key (id)
 );
 
@@ -7002,7 +7002,7 @@ create table dbo.cc_staffeval_direction
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_direction primary key (id)
 );
 
@@ -7023,7 +7023,7 @@ create table dbo.cc_staffeval_document
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_document primary key (id)
 );
 
@@ -7033,7 +7033,7 @@ create table dbo.cc_staffeval_document_code
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_document_code primary key (id)
 );
 
@@ -7105,7 +7105,7 @@ create table dbo.cc_staffeval_edu_hour
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_edu_hour primary key (id)
 );
 
@@ -7134,7 +7134,7 @@ create table dbo.cc_staffeval_file
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_file primary key (id)
 );
 
@@ -7167,7 +7167,7 @@ create table dbo.cc_staffeval_first_document
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_first_document primary key (id)
 );
 
@@ -7222,7 +7222,7 @@ create table dbo.cc_staffeval_first_qual
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_first_qual primary key (id)
 );
 
@@ -7323,7 +7323,7 @@ create table dbo.cc_staffeval_ins_period
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ins_period primary key (id)
 );
 
@@ -7348,7 +7348,7 @@ create table dbo.cc_staffeval_ins_qualification
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ins_qualification primary key (id)
 );
 
@@ -7376,7 +7376,7 @@ create table dbo.cc_staffeval_instructor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_instructor primary key (id)
 );
 
@@ -7410,7 +7410,7 @@ create table dbo.cc_staffeval_log_agnts_perekr
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_log_agnts_perekr primary key (id)
 );
 
@@ -7487,7 +7487,7 @@ create table dbo.cc_staffeval_log_agnts_qual
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_log_agnts_qual primary key (id)
 );
 
@@ -7552,7 +7552,7 @@ create table dbo.cc_staffeval_pg_perekrest
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_pg_perekrest primary key (id)
 );
 
@@ -7601,7 +7601,7 @@ create table dbo.cc_staffeval_poll_procedure
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_poll_procedure primary key (id)
 );
 
@@ -7635,7 +7635,7 @@ create table dbo.cc_staffeval_polls_item
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_polls_item primary key (id)
 );
 
@@ -7663,7 +7663,7 @@ create table dbo.cc_staffeval_polls_p_user
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_polls_p_user primary key (id)
 );
 
@@ -7689,7 +7689,7 @@ create table dbo.cc_staffeval_polls_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_polls_result primary key (id)
 );
 
@@ -7716,7 +7716,7 @@ create table dbo.cc_staffeval_polls_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_polls_type primary key (id)
 );
 
@@ -7735,7 +7735,7 @@ create table dbo.cc_staffeval_position
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_position primary key (id)
 );
 
@@ -7745,7 +7745,7 @@ create table dbo.cc_staffeval_position_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_position_ca primary key (id)
 );
 
@@ -7826,7 +7826,7 @@ create table dbo.cc_staffeval_ppd_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppd_ca primary key (id)
 );
 
@@ -7836,7 +7836,7 @@ create table dbo.cc_staffeval_ppd_ca_first_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppd_ca_first_plan primary key (id)
 );
 
@@ -7925,7 +7925,7 @@ create table dbo.cc_staffeval_ppd_fixed_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppd_fixed_ca primary key (id)
 );
 
@@ -7972,7 +7972,7 @@ create table dbo.cc_staffeval_ppd_sp
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppd_sp primary key (id)
 );
 
@@ -7982,7 +7982,7 @@ create table dbo.cc_staffeval_ppd_sp_first_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppd_sp_first_plan primary key (id)
 );
 
@@ -8037,7 +8037,7 @@ create table dbo.cc_staffeval_ppd_sp_fixed
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppd_sp_fixed primary key (id)
 );
 
@@ -8148,7 +8148,7 @@ create table dbo.cc_staffeval_ppk
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppk primary key (id)
 );
 
@@ -8158,7 +8158,7 @@ create table dbo.cc_staffeval_ppk_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppk_ca primary key (id)
 );
 
@@ -8191,7 +8191,7 @@ create table dbo.cc_staffeval_ppk_sp_from_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_ppk_sp_from_ca primary key (id)
 );
 
@@ -8259,7 +8259,7 @@ create table dbo.cc_staffeval_process_name
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_process_name primary key (id)
 );
 
@@ -8282,7 +8282,7 @@ create table dbo.cc_staffeval_qualification
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_qualification primary key (id)
 );
 
@@ -8375,7 +8375,7 @@ create table dbo.cc_staffeval_rmd_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_rmd_ca primary key (id)
 );
 
@@ -8385,7 +8385,7 @@ create table dbo.cc_staffeval_rmd_ca_first_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_rmd_ca_first_plan primary key (id)
 );
 
@@ -8465,7 +8465,7 @@ create table dbo.cc_staffeval_rmd_fixed_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_rmd_fixed_ca primary key (id)
 );
 
@@ -8511,7 +8511,7 @@ create table dbo.cc_staffeval_rmd_sp
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_rmd_sp primary key (id)
 );
 
@@ -8521,7 +8521,7 @@ create table dbo.cc_staffeval_rmd_sp_first_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_rmd_sp_first_plan primary key (id)
 );
 
@@ -8576,7 +8576,7 @@ create table dbo.cc_staffeval_rmd_sp_fixed
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_rmd_sp_fixed primary key (id)
 );
 
@@ -8687,7 +8687,7 @@ create table dbo.cc_staffeval_room
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_room primary key (id)
 );
 
@@ -8767,7 +8767,7 @@ create table dbo.cc_staffeval_status_list
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_status_list primary key (id)
 );
 
@@ -8790,7 +8790,7 @@ create table dbo.cc_staffeval_test_polls_p
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_test_polls_p primary key (id)
 );
 
@@ -8811,7 +8811,7 @@ create table dbo.cc_staffeval_test_polls_r
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_test_polls_r primary key (id)
 );
 
@@ -8833,7 +8833,7 @@ create table dbo.cc_staffeval_test_polls_u
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_test_polls_u primary key (id)
 );
 
@@ -8854,7 +8854,7 @@ create table dbo.cc_staffeval_tso
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_tso primary key (id)
 );
 
@@ -8931,7 +8931,7 @@ create table dbo.cc_staffeval_type_room
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_type_room primary key (id)
 );
 
@@ -8954,7 +8954,7 @@ create table dbo.cc_staffeval_type_tso
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_type_tso primary key (id)
 );
 
@@ -8977,7 +8977,7 @@ create table dbo.cc_staffeval_umm_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_umm_ca primary key (id)
 );
 
@@ -8987,7 +8987,7 @@ create table dbo.cc_staffeval_umm_ca_first_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_umm_ca_first_plan primary key (id)
 );
 
@@ -9071,7 +9071,7 @@ create table dbo.cc_staffeval_umm_fixed_ca
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_umm_fixed_ca primary key (id)
 );
 
@@ -9119,7 +9119,7 @@ create table dbo.cc_staffeval_umm_sp
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_umm_sp primary key (id)
 );
 
@@ -9129,7 +9129,7 @@ create table dbo.cc_staffeval_umm_sp_first_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_umm_sp_first_plan primary key (id)
 );
 
@@ -9186,7 +9186,7 @@ create table dbo.cc_staffeval_umm_sp_fixed
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_umm_sp_fixed primary key (id)
 );
 
@@ -9301,7 +9301,7 @@ create table dbo.cc_staffeval_utp_department
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_utp_department primary key (id)
 );
 
@@ -9322,7 +9322,7 @@ create table dbo.cc_staffeval_utp_div
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_utp_div primary key (id)
 );
 
@@ -9348,7 +9348,7 @@ create table dbo.cc_staffeval_utp_group
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_staffeval_utp_group primary key (id)
 );
 
@@ -9373,7 +9373,7 @@ create table dbo.cc_template_theme
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_template_theme primary key (id)
 );
 
@@ -9406,7 +9406,7 @@ create table dbo.cc_theme
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_theme primary key (id)
 );
 
@@ -9429,7 +9429,7 @@ create table dbo.cc_training_subject
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_training_subject primary key (id)
 );
 
@@ -9453,7 +9453,7 @@ create table dbo.cc_version
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_version primary key (id)
 );
 
@@ -9482,7 +9482,7 @@ create table dbo.cc_web_notification
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cc_web_notification primary key (id)
 );
 
@@ -9514,7 +9514,7 @@ create table dbo.certificate
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__certificate primary key (id)
 );
 
@@ -9524,7 +9524,7 @@ create table dbo.certificate_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__certificate_type primary key (id)
 );
 
@@ -9647,7 +9647,7 @@ create table dbo.change
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__change primary key (id)
 );
 
@@ -9676,7 +9676,7 @@ create table dbo.chat
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__chat primary key (id)
 );
 
@@ -9686,7 +9686,7 @@ create table dbo.chatbot
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__chatbot primary key (id)
 );
 
@@ -9696,7 +9696,7 @@ create table dbo.chatbot_chat
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__chatbot_chat primary key (id)
 );
 
@@ -9752,7 +9752,7 @@ create table dbo.chatbot_stage
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__chatbot_stage primary key (id)
 );
 
@@ -9774,7 +9774,7 @@ create table dbo.chatbot_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__chatbot_type primary key (id)
 );
 
@@ -9820,7 +9820,7 @@ create table dbo.cl_const
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cl_const primary key (id)
 );
 
@@ -9829,8 +9829,8 @@ create table dbo.cl_consts
     id                               bigint           not null,
     code                             varchar(900)     null,
     name                             text             null,
-    imprint                          text             null,
-    object_id                        text             null,
+    imprint                          xml              null,
+    object_id                        xml              null,
     constraint pk__cl_consts primary key (id)
 );
 
@@ -9842,7 +9842,7 @@ create table dbo.cl_course
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cl_course primary key (id)
 );
 
@@ -9851,23 +9851,23 @@ create table dbo.cl_courses
     id                               bigint           not null,
     code                             text             null,
     name                             text             null,
-    author_id                        text             null,
+    author_id                        xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    localization_id                  text             null,
-    tag_id                           text             null,
-    role_id                          text             null,
+    localization_id                  xml              null,
+    tag_id                           xml              null,
+    role_id                          xml              null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__cl_courses primary key (id)
 );
 
@@ -9885,7 +9885,7 @@ create table dbo.cl_localization
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cl_localization primary key (id)
 );
 
@@ -9903,7 +9903,7 @@ create table dbo.cl_module
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cl_module primary key (id)
 );
 
@@ -9928,13 +9928,13 @@ create table dbo.cl_modules
     changed                          boolean          null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__cl_modules primary key (id)
 );
 
@@ -9944,7 +9944,7 @@ create table dbo.cl_object
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cl_object primary key (id)
 );
 
@@ -9971,7 +9971,7 @@ create table dbo.cl_shape
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cl_shape primary key (id)
 );
 
@@ -9997,7 +9997,7 @@ create table dbo.cl_slide
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cl_slide primary key (id)
 );
 
@@ -10032,7 +10032,7 @@ create table dbo.coding
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__coding primary key (id)
 );
 
@@ -10065,7 +10065,7 @@ create table dbo.collaborator
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__collaborator primary key (id)
 );
 
@@ -10075,7 +10075,7 @@ create table dbo.collaborator_schedule
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__collaborator_schedule primary key (id)
 );
 
@@ -10120,7 +10120,7 @@ create table dbo.collaborators
     position_parent_name             varchar(900)     null,
     org_id                           bigint           null,
     org_name                         varchar(900)     null,
-    category_id                      text             null,
+    category_id                      xml              null,
     web_banned                       boolean          null,
     is_arm_admin                     boolean          null,
     role_id                          text             null,
@@ -10133,7 +10133,7 @@ create table dbo.collaborators
     knowledge_parts                  text             null,
     tags                             text             null,
     experts                          text             null,
-    person_object_profile_id         text             null,
+    person_object_profile_id         xml              null,
     current_state                    varchar(900)     null,
     development_potential_id         bigint           null,
     efficiency_estimation_id         bigint           null,
@@ -10195,7 +10195,7 @@ create table dbo.committee_member
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__committee_member primary key (id)
 );
 
@@ -10251,7 +10251,7 @@ create table dbo."common.access_block_types"
     sys                              boolean          null,
     license_catalogs                 text             null,
     list_index                       bigint           null,
-    structure                        text             null,
+    structure                        xml              null,
     never_saved                      boolean          null,
     is_default                       boolean          null,
     constraint "PK__common.access_block_types" primary key (id)
@@ -10360,7 +10360,7 @@ create table dbo."common.assessment_appraise_parameters"
 (
     id                               varchar(128)     not null,
     name                             text             null,
-    statuses                         text             null,
+    statuses                         xml              null,
     constraint "PK__common.assessment_appraise_parameters" primary key (id)
 );
 
@@ -10410,7 +10410,7 @@ create table dbo."common.assessment_stages"
     id                               bigint           not null,
     name                             text             null,
     is_period_dependent              boolean          null,
-    access                           text             null,
+    access                           xml              null,
     constraint "PK__common.assessment_stages" primary key (id)
 );
 
@@ -10484,7 +10484,7 @@ create table dbo."common.charts"
 (
     chart_id                         varchar(128)     not null,
     chart_type                       text             null,
-    chart_subtypes                   text             null,
+    chart_subtypes                   xml              null,
     chart_name                       text             null,
     icon                             text             null,
     xcolor                           text             null,
@@ -11644,7 +11644,7 @@ create table dbo."common.web_template_types"
     name                             text             null,
     url                              text             null,
     mode                             text             null,
-    wvars                            text             null,
+    wvars                            xml              null,
     wvars_selector                   text             null,
     constraint "PK__common.web_template_types" primary key (id)
 );
@@ -11700,7 +11700,7 @@ create table dbo.competence
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__competence primary key (id)
 );
 
@@ -11710,7 +11710,7 @@ create table dbo.competence_block
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__competence_block primary key (id)
 );
 
@@ -11739,7 +11739,7 @@ create table dbo.competence_profile
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__competence_profile primary key (id)
 );
 
@@ -11749,7 +11749,7 @@ create table dbo.competence_profile_family
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__competence_profile_family primary key (id)
 );
 
@@ -11776,7 +11776,7 @@ create table dbo.competence_profiles
     experts                          text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     constraint pk__competence_profiles primary key (id)
@@ -11801,7 +11801,7 @@ create table dbo.competences
     exercises                        text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__competences primary key (id)
 );
 
@@ -11819,7 +11819,7 @@ create table dbo.component_package
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__component_package primary key (id)
 );
 
@@ -11859,7 +11859,7 @@ create table dbo.compound_program
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__compound_program primary key (id)
 );
 
@@ -11899,7 +11899,7 @@ create table dbo.compound_programs
     name                             varchar(900)     null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     constraint pk__compound_programs primary key (id)
@@ -11917,7 +11917,7 @@ create table dbo.connection
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__connection primary key (id)
 );
 
@@ -11948,7 +11948,7 @@ create table dbo.contact
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__contact primary key (id)
 );
 
@@ -11958,7 +11958,7 @@ create table dbo.contact_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__contact_result primary key (id)
 );
 
@@ -11980,7 +11980,7 @@ create table dbo.contact_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__contact_type primary key (id)
 );
 
@@ -12044,7 +12044,7 @@ create table dbo.contest
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__contest primary key (id)
 );
 
@@ -12099,7 +12099,7 @@ create table dbo.contract
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__contract primary key (id)
 );
 
@@ -12109,7 +12109,7 @@ create table dbo.contract_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__contract_type primary key (id)
 );
 
@@ -12167,7 +12167,7 @@ create table dbo.cost_center
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__cost_center primary key (id)
 );
 
@@ -12199,7 +12199,7 @@ create table dbo.course
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__course primary key (id)
 );
 
@@ -12224,7 +12224,7 @@ create table dbo.course_module
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__course_module primary key (id)
 );
 
@@ -12236,20 +12236,20 @@ create table dbo.course_modules
     name                             text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     activation_count                 bigint           null,
     launch_count                     bigint           null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     knowledge_parts                  text             null,
     tags                             text             null,
     experts                          text             null,
@@ -12297,7 +12297,7 @@ create table dbo.courses
     max_score                        double precision null,
     yourself_start                   boolean          null,
     duration                         bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     person_id                        bigint           null,
     cl_course_id                     bigint           null,
     pwt_disp                         boolean          null,
@@ -12313,13 +12313,13 @@ create table dbo.courses
     base_url                         text             null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__courses primary key (id)
 );
 
@@ -12341,7 +12341,7 @@ create table dbo.covenant
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__covenant primary key (id)
 );
 
@@ -12390,7 +12390,7 @@ create table dbo.custom_admin_template
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__custom_admin_template primary key (id)
 );
 
@@ -12403,7 +12403,7 @@ create table dbo.custom_admin_templates
     form_name                        text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__custom_admin_templates primary key (id)
 );
 
@@ -12417,7 +12417,7 @@ create table dbo.custom_chatbot_template
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__custom_chatbot_template primary key (id)
 );
 
@@ -12429,7 +12429,7 @@ create table dbo.custom_chatbot_templates
     url                              text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__custom_chatbot_templates primary key (id)
 );
 
@@ -12443,7 +12443,7 @@ create table dbo.custom_report
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__custom_report primary key (id)
 );
 
@@ -12472,7 +12472,7 @@ create table dbo.custom_web_template
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__custom_web_template primary key (id)
 );
 
@@ -12482,7 +12482,7 @@ create table dbo.custom_web_template_group
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__custom_web_template_group primary key (id)
 );
 
@@ -12493,7 +12493,7 @@ create table dbo.custom_web_template_groups
     name                             text             null,
     modification_date                timestamp        null,
     app_instance_id                  varchar(900)     null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__custom_web_template_groups primary key (id)
 );
 
@@ -12517,10 +12517,10 @@ create table dbo.custom_web_templates
     changed                          boolean          null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     mode                             text             null,
@@ -12528,7 +12528,7 @@ create table dbo.custom_web_templates
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__custom_web_templates primary key (id)
 );
 
@@ -12544,7 +12544,7 @@ create table dbo.development_method
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__development_method primary key (id)
 );
 
@@ -12566,7 +12566,7 @@ create table dbo.development_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__development_plan primary key (id)
 );
 
@@ -12617,7 +12617,7 @@ create table dbo.development_potential
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__development_potential primary key (id)
 );
 
@@ -12647,7 +12647,7 @@ create table dbo.device_reg
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__device_reg primary key (id)
 );
 
@@ -12672,7 +12672,7 @@ create table dbo.digital_signature
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__digital_signature primary key (id)
 );
 
@@ -12730,7 +12730,7 @@ create table dbo.dimension
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dimension primary key (id)
 );
 
@@ -12748,7 +12748,7 @@ create table dbo.discharge
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__discharge primary key (id)
 );
 
@@ -12769,7 +12769,7 @@ create table dbo.dn_academ_debt
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_academ_debt primary key (id)
 );
 
@@ -12810,7 +12810,7 @@ create table dbo.dn_academ_year
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_academ_year primary key (id)
 );
 
@@ -12850,7 +12850,7 @@ create table dbo.dn_auditorium
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_auditorium primary key (id)
 );
 
@@ -12883,7 +12883,7 @@ create table dbo.dn_block_discipline
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_block_discipline primary key (id)
 );
 
@@ -12913,7 +12913,7 @@ create table dbo.dn_control_event
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_control_event primary key (id)
 );
 
@@ -12955,7 +12955,7 @@ create table dbo.dn_control_form
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_control_form primary key (id)
 );
 
@@ -12991,7 +12991,7 @@ create table dbo.dn_discipline
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_discipline primary key (id)
 );
 
@@ -13026,7 +13026,7 @@ create table dbo.dn_edu_condition
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_edu_condition primary key (id)
 );
 
@@ -13048,7 +13048,7 @@ create table dbo.dn_educat_event
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_educat_event primary key (id)
 );
 
@@ -13070,7 +13070,7 @@ create table dbo.dn_educat_form
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_educat_form primary key (id)
 );
 
@@ -13121,7 +13121,7 @@ create table dbo.dn_ind_educat_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_ind_educat_plan primary key (id)
 );
 
@@ -13154,7 +13154,7 @@ create table dbo.dn_lesson
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_lesson primary key (id)
 );
 
@@ -13196,7 +13196,7 @@ create table dbo.dn_prog_disc_append
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_prog_disc_append primary key (id)
 );
 
@@ -13232,7 +13232,7 @@ create table dbo.dn_program_discipl
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_program_discipl primary key (id)
 );
 
@@ -13281,7 +13281,7 @@ create table dbo.dn_register
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_register primary key (id)
 );
 
@@ -13332,7 +13332,7 @@ create table dbo.dn_schedule
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_schedule primary key (id)
 );
 
@@ -13363,7 +13363,7 @@ create table dbo.dn_special
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_special primary key (id)
 );
 
@@ -13373,7 +13373,7 @@ create table dbo.dn_specialization
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_specialization primary key (id)
 );
 
@@ -13413,7 +13413,7 @@ create table dbo.dn_stream
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_stream primary key (id)
 );
 
@@ -13443,7 +13443,7 @@ create table dbo.dn_stud_centrtest_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_stud_centrtest_result primary key (id)
 );
 
@@ -13470,7 +13470,7 @@ create table dbo.dn_stud_group
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_stud_group primary key (id)
 );
 
@@ -13506,7 +13506,7 @@ create table dbo.dn_student
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_student primary key (id)
 );
 
@@ -13552,7 +13552,7 @@ create table dbo.dn_subject_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_subject_plan primary key (id)
 );
 
@@ -13578,7 +13578,7 @@ create table dbo.dn_term
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_term primary key (id)
 );
 
@@ -13601,7 +13601,7 @@ create table dbo.dn_train_method_complex
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_train_method_complex primary key (id)
 );
 
@@ -13645,7 +13645,7 @@ create table dbo.dn_work_curriculum
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__dn_work_curriculum primary key (id)
 );
 
@@ -13683,7 +13683,7 @@ create table dbo.doc_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__doc_type primary key (id)
 );
 
@@ -13701,7 +13701,7 @@ create table dbo.doc_types
     access_block_type                text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__doc_types primary key (id)
 );
 
@@ -13719,7 +13719,7 @@ create table dbo.document
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__document primary key (id)
 );
 
@@ -13755,7 +13755,7 @@ create table dbo.document_comment_entry
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__document_comment_entry primary key (id)
 );
 
@@ -13809,10 +13809,10 @@ create table dbo.documents
     permit_subscription              boolean          null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     parent_object_type               text             null,
     parent_object_id                 bigint           null,
     parent_object_name               text             null,
@@ -13861,7 +13861,7 @@ create table dbo.download_package
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__download_package primary key (id)
 );
 
@@ -13883,7 +13883,7 @@ create table dbo.education_method
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__education_method primary key (id)
 );
 
@@ -13937,7 +13937,7 @@ create table dbo.education_methods
     tags                             text             null,
     experts                          text             null,
     event_form                       text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     cost_nds                         double precision null,
     constraint pk__education_methods primary key (id)
 );
@@ -13960,7 +13960,7 @@ create table dbo.education_org
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__education_org primary key (id)
 );
 
@@ -14001,7 +14001,7 @@ create table dbo.education_orgs
     email                            text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     is_provider_courses              boolean          null,
@@ -14024,7 +14024,7 @@ create table dbo.education_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__education_plan primary key (id)
 );
 
@@ -14124,7 +14124,7 @@ create table dbo.education_program
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__education_program primary key (id)
 );
 
@@ -14160,7 +14160,7 @@ create table dbo.education_programs
     app_instance_id                  text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__education_programs primary key (id)
 );
 
@@ -14174,7 +14174,7 @@ create table dbo.efficiency_estimation
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__efficiency_estimation primary key (id)
 );
 
@@ -14204,7 +14204,7 @@ create table dbo.estaff_event
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__estaff_event primary key (id)
 );
 
@@ -14214,7 +14214,7 @@ create table dbo.estaff_event_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__estaff_event_type primary key (id)
 );
 
@@ -14279,7 +14279,7 @@ create table dbo.event
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__event primary key (id)
 );
 
@@ -14289,7 +14289,7 @@ create table dbo.event_assessment_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__event_assessment_plan primary key (id)
 );
 
@@ -14556,7 +14556,7 @@ create table dbo.event_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__event_result primary key (id)
 );
 
@@ -14566,7 +14566,7 @@ create table dbo.event_result_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__event_result_type primary key (id)
 );
 
@@ -14577,7 +14577,7 @@ create table dbo.event_result_types
     name                             varchar(900)     null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__event_result_types primary key (id)
 );
 
@@ -14652,7 +14652,7 @@ create table dbo.event_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__event_type primary key (id)
 );
 
@@ -14726,7 +14726,7 @@ create table dbo.events
     user_access_role                 text             null,
     user_group_id                    bigint           null,
     tutor_main                       text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     event_type_id                    bigint           null,
@@ -14809,7 +14809,7 @@ create table dbo.exchange_server
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__exchange_server primary key (id)
 );
 
@@ -14824,7 +14824,7 @@ create table dbo.exchange_servers
     server_version                   text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__exchange_servers primary key (id)
 );
 
@@ -14838,7 +14838,7 @@ create table dbo.exclusion_reason
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__exclusion_reason primary key (id)
 );
 
@@ -14868,7 +14868,7 @@ create table dbo.exercise
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__exercise primary key (id)
 );
 
@@ -14878,7 +14878,7 @@ create table dbo.exercises
     code                             text             null,
     name                             text             null,
     modification_date                timestamp        null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__exercises primary key (id)
 );
 
@@ -14892,7 +14892,7 @@ create table dbo.expense
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__expense primary key (id)
 );
 
@@ -14902,7 +14902,7 @@ create table dbo.expense_item
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__expense_item primary key (id)
 );
 
@@ -14953,7 +14953,7 @@ create table dbo.expert
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__expert primary key (id)
 );
 
@@ -14963,7 +14963,7 @@ create table dbo.expert_question
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__expert_question primary key (id)
 );
 
@@ -15018,7 +15018,7 @@ create table dbo.external_system
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__external_system primary key (id)
 );
 
@@ -15092,7 +15092,7 @@ create table dbo.file_source
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__file_source primary key (id)
 );
 
@@ -15108,10 +15108,10 @@ create table dbo.file_sources
     changed                          boolean          null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     access_org_id                    bigint           null,
@@ -15128,7 +15128,7 @@ create table dbo.forum
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__forum primary key (id)
 );
 
@@ -15138,7 +15138,7 @@ create table dbo.forum_entry
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__forum_entry primary key (id)
 );
 
@@ -15189,7 +15189,7 @@ create table dbo.forum_theme_read_by_collaborator
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__forum_theme_read_by_collaborator primary key (id)
 );
 
@@ -15229,7 +15229,7 @@ create table dbo.forums
     user_group_id                    bigint           null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__forums primary key (id)
 );
 
@@ -15276,7 +15276,7 @@ create table dbo.good
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__good primary key (id)
 );
 
@@ -15286,7 +15286,7 @@ create table dbo.good_instance
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__good_instance primary key (id)
 );
 
@@ -15322,7 +15322,7 @@ create table dbo.good_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__good_type primary key (id)
 );
 
@@ -15350,7 +15350,7 @@ create table dbo.goods
     code                             varchar(900)     null,
     name                             varchar(900)     null,
     good_type_id                     bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  varchar(900)     null,
     cost_desc                        text             null,
@@ -15375,7 +15375,7 @@ create table dbo.grade
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__grade primary key (id)
 );
 
@@ -15395,7 +15395,7 @@ create table dbo."group"
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__group primary key (id)
 );
 
@@ -15429,22 +15429,22 @@ create table dbo.groups
     is_dynamic                       boolean          null,
     is_educ                          boolean          null,
     join_mode                        text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     tags                             text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     allow_social_post                boolean          null,
-    tag_id                           text             null,
+    tag_id                           xml              null,
     is_hidden                        boolean          null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__groups primary key (id)
 );
 
@@ -15468,7 +15468,7 @@ create table dbo.host
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__host primary key (id)
 );
 
@@ -15507,7 +15507,7 @@ create table dbo.indicator
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__indicator primary key (id)
 );
 
@@ -15524,7 +15524,7 @@ create table dbo.indicators
     experts                          text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__indicators primary key (id)
 );
 
@@ -15540,7 +15540,7 @@ create table dbo.invoice
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__invoice primary key (id)
 );
 
@@ -15574,7 +15574,7 @@ create table dbo.item
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__item primary key (id)
 );
 
@@ -15587,7 +15587,7 @@ create table dbo.items
     title                            varchar(900)     null,
     question_text                    text             null,
     question_points                  bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
     modification_date                timestamp        null,
@@ -15613,7 +15613,7 @@ create table dbo.key_position
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__key_position primary key (id)
 );
 
@@ -15623,7 +15623,7 @@ create table dbo.key_position_threat
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__key_position_threat primary key (id)
 );
 
@@ -15708,7 +15708,7 @@ create table dbo.knowledge_classifier
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__knowledge_classifier primary key (id)
 );
 
@@ -15721,10 +15721,10 @@ create table dbo.knowledge_classifiers
     app_instance_id                  text             null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     resource_id                      bigint           null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
@@ -15763,7 +15763,7 @@ create table dbo.knowledge_part
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__knowledge_part primary key (id)
 );
 
@@ -15773,7 +15773,7 @@ create table dbo.knowledge_part_level
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__knowledge_part_level primary key (id)
 );
 
@@ -15797,7 +15797,7 @@ create table dbo.knowledge_part_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__knowledge_part_type primary key (id)
 );
 
@@ -15827,10 +15827,10 @@ create table dbo.knowledge_parts
     tags                             text             null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     resource_id                      bigint           null,
@@ -15856,7 +15856,7 @@ create table dbo.knowledge_profile
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__knowledge_profile primary key (id)
 );
 
@@ -15897,7 +15897,7 @@ create table dbo.kpi
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__kpi primary key (id)
 );
 
@@ -15907,7 +15907,7 @@ create table dbo.kpi_profile
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__kpi_profile primary key (id)
 );
 
@@ -15917,12 +15917,12 @@ create table dbo.kpi_profiles
     code                             text             null,
     name                             text             null,
     competence_profile_family_id     bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    kpi_id                           text             null,
+    kpi_id                           xml              null,
     constraint pk__kpi_profiles primary key (id)
 );
 
@@ -15938,7 +15938,7 @@ create table dbo.kpi_value
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__kpi_value primary key (id)
 );
 
@@ -15973,7 +15973,7 @@ create table dbo.kpis
     owners_ids                       text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     access_block_type                text             null,
@@ -15993,7 +15993,7 @@ create table dbo.learning
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__learning primary key (id)
 );
 
@@ -16003,7 +16003,7 @@ create table dbo.learning_part
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__learning_part primary key (id)
 );
 
@@ -16028,7 +16028,7 @@ create table dbo.learning_record
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__learning_record primary key (id)
 );
 
@@ -16075,7 +16075,7 @@ create table dbo.learning_storage
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__learning_storage primary key (id)
 );
 
@@ -16095,7 +16095,7 @@ create table dbo.learning_task
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__learning_task primary key (id)
 );
 
@@ -16105,7 +16105,7 @@ create table dbo.learning_task_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__learning_task_result primary key (id)
 );
 
@@ -16154,7 +16154,7 @@ create table dbo.learning_tasks
     user_group_id                    bigint           null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__learning_tasks primary key (id)
 );
 
@@ -16241,7 +16241,7 @@ create table dbo.lector
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__lector primary key (id)
 );
 
@@ -16280,7 +16280,7 @@ create table dbo.level
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__level primary key (id)
 );
 
@@ -16308,7 +16308,7 @@ create table dbo.library_material
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material primary key (id)
 );
 
@@ -16318,7 +16318,7 @@ create table dbo.library_material_comment
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material_comment primary key (id)
 );
 
@@ -16341,7 +16341,7 @@ create table dbo.library_material_format
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material_format primary key (id)
 );
 
@@ -16364,7 +16364,7 @@ create table dbo.library_material_item
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material_item primary key (id)
 );
 
@@ -16416,7 +16416,7 @@ create table dbo.library_material_log
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material_log primary key (id)
 );
 
@@ -16439,7 +16439,7 @@ create table dbo.library_material_source_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material_source_type primary key (id)
 );
 
@@ -16463,7 +16463,7 @@ create table dbo.library_material_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material_type primary key (id)
 );
 
@@ -16485,7 +16485,7 @@ create table dbo.library_material_viewing
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_material_viewing primary key (id)
 );
 
@@ -16558,7 +16558,7 @@ create table dbo.library_player
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_player primary key (id)
 );
 
@@ -16583,7 +16583,7 @@ create table dbo.library_section
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_section primary key (id)
 );
 
@@ -16613,7 +16613,7 @@ create table dbo.library_system
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__library_system primary key (id)
 );
 
@@ -16645,7 +16645,7 @@ create table dbo.license
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__license primary key (id)
 );
 
@@ -16666,7 +16666,7 @@ create table dbo.like
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__like primary key (id)
 );
 
@@ -16702,7 +16702,7 @@ create table dbo.messenger_service
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__messenger_service primary key (id)
 );
 
@@ -16724,7 +16724,7 @@ create table dbo.mobile_app_config
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__mobile_app_config primary key (id)
 );
 
@@ -16744,7 +16744,7 @@ create table dbo.notification
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__notification primary key (id)
 );
 
@@ -16754,7 +16754,7 @@ create table dbo.notification_system
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__notification_system primary key (id)
 );
 
@@ -16768,7 +16768,7 @@ create table dbo.notification_systems
     is_std                           boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  varchar(900)     null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__notification_systems primary key (id)
 );
 
@@ -16790,7 +16790,7 @@ create table dbo.notification_template
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__notification_template primary key (id)
 );
 
@@ -16802,7 +16802,7 @@ create table dbo.notification_templates
     is_std                           boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__notification_templates primary key (id)
 );
 
@@ -16819,7 +16819,7 @@ create table dbo.notifications
     is_std                           boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__notifications primary key (id)
 );
 
@@ -16835,7 +16835,7 @@ create table dbo.object_data
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__object_data primary key (id)
 );
 
@@ -16845,7 +16845,7 @@ create table dbo.object_data_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__object_data_type primary key (id)
 );
 
@@ -16856,7 +16856,7 @@ create table dbo.object_data_types
     name                             text             null,
     object_type                      varchar(900)     null,
     access_block_type                text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     is_std                           boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
@@ -16920,7 +16920,7 @@ create table dbo.object_resource
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__object_resource primary key (id)
 );
 
@@ -16947,7 +16947,7 @@ create table dbo.object_version
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__object_version primary key (id)
 );
 
@@ -16987,7 +16987,7 @@ create table dbo.objectflow
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__objectflow primary key (id)
 );
 
@@ -17007,7 +17007,7 @@ create table dbo.objective_translate
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__objective_translate primary key (id)
 );
 
@@ -17053,7 +17053,7 @@ create table dbo.operation
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__operation primary key (id)
 );
 
@@ -17074,7 +17074,7 @@ create table dbo.operations
     changed                          boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__operations primary key (id)
 );
 
@@ -17088,7 +17088,7 @@ create table dbo."order"
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__order primary key (id)
 );
 
@@ -17098,7 +17098,7 @@ create table dbo.order_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__order_type primary key (id)
 );
 
@@ -17169,7 +17169,7 @@ create table dbo.org
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__org primary key (id)
 );
 
@@ -17179,7 +17179,7 @@ create table dbo.org_vendor_state
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__org_vendor_state primary key (id)
 );
 
@@ -17223,7 +17223,7 @@ create table dbo.orgs
     kpi_profile_id                   bigint           null,
     bonus_profile_id                 bigint           null,
     tags                             text             null,
-    tag_id                           text             null,
+    tag_id                           xml              null,
     constraint pk__orgs primary key (id)
 );
 
@@ -17243,7 +17243,7 @@ create table dbo.outstaff_additional_work
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__outstaff_additional_work primary key (id)
 );
 
@@ -17267,7 +17267,7 @@ create table dbo.outstaff_contract
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__outstaff_contract primary key (id)
 );
 
@@ -17310,7 +17310,7 @@ create table dbo.outstaff_order
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__outstaff_order primary key (id)
 );
 
@@ -17320,7 +17320,7 @@ create table dbo.outstaff_order_execution
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__outstaff_order_execution primary key (id)
 );
 
@@ -17466,7 +17466,7 @@ create table dbo.outstaff_provider
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__outstaff_provider primary key (id)
 );
 
@@ -17492,7 +17492,7 @@ create table dbo.outstaff_type_material
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__outstaff_type_material primary key (id)
 );
 
@@ -17516,7 +17516,7 @@ create table dbo.override_web_template
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__override_web_template primary key (id)
 );
 
@@ -17536,7 +17536,7 @@ create table dbo.override_web_templates
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     custom_web_template_name         text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__override_web_templates primary key (id)
 );
 
@@ -17560,7 +17560,7 @@ create table dbo.pa
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__pa primary key (id)
 );
 
@@ -17570,7 +17570,7 @@ create table dbo.participant
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__participant primary key (id)
 );
 
@@ -17664,7 +17664,7 @@ create table dbo.pay_phase
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__pay_phase primary key (id)
 );
 
@@ -17694,7 +17694,7 @@ create table dbo.pay_stage
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__pay_stage primary key (id)
 );
 
@@ -17726,7 +17726,7 @@ create table dbo.payment
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__payment primary key (id)
 );
 
@@ -17736,7 +17736,7 @@ create table dbo.payment_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__payment_type primary key (id)
 );
 
@@ -17797,7 +17797,7 @@ create table dbo.person_object_link
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__person_object_link primary key (id)
 );
 
@@ -17852,7 +17852,7 @@ create table dbo.person_object_profile
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__person_object_profile primary key (id)
 );
 
@@ -17861,7 +17861,7 @@ create table dbo.person_object_profiles
     id                               bigint           not null,
     code                             text             null,
     name                             text             null,
-    object_catalog                   text             null,
+    object_catalog                   xml              null,
     modification_date                timestamp        null,
     constraint pk__person_object_profiles primary key (id)
 );
@@ -17903,7 +17903,7 @@ create table dbo.personnel_committee
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__personnel_committee primary key (id)
 );
 
@@ -17925,7 +17925,7 @@ create table dbo.personnel_committees
     user_group_id                    bigint           null,
     modification_date                timestamp        null,
     app_instance_id                  varchar(900)     null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__personnel_committees primary key (id)
 );
 
@@ -17961,7 +17961,7 @@ create table dbo.personnel_reserve
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__personnel_reserve primary key (id)
 );
 
@@ -18010,7 +18010,7 @@ create table dbo.place
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__place primary key (id)
 );
 
@@ -18041,7 +18041,7 @@ create table dbo.plugin
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__plugin primary key (id)
 );
 
@@ -18063,7 +18063,7 @@ create table dbo.poll
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__poll primary key (id)
 );
 
@@ -18073,7 +18073,7 @@ create table dbo.poll_procedure
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__poll_procedure primary key (id)
 );
 
@@ -18091,7 +18091,7 @@ create table dbo.poll_procedures
     str_sub_bosses_ids               text             null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     trigger_type                     varchar(900)     null,
@@ -18110,7 +18110,7 @@ create table dbo.poll_result
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__poll_result primary key (id)
 );
 
@@ -18123,7 +18123,7 @@ create table dbo.poll_results
     person_id                        bigint           null,
     person_fullname                  varchar(900)     null,
     person_org_name                  text             null,
-    question_id                      text             null,
+    question_id                      xml              null,
     is_done                          boolean          null,
     status                           bigint           null,
     create_date                      timestamp        null,
@@ -18165,7 +18165,7 @@ create table dbo.polls
     is_one_time                      boolean          null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     knowledge_parts                  text             null,
@@ -18186,7 +18186,7 @@ create table dbo.position
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__position primary key (id)
 );
 
@@ -18196,7 +18196,7 @@ create table dbo.position_assessment_form
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__position_assessment_form primary key (id)
 );
 
@@ -18224,7 +18224,7 @@ create table dbo.position_common
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__position_common primary key (id)
 );
 
@@ -18234,7 +18234,7 @@ create table dbo.position_common_instruction
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__position_common_instruction primary key (id)
 );
 
@@ -18279,7 +18279,7 @@ create table dbo.position_commons
     experts                          text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    parent_position_common_id        text             null,
+    parent_position_common_id        xml              null,
     allow_outstaff                   boolean          null,
     kpi_profile_id                   bigint           null,
     bonus_profile_id                 bigint           null,
@@ -18296,7 +18296,7 @@ create table dbo.position_family
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__position_family primary key (id)
 );
 
@@ -18333,7 +18333,7 @@ create table dbo.position_level
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__position_level primary key (id)
 );
 
@@ -18400,7 +18400,7 @@ create table dbo.presence_state
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__presence_state primary key (id)
 );
 
@@ -18423,7 +18423,7 @@ create table dbo.print_form
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__print_form primary key (id)
 );
 
@@ -18437,7 +18437,7 @@ create table dbo.print_forms
     file_name                        text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__print_forms primary key (id)
 );
 
@@ -18453,7 +18453,7 @@ create table dbo.proctoring_system
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__proctoring_system primary key (id)
 );
 
@@ -18485,7 +18485,7 @@ create table dbo.professional_area
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__professional_area primary key (id)
 );
 
@@ -18519,7 +18519,7 @@ create table dbo.profile
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__profile primary key (id)
 );
 
@@ -18554,7 +18554,7 @@ create table dbo.profiling_record
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__profiling_record primary key (id)
 );
 
@@ -18587,7 +18587,7 @@ create table dbo.project
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__project primary key (id)
 );
 
@@ -18597,7 +18597,7 @@ create table dbo.project_participant
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__project_participant primary key (id)
 );
 
@@ -18654,7 +18654,7 @@ create table dbo.projects
     modification_date                timestamp        null,
     app_instance_id                  varchar(900)     null,
     resource_type_id                 bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__projects primary key (id)
 );
 
@@ -18696,7 +18696,7 @@ create table dbo.provider
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__provider primary key (id)
 );
 
@@ -18706,7 +18706,7 @@ create table dbo.providers
     code                             text             null,
     name                             text             null,
     provider_product                 boolean          null,
-    role_id                          text             null,
+    role_id                          xml              null,
     dimension_id                     bigint           null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
@@ -18727,7 +18727,7 @@ create table dbo.pryce
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__pryce primary key (id)
 );
 
@@ -18758,7 +18758,7 @@ create table dbo.qualification
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__qualification primary key (id)
 );
 
@@ -18768,7 +18768,7 @@ create table dbo.qualification_assignment
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__qualification_assignment primary key (id)
 );
 
@@ -18826,18 +18826,18 @@ create table dbo.qualifications
     app_instance_id                  varchar(900)     null,
     join_mode                        text             null,
     status                           text             null,
-    qualification_id                 text             null,
+    qualification_id                 xml              null,
     level_id                         bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__qualifications primary key (id)
 );
 
@@ -18859,7 +18859,7 @@ create table dbo.rating
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__rating primary key (id)
 );
 
@@ -18889,7 +18889,7 @@ create table dbo.readiness_level
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__readiness_level primary key (id)
 );
 
@@ -18919,7 +18919,7 @@ create table dbo.recommendation
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__recommendation primary key (id)
 );
 
@@ -18958,7 +18958,7 @@ create table dbo.recruitment_method
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__recruitment_method primary key (id)
 );
 
@@ -18980,7 +18980,7 @@ create table dbo.recruitment_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__recruitment_plan primary key (id)
 );
 
@@ -19010,7 +19010,7 @@ create table dbo.region
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__region primary key (id)
 );
 
@@ -19045,7 +19045,7 @@ create table dbo.remote_action
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__remote_action primary key (id)
 );
 
@@ -19060,7 +19060,7 @@ create table dbo.remote_actions
     changed                          boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__remote_actions primary key (id)
 );
 
@@ -19076,7 +19076,7 @@ create table dbo.remote_collection
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__remote_collection primary key (id)
 );
 
@@ -19090,7 +19090,7 @@ create table dbo.remote_collections
     changed                          boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__remote_collections primary key (id)
 );
 
@@ -19106,7 +19106,7 @@ create table dbo.remote_security_profile
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__remote_security_profile primary key (id)
 );
 
@@ -19125,7 +19125,7 @@ create table dbo.repositorium
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__repositorium primary key (id)
 );
 
@@ -19168,13 +19168,13 @@ create table dbo.repositoriums
     authors_count                    bigint           null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__repositoriums primary key (id)
 );
 
@@ -19184,7 +19184,7 @@ create table dbo.reprimand
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__reprimand primary key (id)
 );
 
@@ -19194,7 +19194,7 @@ create table dbo.reprimand_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__reprimand_type primary key (id)
 );
 
@@ -19225,7 +19225,7 @@ create table dbo.request
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__request primary key (id)
 );
 
@@ -19262,7 +19262,7 @@ create table dbo.request_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__request_type primary key (id)
 );
 
@@ -19276,7 +19276,7 @@ create table dbo.request_types
     access_block_type                text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     is_std                           boolean          null,
     constraint pk__request_types primary key (id)
 );
@@ -19311,7 +19311,7 @@ create table dbo.requests
     user_group_id                    bigint           null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    tag_id                           text             null,
+    tag_id                           xml              null,
     knowledge_parts                  text             null,
     tags                             text             null,
     experts                          text             null,
@@ -19354,7 +19354,7 @@ create table dbo.resource
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__resource primary key (id)
 );
 
@@ -19364,7 +19364,7 @@ create table dbo.resource_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__resource_type primary key (id)
 );
 
@@ -19375,7 +19375,7 @@ create table dbo.resource_types
     name                             text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__resource_types primary key (id)
 );
 
@@ -19396,7 +19396,7 @@ create table dbo.resources
     use_count                        bigint           null,
     file_name                        text             null,
     size                             bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     person_id                        bigint           null,
     person_fullname                  varchar(900)     null,
     knowledge_parts                  text             null,
@@ -19412,13 +19412,13 @@ create table dbo.resources
     checksum                         text             null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     constraint pk__resources primary key (id)
 );
 
@@ -19442,7 +19442,7 @@ create table dbo.response
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__response primary key (id)
 );
 
@@ -19452,7 +19452,7 @@ create table dbo.response_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__response_type primary key (id)
 );
 
@@ -19465,7 +19465,7 @@ create table dbo.response_types
     access_block_type                text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__response_types primary key (id)
 );
 
@@ -19519,7 +19519,7 @@ create table dbo.resume
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__resume primary key (id)
 );
 
@@ -19573,8 +19573,8 @@ create table dbo.resumes
     main_educ_type_id                varchar(900)     null,
     education                        text             null,
     is_archive                       boolean          null,
-    lng_id                           text             null,
-    educ_type_id                     text             null,
+    lng_id                           xml              null,
+    educ_type_id                     xml              null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
     creation_date                    timestamp        null,
@@ -19626,7 +19626,7 @@ create table dbo.risk_level
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__risk_level primary key (id)
 );
 
@@ -19656,7 +19656,7 @@ create table dbo.risk_perspective
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__risk_perspective primary key (id)
 );
 
@@ -19686,7 +19686,7 @@ create table dbo.role
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__role primary key (id)
 );
 
@@ -19719,7 +19719,7 @@ create table dbo.salary_survey
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__salary_survey primary key (id)
 );
 
@@ -19729,7 +19729,7 @@ create table dbo.salary_survey_source
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__salary_survey_source primary key (id)
 );
 
@@ -19791,7 +19791,7 @@ create table dbo.sale
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__sale primary key (id)
 );
 
@@ -19801,7 +19801,7 @@ create table dbo.sale_contract
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__sale_contract primary key (id)
 );
 
@@ -19835,7 +19835,7 @@ create table dbo.sale_status
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__sale_status primary key (id)
 );
 
@@ -19885,7 +19885,7 @@ create table dbo.schedule_day
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__schedule_day primary key (id)
 );
 
@@ -19907,7 +19907,7 @@ create table dbo.schedule_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__schedule_type primary key (id)
 );
 
@@ -19925,7 +19925,7 @@ create table dbo.script_queue_elem
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__script_queue_elem primary key (id)
 );
 
@@ -19940,7 +19940,7 @@ create table dbo.script_queue_elems
     completed                        boolean          null,
     delete_automatically             boolean          null,
     block                            text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     is_std                           boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
@@ -19963,7 +19963,7 @@ create table dbo.section_instruction
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__section_instruction primary key (id)
 );
 
@@ -19991,7 +19991,7 @@ create table dbo.selected_resume
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__selected_resume primary key (id)
 );
 
@@ -20025,7 +20025,7 @@ create table dbo.selected_vacancy
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__selected_vacancy primary key (id)
 );
 
@@ -20053,7 +20053,7 @@ create table dbo.server_agent
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__server_agent primary key (id)
 );
 
@@ -20077,7 +20077,7 @@ create table dbo.server_agents
     is_std                           boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__server_agents primary key (id)
 );
 
@@ -20091,7 +20091,7 @@ create table dbo.site
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__site primary key (id)
 );
 
@@ -20120,7 +20120,7 @@ create table dbo.sites
     is_std                           boolean          null,
     modification_date                timestamp        null,
     app_instance_id                  varchar(900)     null,
-    owner_object                     text             null,
+    owner_object                     xml              null,
     constraint pk__sites primary key (id)
 );
 
@@ -20134,7 +20134,7 @@ create table dbo.skill
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__skill primary key (id)
 );
 
@@ -20173,10 +20173,10 @@ create table dbo.social_entrys
     like_id                          bigint           null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
@@ -20201,7 +20201,7 @@ create table dbo.statement
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__statement primary key (id)
 );
 
@@ -20257,7 +20257,7 @@ create table dbo.statistic_data
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__statistic_data primary key (id)
 );
 
@@ -20301,7 +20301,7 @@ create table dbo.statistic_rec
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__statistic_rec primary key (id)
 );
 
@@ -20310,7 +20310,7 @@ create table dbo.statistic_recs
     id                               bigint           not null,
     code                             varchar(900)     null,
     name                             varchar(900)     null,
-    period_type                      text             null,
+    period_type                      xml              null,
     start_date                       timestamp        null,
     finish_date                      timestamp        null,
     depth                            bigint           null,
@@ -20321,14 +20321,14 @@ create table dbo.statistic_recs
     app_instance_id                  text             null,
     is_enabled                       boolean          null,
     period_calc_type                 text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     auto_calc                        boolean          null,
     last_calculate_date              timestamp        null,
     calc_period                      bigint           null,
     catalog_name                     text             null,
     is_std                           boolean          null,
     changed                          boolean          null,
-    catalog                          text             null,
+    catalog                          xml              null,
     constraint pk__statistic_recs primary key (id)
 );
 
@@ -20356,7 +20356,7 @@ create table dbo.subdivision
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__subdivision primary key (id)
 );
 
@@ -20366,7 +20366,7 @@ create table dbo.subdivision_group
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__subdivision_group primary key (id)
 );
 
@@ -20448,7 +20448,7 @@ create table dbo.submission
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__submission primary key (id)
 );
 
@@ -20476,7 +20476,7 @@ create table dbo.submission_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__submission_type primary key (id)
 );
 
@@ -20551,7 +20551,7 @@ create table dbo.subscription
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__subscription primary key (id)
 );
 
@@ -20589,7 +20589,7 @@ create table dbo.substitution
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__substitution primary key (id)
 );
 
@@ -20599,7 +20599,7 @@ create table dbo.substitution_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__substitution_type primary key (id)
 );
 
@@ -20610,7 +20610,7 @@ create table dbo.substitution_types
     name                             text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__substitution_types primary key (id)
 );
 
@@ -20660,7 +20660,7 @@ create table dbo.successor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__successor primary key (id)
 );
 
@@ -20724,7 +20724,7 @@ create table dbo.supplementary_question
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__supplementary_question primary key (id)
 );
 
@@ -20747,7 +20747,7 @@ create table dbo.system_event
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__system_event primary key (id)
 );
 
@@ -20761,7 +20761,7 @@ create table dbo.system_events
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     is_std                           boolean          null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__system_events primary key (id)
 );
 
@@ -20777,7 +20777,7 @@ create table dbo.tag
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__tag primary key (id)
 );
 
@@ -20810,16 +20810,16 @@ create table dbo.tags
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     resource_id                      bigint           null,
-    role_id                          text             null,
+    role_id                          xml              null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     user_access_role                 text             null,
     user_group_id                    bigint           null,
     constraint pk__tags primary key (id)
@@ -20862,7 +20862,7 @@ create table dbo.talent_pool_nomination
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__talent_pool_nomination primary key (id)
 );
 
@@ -20892,7 +20892,7 @@ create table dbo.task
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__task primary key (id)
 );
 
@@ -20902,7 +20902,7 @@ create table dbo.task_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__task_type primary key (id)
 );
 
@@ -20935,7 +20935,7 @@ create table dbo.tasks
     target_object_id                 bigint           null,
     fact_object_type                 text             null,
     fact_object_id                   bigint           null,
-    expert_id                        text             null,
+    expert_id                        xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     user_access_role                 text             null,
@@ -20945,7 +20945,7 @@ create table dbo.tasks
     date_fact                        timestamp        null,
     start_date_plan                  timestamp        null,
     end_date_plan                    timestamp        null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__tasks primary key (id)
 );
 
@@ -20961,7 +20961,7 @@ create table dbo.tenancy
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__tenancy primary key (id)
 );
 
@@ -21008,7 +21008,7 @@ create table dbo.test_learning
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__test_learning primary key (id)
 );
 
@@ -21091,7 +21091,7 @@ create table dbo.test_project
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__test_project primary key (id)
 );
 
@@ -21112,7 +21112,7 @@ create table dbo.testing_system
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__testing_system primary key (id)
 );
 
@@ -21143,7 +21143,7 @@ create table dbo.training_plan
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__training_plan primary key (id)
 );
 
@@ -21176,7 +21176,7 @@ create table dbo.traning_order
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__traning_order primary key (id)
 );
 
@@ -21210,7 +21210,7 @@ create table dbo.transaction
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__transaction primary key (id)
 );
 
@@ -21229,7 +21229,7 @@ create table dbo.transactions
     account_id                       bigint           null,
     person_id                        bigint           null,
     person_fullname                  varchar(900)     null,
-    objects                          text             null,
+    objects                          xml              null,
     constraint pk__transactions primary key (id)
 );
 
@@ -21264,7 +21264,7 @@ create table dbo.tutor
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__tutor primary key (id)
 );
 
@@ -21305,7 +21305,7 @@ create table dbo.typical_development_program
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__typical_development_program primary key (id)
 );
 
@@ -21328,7 +21328,7 @@ create table dbo.upload_package
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__upload_package primary key (id)
 );
 
@@ -21349,7 +21349,7 @@ create table dbo.user_assignment
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__user_assignment primary key (id)
 );
 
@@ -21361,7 +21361,7 @@ create table dbo.user_assignments
     object_name                      text             null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__user_assignments primary key (id)
 );
 
@@ -21375,7 +21375,7 @@ create table dbo.user_data
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__user_data primary key (id)
 );
 
@@ -21408,7 +21408,7 @@ create table dbo.vacancy
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__vacancy primary key (id)
 );
 
@@ -21418,7 +21418,7 @@ create table dbo.vacancy_response
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__vacancy_response primary key (id)
 );
 
@@ -21472,7 +21472,7 @@ create table dbo.vacancy_source
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__vacancy_source primary key (id)
 );
 
@@ -21502,7 +21502,7 @@ create table dbo.vacancy_subscription
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__vacancy_subscription primary key (id)
 );
 
@@ -21537,7 +21537,7 @@ create table dbo.vacancy_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__vacancy_type primary key (id)
 );
 
@@ -21621,7 +21621,7 @@ create table dbo.vendor_state
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__vendor_state primary key (id)
 );
 
@@ -21653,7 +21653,7 @@ create table dbo.verb
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__verb primary key (id)
 );
 
@@ -21677,7 +21677,7 @@ create table dbo.walkthrough
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__walkthrough primary key (id)
 );
 
@@ -21700,7 +21700,7 @@ create table dbo.web_design
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__web_design primary key (id)
 );
 
@@ -21721,7 +21721,7 @@ create table dbo.web_rule
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__web_rule primary key (id)
 );
 
@@ -21746,7 +21746,7 @@ create table dbo.webinar_system
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__webinar_system primary key (id)
 );
 
@@ -21778,7 +21778,7 @@ create table dbo.wiki_article
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__wiki_article primary key (id)
 );
 
@@ -21788,7 +21788,7 @@ create table dbo.wiki_article_communication
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__wiki_article_communication primary key (id)
 );
 
@@ -21798,7 +21798,7 @@ create table dbo.wiki_article_communication_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__wiki_article_communication_type primary key (id)
 );
 
@@ -21835,7 +21835,7 @@ create table dbo.wiki_article_type
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__wiki_article_type primary key (id)
 );
 
@@ -21870,7 +21870,7 @@ create table dbo.wiki_base
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__wiki_base primary key (id)
 );
 
@@ -21886,13 +21886,13 @@ create table dbo.wiki_bases
     knowledge_parts                  text             null,
     enable_anonymous_access          boolean          null,
     access_level                     bigint           null,
-    access_roles                     text             null,
-    access_groups                    text             null,
+    access_roles                     xml              null,
+    access_groups                    xml              null,
     access_org_id                    bigint           null,
     access_site_id                   bigint           null,
     access_host_id                   bigint           null,
     operator                         text             null,
-    conditions                       text             null,
+    conditions                       xml              null,
     modification_date                timestamp        null,
     app_instance_id                  text             null,
     constraint pk__wiki_bases primary key (id)
@@ -21904,7 +21904,7 @@ create table dbo.work_schedule
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__work_schedule primary key (id)
 );
 
@@ -21934,7 +21934,7 @@ create table dbo.workflow
     created                          timestamp        null,
     modified                         timestamp        null,
     ftime                            bytea            not null,
-    data                             text             null,
+    data                             xml              null,
     constraint pk__workflow primary key (id)
 );
 
@@ -21949,7 +21949,7 @@ create table dbo.workflows
     app_instance_id                  text             null,
     use_triggers                     boolean          null,
     is_std                           boolean          null,
-    role_id                          text             null,
+    role_id                          xml              null,
     constraint pk__workflows primary key (id)
 );
 
@@ -21964,7 +21964,7 @@ create table scrtest.collaborator
     id                               bigint           null,
     created                          varchar(50)      null,
     modified                         varchar(50)      null,
-    data2                            text             null,
+    data2                            xml              null,
     lastname                         varchar(100)     null
 );
 

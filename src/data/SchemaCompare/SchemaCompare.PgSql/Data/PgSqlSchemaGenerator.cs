@@ -296,6 +296,8 @@ order by
                 return DataType.DoublePrecision;
             case "bytea":
                 return DataType.ByteArray;
+            case "xml":
+                return DataType.Xml;
             default:
                 throw new InvalidOperationException($"unsupported data type: {dataType}");
         }

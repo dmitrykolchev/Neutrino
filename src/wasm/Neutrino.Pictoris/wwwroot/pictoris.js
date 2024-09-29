@@ -5,7 +5,7 @@ let _height;
 let _editor;
 let _context;
 export function refresh() {
-    const result = _pictorisGlobal.setBrightness(128);
+    const result = _pictorisGlobal.setBrightness(0);
     try {
         setImageData(result);
     }
@@ -33,7 +33,6 @@ export function initialize(pictoris, width, height) {
     buttonFV.addEventListener("click", handleFlipVertical);
     const buttonFH = document.getElementById("flipHorizontal");
     buttonFH.addEventListener("click", handleFlipHorizontal);
-    setBrightness(128);
 }
 function handleFlipHorizontal() {
     const result = _pictorisGlobal.flipHorizontal();
@@ -69,6 +68,6 @@ function setImageData(buffer) {
 }
 function handleValueChange(e) {
     const range = e.target;
-    setBrightness(parseInt(range.value, 10));
+    setBrightness(parseFloat(range.value));
 }
 //# sourceMappingURL=pictoris.js.map

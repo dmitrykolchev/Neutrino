@@ -1,0 +1,32 @@
+{
+    "name": "FluentApp",
+    "version": "1.0.0",
+    "description": "Fluent sample project",
+    "main": "index.js",
+    "author": "Dmitry Kolchev",
+    "license": "MIT",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "tsc --build && rollup -c"
+    },
+    "devDependencies": {
+        "@fluentui/tokens": "^0.0.0-nightly-20240910-0407.1",
+        "@fluentui/web-components": "^3.0.0-beta.64",
+        "@microsoft/fast-element": "^2.0.0-beta.26",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@types/node": "^22.5.1",
+        "copyfiles": "^2.4.1",
+        "rollup": "^4.21.2",
+        "rollup-plugin-dts": "^6.1.1",
+        "rollup-plugin-filesize": "^10.0.0",
+        "source-map": "^0.7.4",
+        "source-map-loader": "^5.0.0",
+        "ts-loader": "^9.5.1",
+        "tslib": "^2.7.0",
+        "typescript": "^5.5.4",
+        "undici-types": "^6.19.8"
+    }
+}
