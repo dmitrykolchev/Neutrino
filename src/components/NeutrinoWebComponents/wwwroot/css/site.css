@@ -1,0 +1,182 @@
+/* Include tokens */
+@import "/specturm-css/tokens/dist/index.css";
+
+/*
+  For components with no other contexts available, load the
+  index.css file from the component's package. These are components
+  that do not have a spectrum or express context available.
+*/
+@import "/specturm-css/page/dist/index.css";
+@import "/specturm-css/typography/dist/index.css";
+@import "/specturm-css/icon/dist/index.css";
+
+@import "color-scheme.css";
+@import "border.css";
+@import "colors.css";
+@import "shared-colors.css";
+@import "semantic-colors.css";
+@import "curves.css";
+@import "spacing.css";
+@import "status-colors.css";
+@import "typography.css";
+
+
+html {
+}
+
+.page-header {
+    --height: 16rem;
+    background-color: #000;
+    border-bottom: 1px solid #393939;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    height: var(--height);
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.page-title {
+    font-size: 4.75rem;
+    font-weight: 300;
+    line-height: 1.13;
+    margin-left: 4rem;
+    margin-bottom: 2rem;
+}
+
+.page-tabs {
+    background-color: #000;
+    color: white;
+    position: sticky;
+    left: 0;
+    right: 0;
+    height: 48px;
+    top: 0;
+    z-index: 100;
+}
+
+.page-content {
+    position: relative;
+    padding-top: 2rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+body {
+  background-color: var(--theme-background-color);
+  color: var(--theme-foreground-color);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.display {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-display-font-weight);
+    font-size: var(--typography-display-font-size);
+    line-height: var(--typography-display-line-height);
+}
+
+.large-title {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-large-title-font-weight);
+    font-size: var(--typography-large-title-font-size);
+    line-height: var(--typography-large-title-line-height);
+}
+
+.title1 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-title1-font-weight);
+    font-size: var(--typography-title1-font-size);
+    line-height: var(--typography-title1-line-height);
+}
+
+.title2 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-title2-font-weight);
+    font-size: var(--typography-title2-font-size);
+    line-height: var(--typography-title2-line-height);
+}
+
+.title3 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-title3-font-weight);
+    font-size: var(--typography-title3-font-size);
+    line-height: var(--typography-title3-line-height);
+}
+
+.subtitle1 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-subtitle1-font-weight);
+    font-size: var(--typography-subtitle1-font-size);
+    line-height: var(--typography-subtitle1-line-height);
+}
+
+.subtitle2-stronger {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-subtitle2-stronger-font-weight);
+    font-size: var(--typography-subtitle2-stronger-font-size);
+    line-height: var(--typography-subtitle2-stronger-line-height);
+}
+
+.subtitle2 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-subtitle2-font-weight);
+    font-size: var(--typography-subtitle2-font-size);
+    line-height: var(--typography-subtitle2-line-height);
+}
+
+.body1-stronger {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-body1-stronger-font-weight);
+    font-size: var(--typography-body1-stronger-font-size);
+    line-height: var(--typography-body1-stronger-line-height);
+}
+
+.body1-strong {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-body1-strong-font-weight);
+    font-size: var(--typography-body1-strong-font-size);
+    line-height: var(--typography-body1-strong-line-height);
+}
+
+.body1 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-body1-font-weight);
+    font-size: var(--typography-body1-font-size);
+    line-height: var(--typography-body1-line-height);
+}
+
+.caption1-strong {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-caption1-strong-font-weight);
+    font-size: var(--typography-caption1-strong-font-size);
+    line-height: var(--typography-caption1-strong-line-height);
+}
+
+.caption1 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-caption1-font-weight);
+    font-size: var(--typography-caption1-font-size);
+    line-height: var(--typography-caption1-line-height);
+}
+
+.caption2-strong {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-caption2-strong-font-weight);
+    font-size: var(--typography-caption2-strong-font-size);
+    line-height: var(--typography-caption2-strong-line-height);
+}
+
+.caption2 {
+    font-family: var(--font-family-base);
+    font-weight: var(--typography-caption2-font-weight);
+    font-size: var(--typography-caption2-font-size);
+    line-height: var(--typography-caption2-line-height);
+}
+
+code {
+    font-family: var(--font-family-monospace);
+}

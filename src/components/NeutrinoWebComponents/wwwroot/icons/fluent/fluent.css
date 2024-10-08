@@ -1,0 +1,6 @@
+﻿@font-face {
+    font-family: "FluentSystemIcons";
+    src: url("./FluentSystemIcons-Resizable.woff2") format('woff2'), 
+         url("./FluentSystemIcons-Resizable.ttf") format('truetype'), 
+         url("./FluentSystemIcons-Resizable.woff") format('woff')
+}

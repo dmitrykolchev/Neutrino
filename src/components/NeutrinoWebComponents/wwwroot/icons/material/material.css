@@ -1,0 +1,18 @@
+﻿@font-face {
+    font-family: "MaterialSymbolsOutlined";
+    src: url("./MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].woff2") format('woff2'),
+         url("./MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf") format('truetype')
+}
+
+@font-face {
+    font-family: "MaterialSymbolsRounded";
+    src: url("./MaterialSymbolsRounded[FILL,GRAD,opsz,wght].woff2") format('woff2'),
+         url("./MaterialSymbolsRounded[FILL,GRAD,opsz,wght].ttf") format('truetype')
+}
+
+@font-face {
+    font-family: "MaterialSymbolsSharp";
+    src: url("./MaterialSymbolsSharp[FILL,GRAD,opsz,wght].woff2") format('woff2'),
+         url("./MaterialSymbolsSharp[FILL,GRAD,opsz,wght].ttf") format('truetype')
+}
+

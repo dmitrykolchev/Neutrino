@@ -1,0 +1,5 @@
+:root {
+    --color-success: var(--color-green-primary);
+    --color-warning: var(--color-orange-primary);
+    --color-danger: var(--color-cranberry-primary);
+}

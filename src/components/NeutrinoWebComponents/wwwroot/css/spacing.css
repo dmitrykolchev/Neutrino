@@ -1,0 +1,37 @@
+:root {
+    --spacing-none: 0;
+    --spacing-xxs: 2px;
+    --spacing-xs: 4px;
+    --spacing-snudge: 6px;
+    --spacing-s: 8px;
+    --spacing-mnudge: 10px;
+    --spacing-m: 12px;
+    --spacing-l: 16px;
+    --spacing-xl: 20px;
+    --spacing-xxl: 24px;
+    --spacing-xxxl: 32px;
+
+    --spacing-horizontal-none: var(--spacing-none);
+    --spacing-horizontal-xxs: var(--spacing-xxs);
+    --spacing-horizontal-xs: var(--spacing-xs);
+    --spacing-horizontal-snudge: var(--spacing-snudge);
+    --spacing-horizontal-s: var(--spacing-s);
+    --spacing-horizontal-mnudge: var(--spacing-mnudge);
+    --spacing-horizontal-m: var(--spacing-m);
+    --spacing-horizontal-l: var(--spacing-l);
+    --spacing-horizontal-xl: var(--spacing-xl);
+    --spacing-horizontal-xxl: var(--spacing-xxl);
+    --spacing-horizontal-xxxl: var(--spacing-xxxl);
+
+    --spacing-vertical-none: var(--spacing-none);
+    --spacing-vertical-xxs: var(--spacing-xxs);
+    --spacing-vertical-xs: var(--spacing-xs);
+    --spacing-vertical-snudge: var(--spacing-snudge);
+    --spacing-vertical-s: var(--spacing-s);
+    --spacing-vertical-mnudge: var(--spacing-mnudge);
+    --spacing-vertical-m: var(--spacing-m);
+    --spacing-vertical-l: var(--spacing-l);
+    --spacing-vertical-xl: var(--spacing-xl);
+    --spacing-vertical-xxl: var(--spacing-xxl);
+    --spacing-vertical-xxxl: var(--spacing-xxxl);
+}

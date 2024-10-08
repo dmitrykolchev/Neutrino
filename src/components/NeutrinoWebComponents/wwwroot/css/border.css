@@ -1,0 +1,23 @@
+
+:root {
+    --border-radius-none: 0;
+    --border-radius-small: 2px;
+    --border-radius-medium: 4px;
+    --border-radius-large: 6px;
+    --border-radius-xlarge: 8px;
+    --border-radius-circular: 10000px;
+
+    --stroke-width-thin: 1px;
+    --stroke-width-thick: 2px;
+    --stroke-width-thicker: 3px;
+    --stroke-width-thickest: 4px;
+
+    --shadow2: 0 0 2px var(--shadow-ambient-color), 0 1px 2px var(--shadow-key-color);
+    --shadow4: 0 0 2px var(--shadow-ambient-color), 0 2px 4px var(--shadow-key-color);
+    --shadow8: 0 0 2px var(--shadow-ambient-color), 0 4px 8px var(--shadow-key-color);
+    --shadow16: 0 0 2px var(--shadow-ambient-color), 0 8px 16px var(--shadow-key-color);
+    --shadow28: 0 0 8px var(--shadow-ambient-color), 0 14px 28px var(--shadow-key-color);
+    --shadow64: 0 0 8px var(--shadow-ambient-color), 0 32px 64px var(--shadow-key-color);
+}
+
+

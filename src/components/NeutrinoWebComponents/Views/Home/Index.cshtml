@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    :root {
+        color-scheme: dark;
+        --font-size: 13px;
+    }
+</style>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <neu-button name="button1" type="button">
+        <sp-icon-article slot="start"></sp-icon-article>
+        <span>Здравствуй, Мир!</span>
+    </neu-button>
+
+    <neu-component name="Alexey">Hello World!</neu-component>
+
+    <script type="module">
+
+        class NeuComponent extends HTMLElement {
+            static observedAttributes = ["name"];
+
+            static _style = `
+            span { border: 1px solid green; padding: 8px; font-size: var(--font-size); }`;
+            static _styleSheet;
+
+            _name;
+            _shadowRoot;
+
+            constructor() {
+                super();
+                this._name = null;
+                if (!NeuComponent._styleSheet) {
+                    NeuComponent._styleSheet = new CSSStyleSheet();
+                    NeuComponent._styleSheet.replaceSync(NeuComponent._style);
+                }
+                this._shadowRoot = this.attachShadow({ mode: "open" });
+                //this._shadowRoot.adoptedStyleSheets = [NeuComponent._styleSheet];
+            }
+
+            get name() {
+                return this._name;
+            }
+            set name(value) {
+                this.setAttribute("name", value);
+            }
+
+            attributeChangedCallback(name, oldValue, newValue) {
+                this._name = newValue;
+                this.render();
+            }
+
+            render() {
+                const children = [];
+                const style = document.createElement("style");
+                style.textContent = NeuComponent._style;
+                children.push(style);
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(`<span>Hello, ${this.name}!</span>`, "text/html");
+                children.push(...doc.body.children);
+                this.shadowRoot.replaceChildren(...children);
+                //this.style.setProperty("--font-size", "22px");
+            }
+
+            connectedCallback() {
+                this.render();
+            }
+
+            disconnectedCallback() {
+
+            }
+        }
+        customElements.define("neu-component", NeuComponent);
+
+    </script>
+
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <simple-greeting name="Dmitry"></simple-greeting>
+    <style>
+        .overlay-demo-popover sp-action-group {
+            padding: var(--spectrum-actiongroup-vertical-spacing-regular);
+        }
+
+        #overlay-demo {
+            position: static;
+        }
+
+            #overlay-demo:not(:defined),
+            #overlay-demo *:not(:defined) {
+                display: none;
+            }
+    </style>
+
+    <sp-thumbnail size="1000">
+        <img src="~/images/3M6A5808.JPG" alt="Demo Image" />
+    </sp-thumbnail>
+    <sp-card heading="Card Heading" subheading="JPG Photo">
+        <img slot="cover-photo"
+             src="~/images/3M6A5808.JPG"
+             alt="Demo Image" />
+        <div slot="footer">Footer</div>
+    </sp-card>
+    <br />
+    <sp-popover id="overlay-demo" class="overlay-demo-popover" open>
+        <sp-action-group vertical quiet emphasized selects="single">
+            <sp-action-button id="trigger-1" hold-affordance>
+                <sp-icon-anchor-select slot="icon"></sp-icon-anchor-select>
+            </sp-action-button>
+            <sp-action-button id="trigger-2" hold-affordance>
+                <sp-icon-polygon-select slot="icon"></sp-icon-polygon-select>
+            </sp-action-button>
+            <sp-action-button id="trigger-3" hold-affordance>
+                <sp-icon-rect-select slot="icon"></sp-icon-rect-select>
+            </sp-action-button>
+        </sp-action-group>
+        <sp-overlay trigger="trigger-1@hover" type="hint">
+            <sp-tooltip>Hover</sp-tooltip>
+        </sp-overlay>
+        <sp-overlay trigger="trigger-1@longpress"
+                    type="auto"
+                    placement="right-start">
+            <sp-popover class="overlay-demo-popover" tip>
+                <sp-action-group vertical quiet>
+                    <sp-action-button>
+                        <sp-icon-anchor-select slot="icon"></sp-icon-anchor-select>
+                    </sp-action-button>
+                    <sp-action-button>
+                        <sp-icon-polygon-select slot="icon"></sp-icon-polygon-select>
+                    </sp-action-button>
+                    <sp-action-button>
+                        <sp-icon-rect-select slot="icon"></sp-icon-rect-select>
+                    </sp-action-button>
+                </sp-action-group>
+            </sp-popover>
+        </sp-overlay>
+        <sp-overlay trigger="trigger-2@hover" type="hint">
+            <sp-tooltip>Hover</sp-tooltip>
+        </sp-overlay>
+        <sp-overlay trigger="trigger-2@longpress"
+                    type="auto"
+                    placement="right-start">
+            <sp-popover class="overlay-demo-popover" tip>
+                <sp-action-group vertical quiet>
+                    <sp-action-button>
+                        <sp-icon-anchor-select slot="icon"></sp-icon-anchor-select>
+                    </sp-action-button>
+                    <sp-action-button>
+                        <sp-icon-polygon-select slot="icon"></sp-icon-polygon-select>
+                    </sp-action-button>
+                    <sp-action-button>
+                        <sp-icon-rect-select slot="icon"></sp-icon-rect-select>
+                    </sp-action-button>
+                </sp-action-group>
+            </sp-popover>
+        </sp-overlay>
+        <sp-overlay trigger="trigger-3@hover" type="hint">
+            <sp-tooltip>Hover</sp-tooltip>
+        </sp-overlay>
+        <sp-overlay trigger="trigger-3@longpress"
+                    type="auto"
+                    placement="right-start">
+            <sp-popover class="overlay-demo-popover" tip>
+                <sp-action-group vertical quiet>
+                    <sp-action-button>
+                        <sp-icon-anchor-select slot="icon"></sp-icon-anchor-select>
+                    </sp-action-button>
+                    <sp-action-button>
+                        <sp-icon-polygon-select slot="icon"></sp-icon-polygon-select>
+                    </sp-action-button>
+                    <sp-action-button>
+                        <sp-icon-rect-select slot="icon"></sp-icon-rect-select>
+                    </sp-action-button>
+                </sp-action-group>
+            </sp-popover>
+        </sp-overlay>
+    </sp-popover>
+    <sp-button variant="primary">Primary</sp-button>
+    <br /><br />
+    <sp-button variant="secondary" quiet>secondary</sp-button>
+    <br /><br />
+    <sp-slider label="Slider Label"></sp-slider>
+    <sp-slider label="Slider Label - Editable" editable></sp-slider>
+    <sp-slider label="Slider Label"></sp-slider>
+    <sp-slider label="Slider Label - Disabled" disabled></sp-slider>
+    <sp-field-label for="picker">Where do you live?</sp-field-label>
+    <sp-picker id="picker">
+        <span slot="label">
+            Select a Country with a very long label, too long in fact
+        </span>
+        <sp-menu-item> Deselect </sp-menu-item>
+        <sp-menu-item> Select Inverse </sp-menu-item>
+        <sp-menu-item> Feather... </sp-menu-item>
+        <sp-menu-item> Select and Mask... </sp-menu-item>
+        <sp-menu-divider></sp-menu-divider>
+        <sp-menu-item> Save Selection </sp-menu-item>
+        <sp-menu-item disabled> Make Work Path </sp-menu-item>
+    </sp-picker>
+
+    <sp-picker dir="rtl">
+        <span slot="label">
+            Select a Country with a very long label, too long in fact
+        </span>
+        <sp-menu dir="rtl">
+            <sp-menu-item dir="rtl"> Deselect </sp-menu-item>
+            <sp-menu-item dir="rtl"> Select Inverse </sp-menu-item>
+            <sp-menu-item dir="rtl"> Feather... </sp-menu-item>
+            <sp-menu-item dir="rtl"> Select and Mask... </sp-menu-item>
+            <sp-menu-divider></sp-menu-divider>
+            <sp-menu-item dir="rtl"> Save Selection </sp-menu-item>
+            <sp-menu-item disabled dir="rtl"> Make Work Path </sp-menu-item>
+        </sp-menu>
+    </sp-picker>
+</div>

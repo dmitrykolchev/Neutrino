@@ -1,0 +1,156 @@
+﻿<style>
+
+@@property --border-gradient-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0turn;
+}
+
+.aaa {
+    --outer-radius: 4px;
+    --border-size: 1px;
+    --inner-radius: calc(var(--outer-radius) - var(--border-size));
+    --runtime: #73ED73;
+    background-image: conic-gradient(from var(--border-gradient-angle) at 50% 50%, 
+        transparent, var(--runtime) 16%, transparent 20%, 
+        transparent 25%, #F1697F 41%, transparent 45%,
+        transparent 50%, var(--runtime) 66%, transparent 70%,
+        transparent 75%, #F1697F 91%, transparent 95%);
+    border-radius: var(--outer-radius);
+    background-size: contain;
+    padding: var(--border-size);
+    animation: buttonBorderSpin 4s infinite linear;
+    max-width: 100%;
+}
+
+@@keyframes buttonBorderSpin {
+    0% {
+        --border-gradient-angle: 0turn;
+    }
+
+    100% {
+        --border-gradient-angle: 1turn;
+    }
+}
+</style>
+
+<div class="page-header">
+    <div class="page-title">Material Icons</div>
+</div>
+<div class="page-tabs">
+    <div>&nbsp;</div>
+</div>
+<div class="page-content">
+    <div class="spectrum-Article">
+        <div class="aaa" style="width:420px;height:420px;position:relative;">
+            <div style="width:100%;height:100%;background-color:#333;border-radius:var(--outer-radius)"></div>
+        </div>
+        <h4 class="spectrum-Heading spectrum-Heading--sizeXL spectrum-Heading--serif">
+            Material Icons
+        </h4>
+        <h4 class="spectrum-Heading spectrum-Heading--sizeM spectrum-Heading--serif">
+            Sharp Icons
+        </h4>
+        <p class="spectrum-Body spectrum-Body--sizeM">
+            <neu-material-icon glyph="ArticleShortcut" sharp size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="ArticleShortcut" sharp size="xs"></neu-material-icon>
+            <neu-material-icon glyph="ArticleShortcut" sharp size="s"></neu-material-icon>
+            <neu-material-icon glyph="ArticleShortcut" sharp></neu-material-icon>
+            <neu-material-icon glyph="ArticleShortcut" sharp size="m"></neu-material-icon>
+            <neu-material-icon glyph="ArticleShortcut" sharp size="l"></neu-material-icon>
+            <neu-material-icon glyph="ArticleShortcut" sharp size="xl"></neu-material-icon>
+            <neu-material-icon glyph="ArticleShortcut" sharp size="xxl"></neu-material-icon>
+        </p>
+        <p class="spectrum-Body spectrum-Body--sizeM">
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="xs"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="s"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="n"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="m"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="l"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="xl"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="100" size="xxl"></neu-material-icon>
+        </p>
+        <p class="spectrum-Body spectrum-Body--sizeM">
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="xs"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="s"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="n"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="m"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="l"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="xl"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" sharp weight="900" size="xxl"></neu-material-icon>
+        </p>
+        <p class="spectrum-Body spectrum-Body--sizeM" style="color:#00cc6a;">
+            <neu-material-icon glyph="AudioVideoReceiver" size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" size="xs"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" size="s"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" size="n"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" size="m"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" size="l"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" size="xl"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" size="xxl"></neu-material-icon>
+        </p>
+        <h4 class="spectrum-Heading spectrum-Heading--sizeM spectrum-Heading--serif">
+            Outlined Icons
+        </h4>
+        <p class="spectrum-Body spectrum-Body--sizeM">
+            <neu-material-icon glyph="AdGroup" outlined size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" outlined size="xs"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" outlined size="s"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" outlined size="n"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" outlined size="m"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" outlined size="l"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" outlined size="xl"></neu-material-icon>
+            <neu-material-icon glyph="AdGroup" outlined size="xxl"></neu-material-icon>
+        </p>
+        <p class="spectrum-Body spectrum-Body--sizeM" style="color:#00cc6a;">
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="xs"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="s"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="n"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="m"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="l"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="xl"></neu-material-icon>
+            <neu-material-icon glyph="AudioVideoReceiver" outlined size="xxl"></neu-material-icon>
+        </p>
+        <br />
+        <br />
+        <form>
+        <input id="iconsFilter" type="text" value="wifi"/>
+        <button type="button" onclick="javascript:searchIcons(this)" title="Search">Search</button>
+        <neu-iconlist id="icons" type="Material" size="xxl" style="height:400px;max-height:400px;" filter="wifi"></neu-iconlist>
+        <script>
+            function searchIcons(button) {
+                document.getElementById("icons").filter = document.getElementById("iconsFilter").value;
+            }
+        </script>
+        </form>
+        <br />
+        <br />
+        <h4 class="spectrum-Heading spectrum-Heading--sizeM spectrum-Heading--serif">
+            Rounded Icons
+        </h4>
+        <p class="spectrum-Body spectrum-Body--sizeM">
+            <neu-material-icon glyph="Preview" rounded size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="Preview" rounded size="xs"></neu-material-icon>
+            <neu-material-icon glyph="Preview" rounded size="s"></neu-material-icon>
+            <neu-material-icon glyph="Preview" rounded size="n"></neu-material-icon>
+            <neu-material-icon glyph="Preview" rounded size="m"></neu-material-icon>
+            <neu-material-icon glyph="Preview" rounded size="l"></neu-material-icon>
+            <neu-material-icon glyph="Preview" rounded size="xl"></neu-material-icon>
+            <neu-material-icon glyph="Preview" rounded size="xxl"></neu-material-icon>
+        </p>
+        <p class="spectrum-Body spectrum-Body--sizeM" style="color:#00cc6a;">
+            <neu-material-icon glyph="PublicOff" rounded size="xxs"></neu-material-icon>
+            <neu-material-icon glyph="PublicOff" rounded size="xs"></neu-material-icon>
+            <neu-material-icon glyph="PublicOff" rounded size="s"></neu-material-icon>
+            <neu-material-icon glyph="PublicOff" rounded size="n"></neu-material-icon>
+            <neu-material-icon glyph="PublicOff" rounded size="m"></neu-material-icon>
+            <neu-material-icon glyph="PublicOff" rounded size="l"></neu-material-icon>
+            <neu-material-icon glyph="PublicOff" rounded size="xl"></neu-material-icon>
+            <neu-material-icon glyph="PublicOff" rounded size="xxl"></neu-material-icon>
+        </p>
+    </div>
+</div>
+

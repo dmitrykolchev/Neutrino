@@ -1,0 +1,26 @@
+:root {
+    --shadow-light-ambient-color: rgba(0,0,0,0.12);
+    --shadow-light-key-color: rgba(0,0,0,0.14);
+    --shadow-dark-ambient-color: rgba(0,0,0,0.24);
+    --shadow-dark-key-color: rgba(0,0,0,0.28);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --shadow-ambient-color: var(--shadow-light-ambient-color);
+    --shadow-key-color: var(--shadow-light-key-color);
+    --theme-background-color: white;
+    --theme-foreground-color: black;
+    --color-scheme: light;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shadow-ambient-color: var(--shadow-dark-ambient-color);
+    --shadow-key-color: var(--shadow-dark-key-color);
+    --theme-background-color: black;
+    --theme-foreground-color: white;
+    --color-scheme: dark;
+  }
+}

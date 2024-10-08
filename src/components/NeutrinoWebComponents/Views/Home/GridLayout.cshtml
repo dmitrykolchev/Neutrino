@@ -1,0 +1,172 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<style>
+
+    .gcontainer {
+        display: grid;
+        width: 1200px;
+        padding: 4px;
+        max-height: 400px;
+        row-gap: 4px;
+        column-gap: 4px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        overflow-y: auto;
+        background-color: green;
+    }
+
+        .gcontainer > div {
+            position: relative;
+            padding: 0;
+            background-color: red;
+            padding: 6pt;
+            color: black;
+            overflow: hidden;
+        }
+</style>
+
+<div class="page-header">
+    <div class="page-title">CSS Grid Layout</div>
+</div>
+<div class="page-tabs">
+    <div>Tabs</div>
+</div>
+<div class="page-content">
+    <div class="spectrum-Article">
+        <h1 class="spectrum-Heading spectrum-Heading--sizeXXXL spectrum-Heading--serif">
+            Getting started
+        </h1>
+    </div>
+    <p class="spectrum-Body spectrum-Body--sizeM">
+        If you're creating your own project, we recommend using <code class="spectrum-Code">@@open-wc</code>'s 
+        <sp-link target="_blank" href="https://open-wc.org/guides/developing-components/getting-started/" dir="ltr" focusable="">project generator</sp-link>, which will get you started in an environment similar to this repository. <code class="spectrum-Code">@@open-wc</code> also uses Lit for building components and <code class="spectrum-Code">@@web/test-runner</code> for their testing framework, making it easier for us to troubleshoot and reproduce any issues you run into, as well as reducing the amount of changes to make to your code if you decide to contribute your work to our library. For specific information on how to configure your <code class="spectrum-Code">@@open-wc</code> project, click <sp-link href="/spectrum-web-components/guides/configuring-openwc" dir="ltr" focusable="">here</sp-link>.
+    </p>
+    <section style="position: relative; max-height: 9em; overflow: auto;">
+        <h4>Scroll down for toggle button</h4>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+        </p>
+        <sp-button onclick="javascript:this.nextElementSibling.open = !this.nextElementSibling.open;">
+            Toggle sticky action bar
+        </sp-button>
+        <sp-action-bar variant="sticky" style="inset-block: 0px">
+            2 selected
+            <sp-action-button slot="buttons" label="Edit">
+                <sp-icon-edit slot="icon"></sp-icon-edit>
+            </sp-action-button>
+            <sp-action-button slot="buttons" label="More">
+                <sp-icon-more slot="icon"></sp-icon-more>
+            </sp-action-button>
+        </sp-action-bar>
+    </section>
+
+    <article>
+        <template shadowrootmode="open">
+            <style>
+                p {
+                    padding: 8px;
+                    background-color: plum;
+                }
+            </style>
+            <p>I'm in the shadow DOM.</p>
+        </template>
+    </article>
+
+    <div>
+        <template shadowrootmode="open">
+            <style>
+                :host {
+                    display: block;
+                    border: 1px dotted black;
+                    padding: 10px;
+                    margin: 10px;
+                }
+
+                :focus {
+                    outline: 2px solid blue;
+                }
+            </style>
+            <div>Clickable Shadow DOM text</div>
+            <input type="text" placeholder="Input inside Shadow DOM" />
+        </template>
+    </div>
+
+    <div>
+        <template shadowrootmode="open" shadowrootdelegatesfocus>
+            <style>
+                :host {
+                    display: block;
+                    border: 1px dotted black;
+                    padding: 10px;
+                    margin: 10px;
+                }
+
+                div:focus {
+                    border: 2px solid red;
+                }
+
+                :focus {
+                    outline: 2px solid blue;
+                }
+            </style>
+            <div>Clickable Shadow DOM text</div>
+            <input type="text" placeholder="Input inside Shadow DOM" />
+        </template>
+    </div>
+
+    <pre><code class="css">
+    .gcontainer {
+        display: grid;
+        width: 1200px;
+        padding: 4px;
+        max-height: 400px;
+        row-gap: 4px;
+        column-gap: 4px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        overflow-y: auto;
+        background-color: green;
+    }
+
+        .gcontainer > div {
+            position: relative;
+            padding: 0;
+            background-color: red;
+            padding: 6pt;
+            color: black;
+            overflow: hidden;
+        }
+
+    </code></pre>
+    <div class="gcontainer">
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. </div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+    </div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</p>
+    <div class="gcontainer">
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. </div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc malesuada malesuada feugiat. Sed accumsan sapien tempus ex egestas sodales. Donec vestibulum consectetur nisi. Proin sit amet fringilla turpis. Aenean sapien ipsum, vulputate vel tortor at, blandit feugiat odio. Aliquam erat volutpat. Praesent ante felis, lobortis sed pretium sit amet, tincidunt et lacus. Integer sed bibendum lectus, in accumsan neque. Curabitur fermentum mattis elit, eget varius eros dapibus eget. Mauris vestibulum sodales consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in cursus justo. Sed tincidunt mollis tellus eget finibus. Aenean commodo turpis at congue interdum.</div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+
+:root {
+    --default-background-color: var(--color-grey4);
+    --default-foreground-color: var(--theme-foreground-color);
+    --link-foreground-color: var(--color-blue-tint20);
+    --link-foreground-color-hover: var(--color-blue-primary);
+
+    --color-brand160: #E5F1FA;
+    --color-brand150: #CCE4F6;
+    --color-brand140: #B2D6F2;
+    --color-brand130: #99C9ED;
+    --color-brand120: #7FBBE9;
+    --color-brand110: #65ADE5;
+    --color-brand100: #4CA0E0;
+    --color-brand90: #0078D4;
+    --color-brand80: #006CBE;
+    --color-brand70: #0060A9;
+    --color-brand60: #005394;
+    --color-brand50: #00477F;
+    --color-brand40: #003C6A;
+    --color-brand30: #002F54;
+    --color-brand20: #00233F;
+    --color-brand10: #00172A;
+
+
+}

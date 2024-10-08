@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="spectrum spectrum--dark spectrum--medium">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LitSample</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/highlight/styles/vs2015.css">
+    <link rel="stylesheet" href="~/icons/icons.css" />
+    <script src="~/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        .header-main {
+            top: 0;
+            background-color: #161616;
+            border-bottom: 1px solid #393939;
+            position: fixed;
+            height: 48px;
+            left: 0;
+            right: 0;
+        }
+
+        .left-menu {
+            position: fixed;
+            top: 48px;
+            background-color: #242424;
+            left: 0;
+            width: 240px;
+            color: white;
+            bottom: 28px;
+            border-right: 1px solid #393939;
+        }
+
+        .status {
+            position: fixed;
+            height: 28px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #393939;
+            background-color: #161616;
+        }
+
+        .container {
+            position: fixed;
+            left: 240px;
+            right: 0;
+            top: 48px;
+            bottom: 28px;
+            background-color: #303030;
+            overflow: auto;
+        }
+    </style>
+</head>
+@functions {
+    string GetSelected(string action, string controller)
+    {
+        var routeValues = this.Context.Request.RouteValues;
+        return string.Equals((string?)routeValues["action"], action, StringComparison.InvariantCultureIgnoreCase) &&
+               string.Equals((string?)routeValues["controller"], controller, StringComparison.InvariantCultureIgnoreCase) 
+                   ? "selected" 
+                   : "";
+    }
+}
+<body>
+    <sp-theme color="dark" scale="medium">
+        <header class="header-main" aria-label="Header"></header>
+        <nav class="left-menu">
+            <sp-sidenav defaultValue="Docs">
+                <sp-sidenav-heading value="General"
+                                    label="General Info">
+                    <sp-icon-article slot="icon"> </sp-icon-article>
+                    <sp-sidenav-item value="WebComponents"
+                                     @GetSelected("Index", "Home")
+                                     href=@Url.Action("Index", "Home")
+                                     label="Docs">
+                        <sp-icon-article slot="icon"> </sp-icon-article>
+                    </sp-sidenav-item>
+                    <sp-sidenav-item value="Sidebar"
+                                     @GetSelected("Sidebar", "Home")
+                                     href=@Url.Action("Sidebar", "Home")
+                                     label="Sidebar">
+                        <sp-icon-article slot="icon"> </sp-icon-article>
+                    </sp-sidenav-item>
+                    <sp-sidenav-item value="Colors"
+                                     href=@Url.Action("Colors", "Home")
+                                     @GetSelected("Colors", "Home")
+                                     label="Colors">
+                        <sp-icon-article slot="icon"> </sp-icon-article>
+                    </sp-sidenav-item>
+                </sp-sidenav-heading>
+                <sp-sidenav-heading value="Icons"
+                                    label="Icons">
+                    <sp-icon-article slot="icons"> </sp-icon-article>
+                    <sp-sidenav-item value="MaterialIcons"
+                                     @GetSelected("MaterialIcons", "Home")
+                                     href=@Url.Action("MaterialIcons", "Home")
+                                     label="Material Icons">
+                        <neu-material-icon glyph="AwardStar" size="s" weight="400" slot="icon" sharp></neu-material-icon>
+                    </sp-sidenav-item>
+                    <sp-sidenav-item value="FluentIcons"
+                                     href=@Url.Action("FluentIcons", "Home")
+                                     @GetSelected("FluentIcons", "Home")
+                                     label="Fluent Icons">
+                        <sp-icon-article slot="icon"> </sp-icon-article>
+                    </sp-sidenav-item>
+                </sp-sidenav-heading>
+                <sp-sidenav-heading value="CSSGridLayout"
+                                    label="CSS Grid Layout">
+                    <sp-icon-article slot="icon"> </sp-icon-article>
+                </sp-sidenav-heading>
+                <sp-sidenav-item value="CSSGridLayoutBasics"
+                                 href=@Url.Action("GridLayout", "Home")
+                                 @GetSelected("GridLayout", "Home")
+                                 label="Basics">
+                    <sp-icon-article slot="icon"> </sp-icon-article>
+                </sp-sidenav-item>
+                <sp-sidenav-item value="CSSGridLayoutAdvanced"
+                                 href=@Url.Action("GridLayout", "Home")
+                                 label="Advanced Topics">
+                    <sp-icon-article slot="icon"> </sp-icon-article>
+                </sp-sidenav-item>
+            </sp-sidenav>
+        </nav>
+        <main class="container" role="main">
+            @RenderBody()
+        </main>
+        <nav class="status"></nav>
+    </sp-theme>
+
+    <script type="module" src="~/js/bundle.debug.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

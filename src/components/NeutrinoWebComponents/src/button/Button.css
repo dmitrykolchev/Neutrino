@@ -1,0 +1,25 @@
+﻿:root {
+    --icon-spacing: 8px;
+}
+
+:host {
+    display: inline-block;
+}
+
+button {
+    min-width: 120px;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    cursor: pointer;
+}
+
+[slot='start'], ::slotted([slot='start']) {
+    margin-inline-end: 8px;
+}
+
+[slot='end'], ::slotted([slot='end']) {
+    margin-inline-start: 8px;
+}

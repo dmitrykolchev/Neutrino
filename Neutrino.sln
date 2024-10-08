@@ -94,6 +94,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pictoris", "pictoris", "{1B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neutrino.Pictoris.Colors", "src\pictoris\Neutrino.Pictoris.Colors\Neutrino.Pictoris.Colors.csproj", "{01A3B02C-C662-4F66-B0B4-DA7CFB40B83F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeutrinoWebComponents", "src\components\NeutrinoWebComponents\NeutrinoWebComponents.csproj", "{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -342,6 +344,14 @@ Global
 		{01A3B02C-C662-4F66-B0B4-DA7CFB40B83F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01A3B02C-C662-4F66-B0B4-DA7CFB40B83F}.Release|x64.ActiveCfg = Release|Any CPU
 		{01A3B02C-C662-4F66-B0B4-DA7CFB40B83F}.Release|x64.Build.0 = Release|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Debug|x64.Build.0 = Debug|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Release|x64.ActiveCfg = Release|Any CPU
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -388,6 +398,7 @@ Global
 		{215FCEB1-D88E-404B-A8F2-666A832DE1B6} = {D507D5DD-529D-4F06-9008-9402EB163597}
 		{1BF8D70F-5BA0-47BF-97B3-287637F8BFA8} = {BAB0DAB7-FF19-4EEF-9168-7017BC224F8F}
 		{01A3B02C-C662-4F66-B0B4-DA7CFB40B83F} = {1BF8D70F-5BA0-47BF-97B3-287637F8BFA8}
+		{8396D3D1-4EBC-4E09-A8F1-F27ADA996C6D} = {54D24C05-1A0F-4A97-931F-5F7BE17020F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB655AAD-9761-4D41-A290-85A0E5EAA593}

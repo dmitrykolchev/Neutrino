@@ -113,7 +113,7 @@ public struct ColorF : IEquatable<ColorF>
     public ColorF Spin(float amount)
     {
         Vector<float> hsl = ColorConverter.RgbToHsl(this.ToVector());
-        float h = (hsl[1] + amount) % 1f;
+        float h = (hsl[0] + amount) % 1f;
         return ColorConverter.HslToRgb(ColorConverter.ToVector(h, hsl[1], hsl[2])).ToRgb();
     }
 
@@ -124,12 +124,12 @@ public struct ColorF : IEquatable<ColorF>
     /// <returns>Array of colors</returns>
     public ColorF[] Wheel(int n)
     {
-        if(n <= 2)
+        if (n <= 2)
         {
             throw new ArgumentOutOfRangeException(nameof(n));
         }
         ColorF[] wheel = new ColorF[n];
-        for(int i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i)
         {
             float amount = (float)i / (float)n;
             wheel[i] = Spin(amount);
@@ -258,6 +258,21 @@ public struct ColorF : IEquatable<ColorF>
             a.A + (b.A - a.A) * amount);
     }
 
+    public ColorF[] GetPalette(ColorF darker, ColorF lighter)
+    {
+        ColorF[] palette = new ColorF[16];
+        for (int i = 0; i < 7; ++i)
+        {
+            palette[i] = Mix(darker, this, (1 + i) * 0.1f);
+        }
+        palette[7] = this;
+        for (int i = 8; i <= 15; ++i)
+        {
+            palette[i] = Mix(this, lighter, (i - 7) * 0.1f);
+        }
+        return palette;
+    }
+
     /// <summary>
     /// Converts color to hex color string (alpha is ignored)
     /// </summary>
@@ -272,13 +287,20 @@ public struct ColorF : IEquatable<ColorF>
     /// <exception cref="ArgumentException"></exception>
     public string ToString(string format)
     {
+        byte r = (byte)(R * 255f);
+        byte g = (byte)(G * 255f);
+        byte b = (byte)(B * 255f);
         if (string.Equals(format, "rgb", StringComparison.OrdinalIgnoreCase))
         {
-            return ColorConverter.ToRgbString(this.ToVector());
+            return $"rgb({r} {g} {b})";
+        }
+        else if (string.Equals(format, "rgba", StringComparison.OrdinalIgnoreCase))
+        {
+            return $"rgba({r} {g} {b} {MathF.Round(A, 2, MidpointRounding.AwayFromZero)})";
         }
         if (string.IsNullOrEmpty(format) || string.Equals(format, "hex", StringComparison.OrdinalIgnoreCase))
         {
-            return ColorConverter.ToRgbHexString(this.ToVector());
+            return $"#{r:X2}{g:X2}{b:X2}";
         }
         throw new ArgumentException($"unsupported format {format}", format);
     }

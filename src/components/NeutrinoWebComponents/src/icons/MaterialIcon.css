@@ -1,0 +1,102 @@
+﻿:host {
+    display: inline-flex;
+    --material-icon-size-xxs: 12px;
+    --material-icon-font-size-xxs: 12px;
+    --material-icon-size-xs: 16px;
+    --material-icon-font-size-xs: 16px;
+    --material-icon-size-s: 20px;
+    --material-icon-font-size-s: 20px;
+    --material-icon-size-n: 24px;
+    --material-icon-font-size-n: 24px;
+    --material-icon-size-m: 32px;
+    --material-icon-font-size-m: 32px;
+    --material-icon-size-l: 40px;
+    --material-icon-font-size-l: 40px;
+    --material-icon-size-xl: 48px;
+    --material-icon-font-size-xl: 48px;
+    --material-icon-size-xxl: 64px;
+    --material-icon-font-size-xxl: 64px;
+    line-height: 1;
+    overflow: visible;
+    align-items: center;
+    justify-content: center;
+    font-family: MaterialSymbolsSharp;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-variation-settings: var(--font-variation-settings);
+}
+
+:host([outlined]) {
+    font-family: MaterialSymbolsOutlined;
+}
+:host([rounded]) {
+    font-family: MaterialSymbolsRounded;
+}
+
+:host([size='xxs']) {
+    min-width: var(--material-icon-size-xxs);
+    max-width: var(--material-icon-size-xxs);
+    min-height: var(--material-icon-size-xxs);
+    max-height: var(--material-icon-size-xxs);
+    font-size: var(--material-icon-font-size-xxs);
+}
+
+:host([size='xs']) {
+    min-width: var(--material-icon-size-xs);
+    max-width: var(--material-icon-size-xs);
+    min-height: var(--material-icon-size-xs);
+    max-height: var(--material-icon-size-xs);
+    font-size: var(--material-icon-font-size-xs);
+}
+
+:host([size='s']) {
+    min-width: var(--material-icon-size-s);
+    max-width: var(--material-icon-size-s);
+    min-height: var(--material-icon-size-s);
+    max-height: var(--material-icon-size-s);
+    font-size: var(--material-icon-font-size-s);
+}
+
+:host([size='n']) {
+    min-width: var(--material-icon-size-n);
+    max-width: var(--material-icon-size-n);
+    min-height: var(--material-icon-size-n);
+    max-height: var(--material-icon-size-n);
+    font-size: var(--material-icon-font-size-n);
+}
+
+:host([size='m']) {
+    min-width: var(--material-icon-size-m);
+    max-width: var(--material-icon-size-m);
+    min-height: var(--material-icon-size-m);
+    max-height: var(--material-icon-size-m);
+    font-size: var(--material-icon-font-size-m);
+}
+
+:host([size='l']) {
+    min-width: var(--material-icon-size-l);
+    max-width: var(--material-icon-size-l);
+    min-height: var(--material-icon-size-l);
+    max-height: var(--material-icon-size-l);
+    font-size: var(--material-icon-font-size-l);
+}
+
+:host([size='xl']) {
+    min-width: var(--material-icon-size-xl);
+    max-width: var(--material-icon-size-xl);
+    min-height: var(--material-icon-size-xl);
+    max-height: var(--material-icon-size-xl);
+    font-size: var(--material-icon-font-size-xl);
+}
+
+:host([size='xxl']) {
+    min-width: var(--material-icon-size-xxl);
+    max-width: var(--material-icon-size-xxl);
+    min-height: var(--material-icon-size-xxl);
+    max-height: var(--material-icon-size-xxl);
+    font-size: var(--material-icon-font-size-xxl);
+}

@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,600;0,700;0,900;1,400;1,600;1,700;1,900&display=swap');
+
+:root {
+    --font-family-base: 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+    --font-family-monospace: Consolas, 'Courier New', Courier, monospace;
+    --font-family-numeric: Bahnschrift, 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+
+    --default-font-family: var(--font-family-base);
+    --font-scale-n: 1;
+    --font-scale-m: 1.1;
+    --font-scale-l: 1.2;
+    --font-scale-xl: 1.3;
+    --font-scale-xxl: 1.4;
+
+    --default-font-scale: var(--font-scale-n);
+
+    --font-weight-thin: 100;
+    --font-weight-ultra-light: 200;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-ultra-bold: 800;
+    --font-weight-heavy: 900;
+
+    --font-size1000: calc(68px * var(--default-font-scale));
+    --font-size900: calc(40px * var(--default-font-scale));
+    --font-size800: calc(32px * var(--default-font-scale));
+    --font-size700: calc(28px * var(--default-font-scale));
+    --font-size600: calc(24px * var(--default-font-scale));
+    --font-size500: calc(20px * var(--default-font-scale));
+    --font-size400: calc(16px * var(--default-font-scale));
+    --font-size300: calc(14px * var(--default-font-scale));
+    --font-size200: calc(12px * var(--default-font-scale));
+    --font-size100: calc(10px * var(--default-font-scale));
+
+    --line-height1000: calc(92px * var(--default-font-scale));
+    --line-height900: calc(52px * var(--default-font-scale));
+    --line-height800: calc(40px * var(--default-font-scale));
+    --line-height700: calc(36px * var(--default-font-scale));
+    --line-height600: calc(32px * var(--default-font-scale));
+    --line-height500: calc(28px * var(--default-font-scale));
+    --line-height400: calc(22px * var(--default-font-scale));
+    --line-height300: calc(20px * var(--default-font-scale));
+    --line-height200: calc(16px * var(--default-font-scale));
+    --line-height100: calc(14px * var(--default-font-scale));
+}
+
+:root {
+    --typography-display-font-family: var(--font-family-base);
+    --typography-display-font-weight: var(--font-weight-semibold);
+    --typography-display-font-size: var(--font-size1000);
+    --typography-display-line-height: var(--line-height1000);
+
+    --typography-large-title-font-family: var(--font-family-base);
+    --typography-large-title-font-weight: var(--font-weight-semibold);
+    --typography-large-title-font-size: var(--font-size900);
+    --typography-large-title-line-height: var(--line-height900);
+
+    --typography-title1-font-family: var(--font-family-base);
+    --typography-title1-font-weight: var(--font-weight-semibold);
+    --typography-title1-font-size: var(--font-size800);
+    --typography-title1-line-height: var(--line-height800);
+
+    --typography-title2-font-family: var(--font-family-base);
+    --typography-title2-font-weight: var(--font-weight-semibold);
+    --typography-title2-font-size: var(--font-size700);
+    --typography-title2-line-height: var(--line-height700);
+
+    --typography-title3-font-family: var(--font-family-base);
+    --typography-title3-font-weight: var(--font-weight-semibold);
+    --typography-title3-font-size: var(--font-size600);
+    --typography-title3-line-height: var(--line-height600);
+
+    --typography-subtitle1-font-family: var(--font-family-base);
+    --typography-subtitle1-font-weight: var(--font-weight-semibold);
+    --typography-subtitle1-font-size: var(--font-size500);
+    --typography-subtitle1-line-height: var(--line-height500);
+
+    --typography-subtitle2-stronger-font-family: var(--font-family-base);
+    --typography-subtitle2-stronger-font-weight: var(--font-weight-bold);
+    --typography-subtitle2-stronger-font-size: var(--font-size400);
+    --typography-subtitle2-stronger-line-height: var(--line-height400);
+
+    --typography-subtitle2-font-family: var(--font-family-base);
+    --typography-subtitle2-font-weight: var(--font-weight-semibold);
+    --typography-subtitle2-font-size: var(--font-size400);
+    --typography-subtitle2-line-height: var(--line-height400);
+
+    --typography-body1-stronger-font-family: var(--font-family-base);
+    --typography-body1-stronger-font-weight: var(--font-weight-bold);
+    --typography-body1-stronger-font-size: var(--font-size300);
+    --typography-body1-stronger-line-height: var(--line-height300);
+
+    --typography-body1-strong-font-family: var(--font-family-base);
+    --typography-body1-strong-font-weight: var(--font-weight-semibold);
+    --typography-body1-strong-font-size: var(--font-size300);
+    --typography-body1-strong-line-height: var(--line-height300);
+
+    --typography-body1-font-family: var(--font-family-base);
+    --typography-body1-font-weight: var(--font-weight-regular);
+    --typography-body1-font-size: var(--font-size300);
+    --typography-body1-line-height: var(--line-height300);
+
+    --typography-body2-font-family: var(--font-family-base);
+    --typography-body2-font-weight: var(--font-weight-regular);
+    --typography-body2-font-size: var(--font-size400);
+    --typography-body2-line-height: var(--line-height400);
+
+    --typography-caption1-stronger-font-family: var(--font-family-base);
+    --typography-caption1-stronger-font-weight: var(--font-weight-bold);
+    --typography-caption1-stronger-font-size: var(--font-size200);
+    --typography-caption1-stronger-line-height: var(--line-height200);
+
+    --typography-caption1-strong-font-family: var(--font-family-base);
+    --typography-caption1-strong-font-weight: var(--font-weight-semibold);
+    --typography-caption1-strong-font-size: var(--font-size200);
+    --typography-caption1-strong-line-height: var(--line-height200);
+
+    --typography-caption1-font-family: var(--font-family-base);
+    --typography-caption1-font-weight: var(--font-weight-regular);
+    --typography-caption1-font-size: var(--font-size200);
+    --typography-caption1-line-height: var(--line-height200);
+
+    --typography-caption2-strong-font-family: var(--font-family-base);
+    --typography-caption2-strong-font-weight: var(--font-weight-semibold);
+    --typography-caption2-strong-font-size: var(--font-size100);
+    --typography-caption2-strong-line-height: var(--line-height100);
+
+    --typography-caption2-font-family: var(--font-family-base);
+    --typography-caption2-font-weight: var(--font-weight-regular);
+    --typography-caption2-font-size: var(--font-size100);
+    --typography-caption2-line-height: var(--line-height100);
+}

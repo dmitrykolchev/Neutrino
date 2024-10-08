@@ -1,0 +1,46 @@
+﻿:host {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid darkgray;
+    min-width: 82px;
+    max-width: 82px;
+    height: 110px;
+    justify-items: center;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+:host([selected]), :host([selected]:hover) {
+    border: 1px solid red;
+}
+
+    :host(:hover) {
+        background-color: #F0F0F0;
+        color: black;
+        border: 1px solid #333;
+    }
+
+.caption {
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+    .caption > div {
+        white-space: nowrap;
+        margin: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        pointer-events: none;
+    }
+
+.icon {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    padding-top: 8px;
+    pointer-events: none;
+}
