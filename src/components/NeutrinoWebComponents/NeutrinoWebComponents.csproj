@@ -8,13 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="dist\**" />
-	  <Content Remove="dist\**" />
-	  <EmbeddedResource Remove="dist\**" />
-	  <None Remove="dist\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Remove="src\base\AnchorLike.ts" />
 		<None Remove="src\base\DefineElement.ts" />
 		<None Remove="src\base\Focusable.ts" />

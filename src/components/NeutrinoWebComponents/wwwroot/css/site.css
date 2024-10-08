@@ -82,7 +82,6 @@ body {
     font-weight: var(--typography-title1-font-weight);
     font-size: var(--typography-title1-font-size);
     line-height: var(--typography-title1-line-height);
-    font-weight: var(--font-weight-light);
 }
 
 .neu-title2 {
@@ -90,7 +89,6 @@ body {
     font-weight: var(--typography-title2-font-weight);
     font-size: var(--typography-title2-font-size);
     line-height: var(--typography-title2-line-height);
-    font-weight: var(--font-weight-light);
 }
 
 .neu-title3 {
