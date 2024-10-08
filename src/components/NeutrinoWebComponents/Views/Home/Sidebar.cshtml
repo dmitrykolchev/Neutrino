@@ -1,7 +1,5 @@
 ﻿@using Neutrino.Pictoris.Drawing;
 
-@{
-}
 <div class="page-header">
     <h1 class="neu-display">Sidebar</h1>
 </div>
@@ -20,37 +18,40 @@
     <neu-sidebar style="width:320px;">
         <neu-sidebar-header>
             <span>General Info</span>
-            <neu-sidebar-item href="#" selected>
+            <neu-sidebar-item selected value="welcome">
                 <span>Welcome</span>
                 <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
             </neu-sidebar-item>
-            <neu-sidebar-item href="#">
+            <neu-sidebar-item value="quickStart">
                 <span>Quick Start</span>
                 <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
             </neu-sidebar-item>
         </neu-sidebar-header>
         <neu-sidebar-header>
             <span>Icons</span>
-            <neu-sidebar-item href="#">
+            <neu-sidebar-item value="materialIcons">
                 <span>Material Icons</span>
                 <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
             </neu-sidebar-item>
-            <neu-sidebar-item href="#">
+            <neu-sidebar-item value="fluentIcons">
                 <span>Fluent UI Icons</span>
                 <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
             </neu-sidebar-item>
-            <neu-sidebar-item expanded href="#">
+            <neu-sidebar-item expanded value="allIcons">
                 <span>All Icons</span>
                 <neu-material-icon glyph="PhotoLibrary" size="s" slot="start"></neu-material-icon>
-                <neu-sidebar-item href="#">
+                <neu-sidebar-item value="materialIcons1">
                     <span>Material Icons</span>
                     <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
-                <neu-sidebar-item href="#">
+                <neu-sidebar-item value="fluentIcons1">
                     <span>Fluent UI Icons</span>
                     <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
-
+                <neu-sidebar-item value="lorem">
+                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tincidunt ipsum nunc, ac gravida nulla interdum et. </span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
             </neu-sidebar-item>
         </neu-sidebar-header>
     </neu-sidebar>

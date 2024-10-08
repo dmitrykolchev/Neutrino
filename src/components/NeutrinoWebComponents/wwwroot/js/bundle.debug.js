@@ -582,19 +582,6 @@ defineElement$1("neu-link", Link$1);
 
 const styles$5 = i$n`:host {
     display: block;
-    background-color: var(--color-grey14);
-    padding: var(--spacing-xs);
-    overflow-y: auto;
-}
-
-:host div[role="list"] {
-    display: flex;
-    flex-direction: column;
-}
-`;
-
-const styles$4 = i$n`:host {
-    display: block;
 }
 
 :host div[role="list"] {
@@ -612,7 +599,7 @@ const styles$4 = i$n`:host {
     padding-inline-start: calc(var(--spacing-s) - var(--spacing-xs));
     padding-inline-end: var(--spacing-s);
     column-gap: var(--spacing-s);
-    align-items: center;
+    align-items: flex-start;
     color: var(--default-foreground-color);
     font-family: var(--typography-body1-strong-font-family);
     font-weight: var(--typography-body1-strong-font-weight);
@@ -636,23 +623,34 @@ const styles$4 = i$n`:host {
 }
 `;
 
-class SidebarItem extends AnchorLike(NeutrinoElement) {
-    static get styles() {
-        return [styles$4];
-    }
+class SidebarItem extends AnchorLike(Focusable$1) {
     constructor() {
-        super();
+        super(...arguments);
         this.value = undefined;
         this.selected = false;
         this.expanded = false;
     }
+    static get styles() {
+        return [styles$5];
+    }
     get parentSidebar() {
         return this._parentSidebar ?? (this._parentSidebar = this.closest("neu-sidebar"));
     }
+    get focusElement() {
+        return this;
+    }
+    get hasChildren() {
+        return !!this.querySelector('neu-sidebar-item');
+    }
     render() {
         return ke `
-            <a id="item-link"
+            <a 
+                id="item-link"
                 href=${this.href || "#"}
+                target=${to(this.target)}
+                download=${to(this.download)}
+                rel=${to(this.rel)}
+                @click="${this.handleClick}"
             >
             <slot name="start"></slot>
             <span>${this.label}<slot></slot></span>
@@ -667,20 +665,57 @@ class SidebarItem extends AnchorLike(NeutrinoElement) {
             : D}
             `;
     }
+    firstUpdated(changed) {
+        super.firstUpdated(changed);
+        this.setAttribute('role', 'listitem');
+    }
+    update(changes) {
+        if (!this.hasAttribute('slot')) {
+            this.slot = "descendant";
+        }
+        super.update(changes);
+    }
     async connectedCallback() {
         super.connectedCallback();
         const parent = this.parentSidebar;
         if (parent) {
             await parent.updateComplete;
-            parent.startTrackingItem(this);
+            parent.startTrackingSelection(this);
         }
     }
     disconnectedCallback() {
         super.disconnectedCallback();
-        const parent = this.parentSidebar;
-        if (parent) {
-            parent.stopTrackingItem(this);
+        this.parentSidebar?.stopTrackingSelection(this);
+    }
+    click() {
+        this.handleClick();
+    }
+    handleSidebarSelect(event) {
+        this.selected = event.target === this;
+    }
+    handleClick(event) {
+        if (!this.href && event) {
+            event.preventDefault();
         }
+        if (!this.disabled && (!this.href || event?.defaultPrevented)) {
+            if (this.hasChildren) {
+                this.expanded = !this.expanded;
+            }
+            else if (this.value) {
+                this.announceSelected(this.value);
+            }
+        }
+    }
+    announceSelected(value) {
+        const selectDetail = {
+            value
+        };
+        const selectionEvent = new CustomEvent('sidebar-select', {
+            bubbles: true,
+            composed: true,
+            detail: selectDetail,
+        });
+        this.dispatchEvent(selectionEvent);
     }
 }
 __decorate([
@@ -696,7 +731,7 @@ __decorate([
     __metadata("design:type", Object)
 ], SidebarItem.prototype, "expanded", void 0);
 
-const styles$3 = i$n`:host {
+const styles$4 = i$n`:host {
     display: block;
 }
 
@@ -725,7 +760,7 @@ const styles$3 = i$n`:host {
 
 class SidebarHeading extends NeutrinoElement {
     static get styles() {
-        return [styles$3];
+        return [styles$4];
     }
     get parentSidebar() {
         return this._parentSidebar ?? (this._parentSidebar = this.closest("neu-sidebar"));
@@ -742,20 +777,15 @@ class SidebarHeading extends NeutrinoElement {
             </div>
         `;
     }
-    async connectedCallback() {
-        super.connectedCallback();
-        const parent = this.parentSidebar;
-        if (parent) {
-            await parent.updateComplete;
-            parent.startTrackingItem(this);
-        }
+    firstUpdated(changed) {
+        super.firstUpdated(changed);
+        this.setAttribute('role', 'listitem');
     }
-    disconnectedCallback() {
-        super.disconnectedCallback();
-        const parent = this.parentSidebar;
-        if (parent) {
-            parent.stopTrackingItem(this);
+    update(changes) {
+        if (!this.hasAttribute('slot')) {
+            this.slot = "descendant";
         }
+        super.update(changes);
     }
 }
 __decorate([
@@ -763,40 +793,84 @@ __decorate([
     __metadata("design:type", String)
 ], SidebarHeading.prototype, "label", void 0);
 
+const styles$3 = i$n`:host {
+    display: block;
+    background-color: var(--color-grey14);
+    padding: var(--spacing-xs);
+    overflow-y: auto;
+}
+
+:host div[role="list"] {
+    display: flex;
+    flex-direction: column;
+}
+`;
+
 class Sidebar extends Focusable$1 {
-    static get styles() {
-        return [styles$5];
-    }
     constructor() {
-        super();
+        super(...arguments);
         this._items = new Set();
+        this.value = undefined;
+        this.label = undefined;
+    }
+    static get styles() {
+        return [styles$3];
     }
     get focusElement() {
         return this;
     }
     render() {
         return ke `
-            <nav>
+            <nav
+                @sidebar-select=${this.handleSelect}
+                aria-label=${to(this.label)}
+            >
                 <div role="list">
                     <slot name="descendant"></slot>
                 </div>
             </nav>
         `;
     }
-    startTrackingItem(item) {
-        if (item) {
-            this._items.add(item);
-            if (!item.slot) {
-                item.slot = "descendant";
-            }
+    handleSelect(event) {
+        event.stopPropagation();
+        if (this.value === event.detail.value) {
+            return;
+        }
+        const oldValue = this.value;
+        this.value = event.detail.value;
+        const applyDefault = this.dispatchEvent(new Event('change', {
+            bubbles: true,
+            composed: true,
+            cancelable: true,
+        }));
+        if (!applyDefault) {
+            this.value = oldValue;
+            event.target.selected = false;
+            event.preventDefault();
+        }
+        else {
+            this._items.forEach((item) => item.handleSidebarSelect(event));
         }
     }
-    stopTrackingItem(item) {
+    startTrackingSelection(item) {
+        if (item) {
+            this._items.add(item);
+        }
+    }
+    stopTrackingSelection(item) {
         if (item) {
             this._items.delete(item);
         }
     }
 }
+__decorate([
+    n$g({ reflect: true }),
+    __metadata("design:type", Object)
+], Sidebar.prototype, "value", void 0);
+__decorate([
+    n$g({ reflect: true }),
+    __metadata("design:type", Object)
+], Sidebar.prototype, "label", void 0);
 defineElement$1(`${prefix}-sidebar`, Sidebar);
 defineElement$1(`${prefix}-sidebar-item`, SidebarItem);
 defineElement$1(`${prefix}-sidebar-header`, SidebarHeading);

@@ -17,7 +17,7 @@
     padding-inline-start: calc(var(--spacing-s) - var(--spacing-xs));
     padding-inline-end: var(--spacing-s);
     column-gap: var(--spacing-s);
-    align-items: center;
+    align-items: flex-start;
     color: var(--default-foreground-color);
     font-family: var(--typography-body1-strong-font-family);
     font-weight: var(--typography-body1-strong-font-weight);

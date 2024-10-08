@@ -1,4 +1,4 @@
-﻿import { CSSResultArray, html, TemplateResult } from "lit";
+﻿import { CSSResultArray, html, PropertyValues, TemplateResult } from "lit";
 import { NeutrinoElement } from "../base/NeutrinoElement.js";
 import { property } from "lit/decorators.js";
 import { Sidebar } from "./Sidebar.js";
@@ -33,20 +33,29 @@ export class SidebarHeading extends NeutrinoElement {
         `;
     }
 
-    public override async connectedCallback() {
-        super.connectedCallback();
-        const parent = this.parentSidebar;
-        if (parent) {
-            await parent.updateComplete;
-            parent.startTrackingItem(this);
-        }
+    protected override firstUpdated(changed: PropertyValues<this>): void {
+        super.firstUpdated(changed);
+        this.setAttribute('role', 'listitem');
     }
 
-    public override disconnectedCallback(): void {
-        super.disconnectedCallback();
-        const parent = this.parentSidebar;
-        if (parent) {
-            parent.stopTrackingItem(this);
+    protected override update(changes: PropertyValues): void {
+        if (!this.hasAttribute('slot')) {
+            this.slot = "descendant";
         }
+        super.update(changes);
     }
+
+//    public override async connectedCallback() {
+//        super.connectedCallback();
+//        const parent = this.parentSidebar;
+//        if (parent) {
+//            await parent.updateComplete;
+//            parent.startTrackingSelection(this);
+//        }
+//    }
+
+//    public override disconnectedCallback(): void {
+//        super.disconnectedCallback();
+//        this.parentSidebar?.stopTrackingSelection(this);
+//    }
 }
