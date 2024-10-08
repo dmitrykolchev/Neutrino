@@ -8,6 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="dist\**" />
+	  <Content Remove="dist\**" />
+	  <EmbeddedResource Remove="dist\**" />
+	  <None Remove="dist\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Remove="src\base\AnchorLike.ts" />
 		<None Remove="src\base\DefineElement.ts" />
 		<None Remove="src\base\Focusable.ts" />
@@ -26,6 +33,7 @@
 		<None Remove="src\index.rollup.debug.ts" />
 		<None Remove="src\index.rollup.ts" />
 		<None Remove="src\index.ts" />
+		<None Remove="src\link\Link.ts" />
 		<None Remove="src\sidebar\sidebar.ts" />
 		<None Remove="src\sidebar\SidebarItem.ts" />
 		<None Remove="src\theme\colors.ts" />
@@ -56,6 +64,7 @@
 		<TypeScriptCompile Include="src\icons\IconList.ts" />
 		<TypeScriptCompile Include="src\icons\MaterialIcon.ts" />
 		<TypeScriptCompile Include="src\icons\MaterialIcons.ts" />
+		<TypeScriptCompile Include="src\link\Link.ts" />
 		<TypeScriptCompile Include="src\sidebar\Sidebar.ts" />
 		<TypeScriptCompile Include="src\sidebar\SidebarItem.ts" />
 		<TypeScriptCompile Include="src\styles.d.ts" />

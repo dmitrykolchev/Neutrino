@@ -1,7 +1,7 @@
 
 :root {
     --default-background-color: var(--color-grey4);
-    --default-foreground-color: var(--theme-foreground-color);
+    --default-foreground-color: var(--theme-black);
     --link-foreground-color: var(--color-blue-tint20);
     --link-foreground-color-hover: var(--color-blue-primary);
 
@@ -21,6 +21,4 @@
     --color-brand30: #002F54;
     --color-brand20: #00233F;
     --color-brand10: #00172A;
-
-
 }

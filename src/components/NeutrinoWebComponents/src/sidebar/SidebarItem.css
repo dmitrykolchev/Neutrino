@@ -18,7 +18,7 @@
     padding-inline-end: var(--spacing-l);
     column-gap: var(--spacing-s);
     align-items: center;
-    color: var(--theme-foreground-color);
+    color: var(--default-foreground-color);
     font-family: var(--typography-body1-strong-font-family);
     font-weight: var(--typography-body1-strong-font-weight);
     font-size: var(--typography-body1-strong-font-size);

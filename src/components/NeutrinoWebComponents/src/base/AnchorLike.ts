@@ -32,7 +32,7 @@ export interface IAnchorLike {
     href?: string;
     rel?: string;
     target?: AnchorTarget;
-    //renderAnchor(options: RenderAnchorOptions): TemplateResult;
+    renderAnchor(options: RenderAnchorOptions): TemplateResult;
 }
 
 

@@ -1,8 +1,16 @@
-import { ReactiveElement } from "lit";
+import { ReactiveElement, TemplateResult } from "lit";
 import { ValuesOf } from "./Typings";
 type Constructor<T = Record<string, unknown>> = {
     new (...args: any[]): T;
     prototype: T;
+};
+type RenderAnchorOptions = {
+    id: string;
+    className?: string;
+    ariaHidden?: boolean;
+    anchorContent?: TemplateResult | TemplateResult[];
+    labelledby?: string;
+    tabindex?: -1 | 0;
 };
 export declare const AnchorTarget: {
     readonly blank: "_blank";
@@ -17,6 +25,7 @@ export interface IAnchorLike {
     href?: string;
     rel?: string;
     target?: AnchorTarget;
+    renderAnchor(options: RenderAnchorOptions): TemplateResult;
 }
 export declare function AnchorLike<T extends Constructor<ReactiveElement>>(constructor: T): T & Constructor<IAnchorLike>;
 export {};
