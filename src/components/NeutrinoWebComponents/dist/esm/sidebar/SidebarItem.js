@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { property } from "lit/decorators.js";
 import { NeutrinoElement } from "../base/NeutrinoElement.js";
-import { Sidebar } from "./Sidebar.js";
 import { html, nothing } from "lit";
 import { AnchorLike } from "../base/AnchorLike.js";
 import style from "./SidebarItem.css";
@@ -19,41 +18,12 @@ export class SidebarItem extends AnchorLike(NeutrinoElement) {
     }
     constructor() {
         super();
-        this._items = new Set();
         this.value = undefined;
         this.selected = false;
         this.expanded = false;
     }
-    get items() {
-        return this._items;
-    }
-    get parent() {
-        if (!this._parent) {
-            let element = this.parentElement;
-            while (element) {
-                if (element instanceof SidebarItem || element instanceof Sidebar) {
-                    this._parent = element;
-                    break;
-                }
-                element = this.parentElement;
-            }
-        }
-        return this._parent;
-    }
-    get hasChildren() {
-        return !!this.querySelector('sp-sidenav-item');
-    }
     get parentSidebar() {
         return this._parentSidebar ?? (this._parentSidebar = this.closest("neu-sidebar"));
-    }
-    startTrackingItem(item) {
-        this._items.add(item);
-        if (!item.slot) {
-            item.slot = "descendant";
-        }
-    }
-    stopTrackingItem(item) {
-        this._items.delete(item);
     }
     render() {
         return html `
@@ -73,16 +43,17 @@ export class SidebarItem extends AnchorLike(NeutrinoElement) {
             : nothing}
             `;
     }
-    connectedCallback() {
+    async connectedCallback() {
         super.connectedCallback();
-        const parent = this.parent;
+        const parent = this.parentSidebar;
         if (parent) {
+            await parent.updateComplete;
             parent.startTrackingItem(this);
         }
     }
     disconnectedCallback() {
         super.disconnectedCallback();
-        const parent = this.parent;
+        const parent = this.parentSidebar;
         if (parent) {
             parent.stopTrackingItem(this);
         }

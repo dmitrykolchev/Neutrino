@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/icons/icons.css" />
     <script src="~/highlight/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
+    <script type="module" src="~/js/bundle.debug.js" asp-append-version="true"></script>
     <style>
         .header-main {
             top: 0;
@@ -41,7 +42,7 @@
             background-color: #161616;
         }
 
-        .container {
+        .application-area {
             position: fixed;
             left: 240px;
             right: 0;
@@ -122,13 +123,12 @@
                 </sp-sidenav-item>
             </sp-sidenav>
         </nav>
-        <main class="container" role="main">
+        <main class="application-area" role="main">
             @RenderBody()
         </main>
         <nav class="status"></nav>
     </sp-theme>
 
-    <script type="module" src="~/js/bundle.debug.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

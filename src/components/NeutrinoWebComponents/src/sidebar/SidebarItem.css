@@ -14,8 +14,8 @@
     text-decoration: none;
     padding-block-start: var(--spacing-s);
     padding-block-end: var(--spacing-s);
-    padding-inline-start: calc(var(--spacing-l) - var(--spacing-xs));
-    padding-inline-end: var(--spacing-l);
+    padding-inline-start: calc(var(--spacing-s) - var(--spacing-xs));
+    padding-inline-end: var(--spacing-s);
     column-gap: var(--spacing-s);
     align-items: center;
     color: var(--default-foreground-color);

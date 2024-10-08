@@ -1,0 +1,25 @@
+﻿:host {
+    display: block;
+}
+
+:host div[role="list"] {
+    display: flex;
+    flex-direction: column;
+}
+
+#item-heading {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    padding-block-start: var(--spacing-l);
+    padding-block-end: var(--spacing-s);
+    padding-inline-start: var(--spacing-s);
+    padding-inline-end: var(--spacing-s);
+    column-gap: var(--spacing-s);
+    align-items: center;
+    color: var(--theme-foreground30);
+    font-family: var(--typography-caption1-strong-font-family);
+    font-weight: var(--typography-caption1-strong-font-weight);
+    font-size: var(--typography-caption1-strong-font-size);
+    line-height: var(--typography-caption1-strong-line-height);
+}

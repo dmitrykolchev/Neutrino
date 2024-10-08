@@ -2,13 +2,14 @@
 import { defineElement, prefix } from "../base/DefineElement.js";
 import { Focusable } from "../base/Focusable.js";
 import style from "./Sidebar.css";
-import { ifDefined } from "lit/directives/if-defined.js";
-import { IItemContainer, SidebarItem } from "./SidebarItem.js";
+import { SidebarItem } from "./SidebarItem.js";
+import { SidebarHeading } from "./SidebarHeading.js";
 
+type SidebarItemType = SidebarItem | SidebarHeading;
 
-export class Sidebar extends Focusable
-    implements IItemContainer<SidebarItem> {
-    private _items = new Set<SidebarItem>();
+export class Sidebar extends Focusable {
+    private _items: Set<SidebarItemType> = new Set<SidebarItemType>();
+
     public static get styles(): CSSResultArray {
         return [style];
     }
@@ -21,29 +22,6 @@ export class Sidebar extends Focusable
         return this;
     }
 
-    public get items(): Set<SidebarItem> {
-        return this._items;
-    }
-
-    public get hasChildren(): boolean {
-        return !!this.querySelector('sp-sidenav-item');
-    }
-
-    public get parent(): IItemContainer<SidebarItem> | undefined {
-        return undefined;
-    }
-
-    public startTrackingItem(item: SidebarItem) {
-        this._items.add(item);
-        if (!item.slot) {
-            item.slot = "descendant";
-        }
-    }
-
-    public stopTrackingItem(item: SidebarItem) {
-        this._items.delete(item);
-    }
-
     protected override render(): TemplateResult {
         return html`
             <nav>
@@ -54,7 +32,22 @@ export class Sidebar extends Focusable
         `;
     }
 
+    public startTrackingItem(item: SidebarItem | SidebarHeading): void {
+        if (item) {
+            this._items.add(item);
+            if (!item.slot) {
+                item.slot = "descendant";
+            }
+        }
+    }
+
+    public stopTrackingItem(item: SidebarItem | SidebarHeading): void {
+        if (item) {
+            this._items.delete(item);
+        }
+    }
 }
 
 defineElement(`${prefix}-sidebar`, Sidebar)
 defineElement(`${prefix}-sidebar-item`, SidebarItem)
+defineElement(`${prefix}-sidebar-header`, SidebarHeading)

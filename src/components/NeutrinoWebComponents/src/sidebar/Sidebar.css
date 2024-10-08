@@ -2,6 +2,7 @@
     display: block;
     background-color: var(--color-grey14);
     padding: var(--spacing-xs);
+    overflow-y: auto;
 }
 
 :host div[role="list"] {

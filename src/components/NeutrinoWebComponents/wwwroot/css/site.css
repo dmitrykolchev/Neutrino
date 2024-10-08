@@ -14,7 +14,7 @@ html {
 
 .page-header {
     --height: 14rem;
-    background-color: var(--theme-white);
+    background-color: var(--theme-background);
     border-bottom: 1px solid #393939;
     color: #fff;
     display: flex;

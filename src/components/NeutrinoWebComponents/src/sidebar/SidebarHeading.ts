@@ -1,12 +1,11 @@
-﻿import { property } from "lit/decorators.js";
+﻿import { CSSResultArray, html, TemplateResult } from "lit";
 import { NeutrinoElement } from "../base/NeutrinoElement.js";
-import { CSSResultArray, TemplateResult, html, nothing } from "lit";
-import { AnchorLike } from "../base/AnchorLike.js";
+import { property } from "lit/decorators.js";
 import { Sidebar } from "./Sidebar.js";
 
-import style from "./SidebarItem.css";
+import style from "./SidebarHeading.css";
 
-export class SidebarItem extends AnchorLike(NeutrinoElement) {
+export class SidebarHeading extends NeutrinoElement {
 
     private _parentSidebar: Sidebar | undefined;
 
@@ -14,18 +13,8 @@ export class SidebarItem extends AnchorLike(NeutrinoElement) {
         return [style];
     }
 
-    constructor() {
-        super();
-    }
-
     @property()
-    public value: string | undefined = undefined;
-
-    @property({ type: Boolean, reflect: true })
-    public selected = false;
-
-    @property({ type: Boolean, reflect: true })
-    public expanded = false;
+    public label?: string;
 
     public get parentSidebar() {
         return this._parentSidebar ??= this.closest("neu-sidebar") as Sidebar | undefined;
@@ -33,21 +22,15 @@ export class SidebarItem extends AnchorLike(NeutrinoElement) {
 
     protected override render(): TemplateResult {
         return html`
-            <a id="item-link"
-                href=${this.href || "#"}
-            >
+            <div id="item-heading">
             <slot name="start"></slot>
             <span>${this.label}<slot></slot></span>
             <slot name="end"></slot>
-            </a>
-            ${this.expanded
-                ? html`
-                      <div aria-labelledby="item-link" role="list">
-                          <slot name="descendant"></slot>
-                      </div>
-                  `
-                : nothing}
-            `;
+            </div>
+            <div aria-labelledby="item-header" role="list">
+                <slot name="descendant"></slot>
+            </div>
+        `;
     }
 
     public override async connectedCallback() {
@@ -67,5 +50,3 @@ export class SidebarItem extends AnchorLike(NeutrinoElement) {
         }
     }
 }
-
-

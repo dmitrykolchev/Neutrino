@@ -17,18 +17,20 @@
         содержит ссылки на доступные пользователю разделы приложения.
     </p>
 
-    <neu-sidebar>
-        <neu-sidebar-item href="#" selected>
+    <neu-sidebar style="width:320px;">
+        <neu-sidebar-header>
             <span>General Info</span>
-            <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
-        </neu-sidebar-item>
-        <neu-sidebar-item href="#">
-            <span>Quick Start</span>
-            <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
-        </neu-sidebar-item>
-        <neu-sidebar-item href="#" expanded>
+            <neu-sidebar-item href="#" selected>
+                <span>Welcome</span>
+                <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
+            </neu-sidebar-item>
+            <neu-sidebar-item href="#">
+                <span>Quick Start</span>
+                <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
+            </neu-sidebar-item>
+        </neu-sidebar-header>
+        <neu-sidebar-header>
             <span>Icons</span>
-            <neu-material-icon glyph="PhotoLibrary" size="s" slot="start"></neu-material-icon>
             <neu-sidebar-item href="#">
                 <span>Material Icons</span>
                 <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
@@ -37,7 +39,20 @@
                 <span>Fluent UI Icons</span>
                 <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
             </neu-sidebar-item>
-        </neu-sidebar-item>
+            <neu-sidebar-item expanded href="#">
+                <span>All Icons</span>
+                <neu-material-icon glyph="PhotoLibrary" size="s" slot="start"></neu-material-icon>
+                <neu-sidebar-item href="#">
+                    <span>Material Icons</span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item href="#">
+                    <span>Fluent UI Icons</span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+
+            </neu-sidebar-item>
+        </neu-sidebar-header>
     </neu-sidebar>
 </div>
 

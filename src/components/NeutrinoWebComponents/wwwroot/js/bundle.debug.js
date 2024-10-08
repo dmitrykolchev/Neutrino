@@ -439,7 +439,7 @@ function AnchorLike(constructor) {
     return AnchorLikeElement;
 }
 
-const styles$6 = i$n`:root {
+const styles$7 = i$n`:root {
     --icon-spacing: 8px;
 }
 
@@ -509,7 +509,7 @@ let Button$1 = class Button extends AnchorLike(FormElement(Focusable$1)) {
         };
     }
     static get styles() {
-        return [styles$6];
+        return [styles$7];
     }
     get focusElement() {
         return this;
@@ -550,7 +550,7 @@ __decorate([
 ], Button$1.prototype, "anchorElement", void 0);
 defineElement$1("neu-button", Button$1);
 
-const styles$5 = i$n`:host {
+const styles$6 = i$n`:host {
     display: inline;
 }
 
@@ -565,7 +565,7 @@ const styles$5 = i$n`:host {
 
 let Link$1 = class Link extends AnchorLike(Focusable$1) {
     static get styles() {
-        return [styles$5];
+        return [styles$6];
     }
     get focusElement() {
         return this.anchorElement;
@@ -580,10 +580,11 @@ __decorate([
 ], Link$1.prototype, "anchorElement", void 0);
 defineElement$1("neu-link", Link$1);
 
-const styles$4 = i$n`:host {
+const styles$5 = i$n`:host {
     display: block;
     background-color: var(--color-grey14);
     padding: var(--spacing-xs);
+    overflow-y: auto;
 }
 
 :host div[role="list"] {
@@ -592,7 +593,7 @@ const styles$4 = i$n`:host {
 }
 `;
 
-const styles$3 = i$n`:host {
+const styles$4 = i$n`:host {
     display: block;
 }
 
@@ -608,8 +609,8 @@ const styles$3 = i$n`:host {
     text-decoration: none;
     padding-block-start: var(--spacing-s);
     padding-block-end: var(--spacing-s);
-    padding-inline-start: calc(var(--spacing-l) - var(--spacing-xs));
-    padding-inline-end: var(--spacing-l);
+    padding-inline-start: calc(var(--spacing-s) - var(--spacing-xs));
+    padding-inline-end: var(--spacing-s);
     column-gap: var(--spacing-s);
     align-items: center;
     color: var(--default-foreground-color);
@@ -637,45 +638,16 @@ const styles$3 = i$n`:host {
 
 class SidebarItem extends AnchorLike(NeutrinoElement) {
     static get styles() {
-        return [styles$3];
+        return [styles$4];
     }
     constructor() {
         super();
-        this._items = new Set();
         this.value = undefined;
         this.selected = false;
         this.expanded = false;
     }
-    get items() {
-        return this._items;
-    }
-    get parent() {
-        if (!this._parent) {
-            let element = this.parentElement;
-            while (element) {
-                if (element instanceof SidebarItem || element instanceof Sidebar) {
-                    this._parent = element;
-                    break;
-                }
-                element = this.parentElement;
-            }
-        }
-        return this._parent;
-    }
-    get hasChildren() {
-        return !!this.querySelector('sp-sidenav-item');
-    }
     get parentSidebar() {
         return this._parentSidebar ?? (this._parentSidebar = this.closest("neu-sidebar"));
-    }
-    startTrackingItem(item) {
-        this._items.add(item);
-        if (!item.slot) {
-            item.slot = "descendant";
-        }
-    }
-    stopTrackingItem(item) {
-        this._items.delete(item);
     }
     render() {
         return ke `
@@ -695,16 +667,17 @@ class SidebarItem extends AnchorLike(NeutrinoElement) {
             : D}
             `;
     }
-    connectedCallback() {
+    async connectedCallback() {
         super.connectedCallback();
-        const parent = this.parent;
+        const parent = this.parentSidebar;
         if (parent) {
+            await parent.updateComplete;
             parent.startTrackingItem(this);
         }
     }
     disconnectedCallback() {
         super.disconnectedCallback();
-        const parent = this.parent;
+        const parent = this.parentSidebar;
         if (parent) {
             parent.stopTrackingItem(this);
         }
@@ -723,9 +696,76 @@ __decorate([
     __metadata("design:type", Object)
 ], SidebarItem.prototype, "expanded", void 0);
 
+const styles$3 = i$n`:host {
+    display: block;
+}
+
+:host div[role="list"] {
+    display: flex;
+    flex-direction: column;
+}
+
+#item-heading {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    padding-block-start: var(--spacing-l);
+    padding-block-end: var(--spacing-s);
+    padding-inline-start: var(--spacing-s);
+    padding-inline-end: var(--spacing-s);
+    column-gap: var(--spacing-s);
+    align-items: center;
+    color: var(--theme-foreground30);
+    font-family: var(--typography-caption1-strong-font-family);
+    font-weight: var(--typography-caption1-strong-font-weight);
+    font-size: var(--typography-caption1-strong-font-size);
+    line-height: var(--typography-caption1-strong-line-height);
+}
+`;
+
+class SidebarHeading extends NeutrinoElement {
+    static get styles() {
+        return [styles$3];
+    }
+    get parentSidebar() {
+        return this._parentSidebar ?? (this._parentSidebar = this.closest("neu-sidebar"));
+    }
+    render() {
+        return ke `
+            <div id="item-heading">
+            <slot name="start"></slot>
+            <span>${this.label}<slot></slot></span>
+            <slot name="end"></slot>
+            </div>
+            <div aria-labelledby="item-header" role="list">
+                <slot name="descendant"></slot>
+            </div>
+        `;
+    }
+    async connectedCallback() {
+        super.connectedCallback();
+        const parent = this.parentSidebar;
+        if (parent) {
+            await parent.updateComplete;
+            parent.startTrackingItem(this);
+        }
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        const parent = this.parentSidebar;
+        if (parent) {
+            parent.stopTrackingItem(this);
+        }
+    }
+}
+__decorate([
+    n$g(),
+    __metadata("design:type", String)
+], SidebarHeading.prototype, "label", void 0);
+
 class Sidebar extends Focusable$1 {
     static get styles() {
-        return [styles$4];
+        return [styles$5];
     }
     constructor() {
         super();
@@ -733,24 +773,6 @@ class Sidebar extends Focusable$1 {
     }
     get focusElement() {
         return this;
-    }
-    get items() {
-        return this._items;
-    }
-    get hasChildren() {
-        return !!this.querySelector('sp-sidenav-item');
-    }
-    get parent() {
-        return undefined;
-    }
-    startTrackingItem(item) {
-        this._items.add(item);
-        if (!item.slot) {
-            item.slot = "descendant";
-        }
-    }
-    stopTrackingItem(item) {
-        this._items.delete(item);
     }
     render() {
         return ke `
@@ -761,9 +783,23 @@ class Sidebar extends Focusable$1 {
             </nav>
         `;
     }
+    startTrackingItem(item) {
+        if (item) {
+            this._items.add(item);
+            if (!item.slot) {
+                item.slot = "descendant";
+            }
+        }
+    }
+    stopTrackingItem(item) {
+        if (item) {
+            this._items.delete(item);
+        }
+    }
 }
 defineElement$1(`${prefix}-sidebar`, Sidebar);
 defineElement$1(`${prefix}-sidebar-item`, SidebarItem);
+defineElement$1(`${prefix}-sidebar-header`, SidebarHeading);
 
 const materialIcons = {
     "10k": '\ue951',

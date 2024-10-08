@@ -3,6 +3,7 @@ import { defineElement, prefix } from "../base/DefineElement.js";
 import { Focusable } from "../base/Focusable.js";
 import style from "./Sidebar.css";
 import { SidebarItem } from "./SidebarItem.js";
+import { SidebarHeading } from "./SidebarHeading.js";
 export class Sidebar extends Focusable {
     static get styles() {
         return [style];
@@ -14,24 +15,6 @@ export class Sidebar extends Focusable {
     get focusElement() {
         return this;
     }
-    get items() {
-        return this._items;
-    }
-    get hasChildren() {
-        return !!this.querySelector('sp-sidenav-item');
-    }
-    get parent() {
-        return undefined;
-    }
-    startTrackingItem(item) {
-        this._items.add(item);
-        if (!item.slot) {
-            item.slot = "descendant";
-        }
-    }
-    stopTrackingItem(item) {
-        this._items.delete(item);
-    }
     render() {
         return html `
             <nav>
@@ -41,7 +24,21 @@ export class Sidebar extends Focusable {
             </nav>
         `;
     }
+    startTrackingItem(item) {
+        if (item) {
+            this._items.add(item);
+            if (!item.slot) {
+                item.slot = "descendant";
+            }
+        }
+    }
+    stopTrackingItem(item) {
+        if (item) {
+            this._items.delete(item);
+        }
+    }
 }
 defineElement(`${prefix}-sidebar`, Sidebar);
 defineElement(`${prefix}-sidebar-item`, SidebarItem);
+defineElement(`${prefix}-sidebar-header`, SidebarHeading);
 //# sourceMappingURL=Sidebar.js.map
