@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" class="spectrum spectrum--dark spectrum--medium">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,6 +14,7 @@
         :root {
             --sidebar-width: 320px;
         }
+
         .header-main {
             top: 0;
             background-color: #161616;
@@ -27,7 +28,7 @@
         .left-menu {
             position: fixed;
             top: 48px;
-            background-color: #242424;
+            background-color: var(--color-neutral-100);
             left: 0;
             width: var(--sidebar-width);
             color: white;
@@ -61,77 +62,90 @@
     {
         var routeValues = this.Context.Request.RouteValues;
         return string.Equals((string?)routeValues["action"], action, StringComparison.InvariantCultureIgnoreCase) &&
-               string.Equals((string?)routeValues["controller"], controller, StringComparison.InvariantCultureIgnoreCase) 
-                   ? "selected" 
+               string.Equals((string?)routeValues["controller"], controller, StringComparison.InvariantCultureIgnoreCase)
+                   ? "selected"
                    : "";
     }
 }
 <body>
-    <sp-theme color="dark" scale="medium">
-        <header class="header-main" aria-label="Header"></header>
-        <nav class="left-menu">
-            <neu-sidebar style="width:100%;">
-                <neu-sidebar-header>
-                    <span>General Info</span>
-                    <neu-sidebar-item value="welcome"
-                                      @GetSelected("Index", "Home")
-                                      href="@Url.Action("Index", "Home")">
-                        <span>Welcome</span>
-                        <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
-                    </neu-sidebar-item>
-                    <neu-sidebar-item value="quickStart">
-                        <span>Quick Start</span>
-                        <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
-                    </neu-sidebar-item>
-                </neu-sidebar-header>
-                <neu-sidebar-header>
-                    <span>Components</span>
-                    <neu-sidebar-item value="buttons">
-                        <span>Buttons</span>
-                        <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
-                    </neu-sidebar-item>
-                    <neu-sidebar-item value="sidebar"
-                                      @GetSelected("Sidebar", "Home")
-                                      href="@Url.Action("Sidebar", "Home")">
-                        <span>Sidebar</span>
-                        <neu-material-icon glyph="SideNavigation" size="s" slot="start"></neu-material-icon>
-                        <neu-material-icon glyph="SideNavigation" size="s" slot="end"></neu-material-icon>
-                    </neu-sidebar-item>
-                    <neu-sidebar-item value="CSSGridLayoutBasics"
-                                      href=@Url.Action("GridLayout", "Home")
-                                      @GetSelected("GridLayout", "Home")>
-                        <span>Grid Layout</span>
-                        <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
-                    </neu-sidebar-item>
-                </neu-sidebar-header>
-                <neu-sidebar-header>
-                    <span>Icons</span>
-                    <neu-sidebar-item value="materialIcons"
-                                      @GetSelected("MaterialIcons", "Home")
-                                      href=@Url.Action("MaterialIcons", "Home")>
-                        <span>Material Icons</span>
-                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
-                    </neu-sidebar-item>
-                    <neu-sidebar-item value="fluentIcons" 
-                                      @GetSelected("FluentIcons", "Home")
-                                      href=@Url.Action("FluentIcons", "Home")>
-                        <span>Fluent UI Icons</span>
-                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
-                    </neu-sidebar-item>
-                    <neu-sidebar-item value="fabricIcons"
-                                      @GetSelected("FabricIcons", "Home")
-                                      href=@Url.Action("FabricIcons", "Home")>
-                        <span>Fabric Icons</span>
-                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
-                    </neu-sidebar-item>
-                </neu-sidebar-header>
-            </neu-sidebar>
-        </nav>
-        <main class="application-area" role="main">
-            @RenderBody()
-        </main>
-        <nav class="status"></nav>
-    </sp-theme>
+    <header class="header-main" aria-label="Header"></header>
+    <nav class="left-menu">
+        <neu-sidebar style="width:100%;">
+            <neu-sidebar-header>
+                <span>General Info</span>
+                <neu-sidebar-item value="welcome"
+                                  @GetSelected("Index", "Home")
+                                  href="@Url.Action("Index", "Home")">
+                    <span>Welcome</span>
+                    <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="quickStart">
+                    <span>Quick Start</span>
+                    <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="colors"
+                                  @GetSelected("Colors", "Home")
+                                  href="@Url.Action("Colors", "Home")">
+                    <span>Colors</span>
+                    <neu-material-icon glyph="Colors" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+            </neu-sidebar-header>
+            <neu-sidebar-header>
+                <span>Components</span>
+                <neu-sidebar-item value="buttons">
+                    <span>Buttons</span>
+                    <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="sidebar"
+                                  @GetSelected("Sidebar", "Home")
+                                  href="@Url.Action("Sidebar", "Home")">
+                    <span>Sidebar</span>
+                    <neu-material-icon glyph="SideNavigation" size="s" slot="start"></neu-material-icon>
+                    <neu-material-icon glyph="SideNavigation" size="s" slot="end"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="CSSGridLayoutBasics"
+                                  href=@Url.Action("GridLayout", "Home")
+                                  @GetSelected("GridLayout", "Home")>
+                    <span>Grid Layout</span>
+                    <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+            </neu-sidebar-header>
+            <neu-sidebar-header>
+                <span>Icons</span>
+                <neu-sidebar-item value="materialIcons"
+                                  @GetSelected("MaterialIcons", "Home")
+                                  href=@Url.Action("MaterialIcons", "Home")>
+                    <span>Material Icons</span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="fluentIcons"
+                                  @GetSelected("FluentIcons", "Home")
+                                  href=@Url.Action("FluentIcons", "Home")>
+                    <span>Fluent UI Icons</span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="fabricIcons"
+                                  @GetSelected("FabricIcons", "Home")
+                                  href=@Url.Action("FabricIcons", "Home")>
+                    <span>Fabric Icons</span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+            </neu-sidebar-header>
+            <neu-sidebar-header>
+                <span>Architecture</span>
+                <neu-sidebar-item value="materialIcons"
+                                  @GetSelected("Solid", "Architecture")
+                                  href=@Url.Action("Solid", "Architecture")>
+                    <span>SOLID</span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+            </neu-sidebar-header>
+        </neu-sidebar>
+    </nav>
+    <main class="application-area" role="main">
+        @RenderBody()
+    </main>
+    <nav class="status"></nav>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

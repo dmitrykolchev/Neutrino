@@ -3,14 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace LitSample.Controllers;
+
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger _logger;
 
     public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
     }
+
     public IActionResult Sidebar()
     {
         return View();
@@ -20,6 +22,7 @@ public class HomeController : Controller
     {
         return View();
     }
+
     public IActionResult Colors()
     {
         return View();
@@ -29,6 +32,7 @@ public class HomeController : Controller
     {
         return View();
     }
+
     public IActionResult FluentIcons()
     {
         return View();

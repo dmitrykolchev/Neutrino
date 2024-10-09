@@ -258,21 +258,6 @@ public struct ColorF : IEquatable<ColorF>
             a.A + (b.A - a.A) * amount);
     }
 
-    public ColorF[] GetPalette(ColorF darker, ColorF lighter)
-    {
-        ColorF[] palette = new ColorF[16];
-        for (int i = 0; i < 7; ++i)
-        {
-            palette[i] = Mix(darker, this, (1 + i) * 0.1f);
-        }
-        palette[7] = this;
-        for (int i = 8; i <= 15; ++i)
-        {
-            palette[i] = Mix(this, lighter, (i - 7) * 0.1f);
-        }
-        return palette;
-    }
-
     /// <summary>
     /// Converts color to hex color string (alpha is ignored)
     /// </summary>

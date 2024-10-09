@@ -1,6 +1,6 @@
 ﻿:host {
     display: block;
-    background-color: var(--color-grey14);
+    background-color: var(--color-neutral-100);
     padding: var(--spacing-xs);
     overflow-y: auto;
 }

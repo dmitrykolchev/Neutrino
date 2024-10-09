@@ -609,7 +609,7 @@ const styles$5 = i$n`:host {
 }
 
 #item-link ::slotted([slot="start"]) {
-    color: var(--color-brand120);
+    color: var(--color-brand-800);
     flex: 0 0 0;
 }
 
@@ -623,12 +623,12 @@ const styles$5 = i$n`:host {
 
 #item-link:hover, 
 :host([selected]) #item-link:hover {
-    background-color: var(--color-grey30);
+    background-color: var(--color-neutral-300);
 }
 
 :host([selected]) #item-link {
-    background-color: var(--color-grey20);
-    border-left: var(--spacing-xs) solid var(--color-brand120);
+    background-color: var(--color-neutral-200);
+    border-left: var(--spacing-xs) solid var(--color-brand-800);
 }
 `;
 
@@ -804,7 +804,7 @@ __decorate([
 
 const styles$3 = i$n`:host {
     display: block;
-    background-color: var(--color-grey14);
+    background-color: var(--color-neutral-100);
     padding: var(--spacing-xs);
     overflow-y: auto;
 }

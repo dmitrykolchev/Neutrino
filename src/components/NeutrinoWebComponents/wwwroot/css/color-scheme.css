@@ -4,7 +4,7 @@
     --shadow-dark-ambient-color: rgba(0,0,0,0.24);
     --shadow-dark-key-color: rgba(0,0,0,0.28);
     --theme-foreground: black;
-    --theme-foreground10: var(--color-grey10);
+    --theme-foreground10: var(--color-neutral-100);
     --theme-background: white;
 }
 
@@ -13,9 +13,9 @@
     --shadow-ambient-color: var(--shadow-light-ambient-color);
     --shadow-key-color: var(--shadow-light-key-color);
     --theme-foreground: black;
-    --theme-foreground10: var(--color-grey10);
-    --theme-foreground20: var(--color-grey20);
-    --theme-foreground30: var(--color-grey30);
+    --theme-foreground10: var(--color-neutral-100);
+    --theme-foreground20: var(--color-neutral-200);
+    --theme-foreground30: var(--color-neutral-300);
     --theme-background: white;
     --color-scheme: light;
   }
@@ -26,13 +26,13 @@
     --shadow-ambient-color: var(--shadow-dark-ambient-color);
     --shadow-key-color: var(--shadow-dark-key-color);
     --theme-foreground: white;
-    --theme-foreground10: var(--color-grey90);
-    --theme-foreground20: var(--color-grey80);
-    --theme-foreground30: var(--color-grey70);
-    --theme-background: var(--color-grey4);
-    --theme-background10: var(--color-grey10);
-    --theme-background20: var(--color-grey20);
-    --theme-background20: var(--color-grey30);
+    --theme-foreground10: var(--color-neutral-900);
+    --theme-foreground20: var(--color-neutral-800);
+    --theme-foreground30: var(--color-neutral-700);
+    --theme-background: var(--color-neutral-50);
+    --theme-background10: var(--color-neutral-100);
+    --theme-background20: var(--color-neutral-200);
+    --theme-background20: var(--color-neutral-300);
     --color-scheme: dark;
   }
 }
