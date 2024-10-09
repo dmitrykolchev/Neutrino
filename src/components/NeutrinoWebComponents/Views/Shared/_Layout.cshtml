@@ -11,6 +11,9 @@
     <script>hljs.highlightAll();</script>
     <script type="module" src="~/js/bundle.debug.js" asp-append-version="true"></script>
     <style>
+        :root {
+            --sidebar-width: 320px;
+        }
         .header-main {
             top: 0;
             background-color: #161616;
@@ -26,7 +29,7 @@
             top: 48px;
             background-color: #242424;
             left: 0;
-            width: 240px;
+            width: var(--sidebar-width);
             color: white;
             bottom: 28px;
             border-right: 1px solid #393939;
@@ -44,7 +47,7 @@
 
         .application-area {
             position: fixed;
-            left: 240px;
+            left: var(--sidebar-width);
             right: 0;
             top: 48px;
             bottom: 28px;
@@ -67,61 +70,62 @@
     <sp-theme color="dark" scale="medium">
         <header class="header-main" aria-label="Header"></header>
         <nav class="left-menu">
-            <sp-sidenav defaultValue="Docs">
-                <sp-sidenav-heading value="General"
-                                    label="General Info">
-                    <sp-icon-article slot="icon"> </sp-icon-article>
-                    <sp-sidenav-item value="WebComponents"
-                                     @GetSelected("Index", "Home")
-                                     href=@Url.Action("Index", "Home")
-                                     label="Docs">
-                        <sp-icon-article slot="icon"> </sp-icon-article>
-                    </sp-sidenav-item>
-                    <sp-sidenav-item value="Sidebar"
-                                     @GetSelected("Sidebar", "Home")
-                                     href=@Url.Action("Sidebar", "Home")
-                                     label="Sidebar">
-                        <sp-icon-article slot="icon"> </sp-icon-article>
-                    </sp-sidenav-item>
-                    <sp-sidenav-item value="Colors"
-                                     href=@Url.Action("Colors", "Home")
-                                     @GetSelected("Colors", "Home")
-                                     label="Colors">
-                        <sp-icon-article slot="icon"> </sp-icon-article>
-                    </sp-sidenav-item>
-                </sp-sidenav-heading>
-                <sp-sidenav-heading value="Icons"
-                                    label="Icons">
-                    <sp-icon-article slot="icons"> </sp-icon-article>
-                    <sp-sidenav-item value="MaterialIcons"
-                                     @GetSelected("MaterialIcons", "Home")
-                                     href=@Url.Action("MaterialIcons", "Home")
-                                     label="Material Icons">
-                        <neu-material-icon glyph="AwardStar" size="s" weight="400" slot="icon" sharp></neu-material-icon>
-                    </sp-sidenav-item>
-                    <sp-sidenav-item value="FluentIcons"
-                                     href=@Url.Action("FluentIcons", "Home")
-                                     @GetSelected("FluentIcons", "Home")
-                                     label="Fluent Icons">
-                        <sp-icon-article slot="icon"> </sp-icon-article>
-                    </sp-sidenav-item>
-                </sp-sidenav-heading>
-                <sp-sidenav-heading value="CSSGridLayout"
-                                    label="CSS Grid Layout">
-                    <sp-icon-article slot="icon"> </sp-icon-article>
-                </sp-sidenav-heading>
-                <sp-sidenav-item value="CSSGridLayoutBasics"
-                                 href=@Url.Action("GridLayout", "Home")
-                                 @GetSelected("GridLayout", "Home")
-                                 label="Basics">
-                    <sp-icon-article slot="icon"> </sp-icon-article>
-                </sp-sidenav-item>
-                <sp-sidenav-item value="CSSGridLayoutAdvanced"
-                                 href=@Url.Action("GridLayout", "Home")
-                                 label="Advanced Topics">
-                    <sp-icon-article slot="icon"> </sp-icon-article>
-                </sp-sidenav-item>
-            </sp-sidenav>
+            <neu-sidebar style="width:100%;">
+                <neu-sidebar-header>
+                    <span>General Info</span>
+                    <neu-sidebar-item value="welcome"
+                                      @GetSelected("Index", "Home")
+                                      href="@Url.Action("Index", "Home")">
+                        <span>Welcome</span>
+                        <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                    <neu-sidebar-item value="quickStart">
+                        <span>Quick Start</span>
+                        <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                </neu-sidebar-header>
+                <neu-sidebar-header>
+                    <span>Components</span>
+                    <neu-sidebar-item value="buttons">
+                        <span>Buttons</span>
+                        <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                    <neu-sidebar-item value="sidebar"
+                                      @GetSelected("Sidebar", "Home")
+                                      href="@Url.Action("Sidebar", "Home")">
+                        <span>Sidebar</span>
+                        <neu-material-icon glyph="SideNavigation" size="s" slot="start"></neu-material-icon>
+                        <neu-material-icon glyph="SideNavigation" size="s" slot="end"></neu-material-icon>
+                    </neu-sidebar-item>
+                    <neu-sidebar-item value="CSSGridLayoutBasics"
+                                      href=@Url.Action("GridLayout", "Home")
+                                      @GetSelected("GridLayout", "Home")>
+                        <span>Grid Layout</span>
+                        <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                </neu-sidebar-header>
+                <neu-sidebar-header>
+                    <span>Icons</span>
+                    <neu-sidebar-item value="materialIcons"
+                                      @GetSelected("MaterialIcons", "Home")
+                                      href=@Url.Action("MaterialIcons", "Home")>
+                        <span>Material Icons</span>
+                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                    <neu-sidebar-item value="fluentIcons" 
+                                      @GetSelected("FluentIcons", "Home")
+                                      href=@Url.Action("FluentIcons", "Home")>
+                        <span>Fluent UI Icons</span>
+                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                    <neu-sidebar-item value="fabricIcons"
+                                      @GetSelected("FabricIcons", "Home")
+                                      href=@Url.Action("FabricIcons", "Home")>
+                        <span>Fabric Icons</span>
+                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                </neu-sidebar-header>
+            </neu-sidebar>
         </nav>
         <main class="application-area" role="main">
             @RenderBody()

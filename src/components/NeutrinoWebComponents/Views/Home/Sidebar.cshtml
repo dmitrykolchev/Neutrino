@@ -14,46 +14,73 @@
         Навигационная панель. Обычно располагается в левой части главного экрана приложения. Навигационная панель
         содержит ссылки на доступные пользователю разделы приложения.
     </p>
-
-    <neu-sidebar style="width:320px;">
-        <neu-sidebar-header>
-            <span>General Info</span>
-            <neu-sidebar-item selected value="welcome">
-                <span>Welcome</span>
-                <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
-            </neu-sidebar-item>
-            <neu-sidebar-item value="quickStart">
-                <span>Quick Start</span>
-                <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
-            </neu-sidebar-item>
-        </neu-sidebar-header>
-        <neu-sidebar-header>
-            <span>Icons</span>
-            <neu-sidebar-item value="materialIcons">
-                <span>Material Icons</span>
-                <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
-            </neu-sidebar-item>
-            <neu-sidebar-item value="fluentIcons">
-                <span>Fluent UI Icons</span>
-                <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
-            </neu-sidebar-item>
-            <neu-sidebar-item expanded value="allIcons">
-                <span>All Icons</span>
-                <neu-material-icon glyph="PhotoLibrary" size="s" slot="start"></neu-material-icon>
-                <neu-sidebar-item value="materialIcons1">
+    <div style="display:flex;flex-direction:row;column-gap:8px;">
+        <neu-sidebar style="width:320px;" id="sidebar">
+            <neu-sidebar-header>
+                <span>General Info</span>
+                <neu-sidebar-item selected value="welcome" href="@Url.Action("Index", "Home")">
+                    <span>Welcome</span>
+                    <neu-material-icon glyph="AwardStar" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="quickStart">
+                    <span>Quick Start</span>
+                    <neu-material-icon glyph="ArticleShortcut" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+            </neu-sidebar-header>
+            <neu-sidebar-header>
+                <span>Components</span>
+                <neu-sidebar-item value="buttons" href="@Url.Action("Sidebar", "Home")">
+                    <span>Buttons</span>
+                    <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="sidebar" href="@Url.Action("Sidebar", "Home")">
+                    <span>Sidebar</span>
+                    <neu-material-icon glyph="SideNavigation" size="s" slot="start"></neu-material-icon>
+                    <neu-material-icon glyph="SideNavigation" size="s" slot="end"></neu-material-icon>
+                </neu-sidebar-item>
+            </neu-sidebar-header>
+            <neu-sidebar-header>
+                <span>Icons</span>
+                <neu-sidebar-item value="materialIcons">
                     <span>Material Icons</span>
                     <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
-                <neu-sidebar-item value="fluentIcons1">
+                <neu-sidebar-item value="fluentIcons">
                     <span>Fluent UI Icons</span>
                     <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
-                <neu-sidebar-item value="lorem">
-                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tincidunt ipsum nunc, ac gravida nulla interdum et. </span>
-                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                <neu-sidebar-item expanded value="allIcons">
+                    <span>All Icons</span>
+                    <neu-material-icon glyph="PhotoLibrary" size="s" slot="start"></neu-material-icon>
+                    <neu-sidebar-item value="materialIcons1">
+                        <span>Material Icons</span>
+                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                    <neu-sidebar-item value="fluentIcons1">
+                        <span>Fluent UI Icons</span>
+                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                    </neu-sidebar-item>
+                    <neu-sidebar-item value="lorem">
+                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tincidunt ipsum nunc, ac gravida nulla interdum et. </span>
+                        <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                        <neu-material-icon glyph="Image" size="s" slot="end"></neu-material-icon>
+                    </neu-sidebar-item>
                 </neu-sidebar-item>
-            </neu-sidebar-item>
-        </neu-sidebar-header>
-    </neu-sidebar>
+            </neu-sidebar-header>
+        </neu-sidebar>
+        <div id="log" style="background-color:var(--theme-background10);min-width:240px;">
+        </div>
+    </div>
 </div>
 
+<script type="module">
+    const sidebar = document.getElementById("sidebar");
+    sidebar.addEventListener("change", handleChange);
+    const log = document.getElementById("log");
+
+    function handleChange() {
+        const line = document.createElement("div");
+        line.textContent = `Change: ${sidebar.value}`;
+        log.appendChild(line);
+    }
+</script>

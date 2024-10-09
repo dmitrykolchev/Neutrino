@@ -28,6 +28,15 @@
 
 #item-link ::slotted([slot="start"]) {
     color: var(--color-brand120);
+    flex: 0 0 0;
+}
+
+#item-link ::slotted([slot="end"]) {
+    flex: 0 0 0;
+}
+
+#item-link span[part="content"] {
+    flex: 1 1 0;
 }
 
 #item-link:hover, 

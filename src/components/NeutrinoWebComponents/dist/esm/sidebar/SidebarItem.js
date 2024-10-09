@@ -43,7 +43,7 @@ export class SidebarItem extends AnchorLike(Focusable) {
                 @click="${this.handleClick}"
             >
             <slot name="start"></slot>
-            <span>${this.label}<slot></slot></span>
+            <span part="content">${this.label}<slot></slot></span>
             <slot name="end"></slot>
             </a>
             ${this.expanded

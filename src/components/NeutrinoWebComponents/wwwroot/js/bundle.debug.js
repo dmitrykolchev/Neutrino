@@ -610,6 +610,15 @@ const styles$5 = i$n`:host {
 
 #item-link ::slotted([slot="start"]) {
     color: var(--color-brand120);
+    flex: 0 0 0;
+}
+
+#item-link ::slotted([slot="end"]) {
+    flex: 0 0 0;
+}
+
+#item-link span[part="content"] {
+    flex: 1 1 0;
 }
 
 #item-link:hover, 
@@ -653,7 +662,7 @@ class SidebarItem extends AnchorLike(Focusable$1) {
                 @click="${this.handleClick}"
             >
             <slot name="start"></slot>
-            <span>${this.label}<slot></slot></span>
+            <span part="content">${this.label}<slot></slot></span>
             <slot name="end"></slot>
             </a>
             ${this.expanded

@@ -30,6 +30,9 @@
     --theme-foreground20: var(--color-grey80);
     --theme-foreground30: var(--color-grey70);
     --theme-background: var(--color-grey4);
+    --theme-background10: var(--color-grey10);
+    --theme-background20: var(--color-grey20);
+    --theme-background20: var(--color-grey30);
     --color-scheme: dark;
   }
 }
