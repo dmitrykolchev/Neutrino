@@ -25,17 +25,25 @@
     --color-white-alpha95: rgba(255, 255, 255, 0.95);
 
     --color-neutral-0: black;
-    --color-neutral-50: #0D0D0D;
-    --color-neutral-100: #1A1A1A;
-    --color-neutral-200: #333333;
-    --color-neutral-300: #4D4D4D;
-    --color-neutral-400: #666666;
-    --color-neutral-500: #808080;
-    --color-neutral-600: #999999;
-    --color-neutral-700: #B3B3B3;
-    --color-neutral-800: #CCCCCC;
-    --color-neutral-900: #E6E6E6;
-    --color-neutral-900: #E6E6E6;
-    --color-neutral-950: #F2F2F2;
+    --color-neutral-50:#0C0C0C;
+    --color-neutral-100:#191919;
+    --color-neutral-150:#262626;
+    --color-neutral-200:#333333;
+    --color-neutral-250:#3F3F3F;
+    --color-neutral-300:#4C4C4C;
+    --color-neutral-350:#595959;
+    --color-neutral-400:#666666;
+    --color-neutral-450:#727272;
+    --color-neutral-500:#7F7F7F;
+    --color-neutral-550:#8C8C8C;
+    --color-neutral-600:#999999;
+    --color-neutral-650:#A5A5A5;
+    --color-neutral-700:#B2B2B2;
+    --color-neutral-750:#BFBFBF;
+    --color-neutral-800:#CCCCCC;
+    --color-neutral-850:#D8D8D8;
+    --color-neutral-900:#E5E5E5;
+    --color-neutral-950:#F2F2F2;
     --color-neutral-1000: white;
 }
+

@@ -1,0 +1,99 @@
+﻿<style>
+
+    @@property --border-gradient-angle {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0turn;
+    }
+
+    @@property --gradient-angle {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0turn;
+    }
+
+    .aaa {
+        --outer-radius: 4px;
+        --border-size: 1px;
+        --inner-radius: calc(var(--outer-radius) - var(--border-size));
+        --runtime: #73ED73;
+        background-image: conic-gradient(from var(--border-gradient-angle) at 50% 50%, transparent, var(--runtime) 16%, transparent 20%, transparent 25%, #F1697F 41%, transparent 45%, transparent 50%, var(--runtime) 66%, transparent 70%, transparent 75%, #F1697F 91%, transparent 95%);
+        border-radius: var(--outer-radius);
+        background-size: contain;
+        padding: var(--border-size);
+        animation: buttonBorderSpin 4s infinite linear;
+        max-width: 100%;
+    }
+
+    @@keyframes buttonBorderSpin {
+        0% {
+            --border-gradient-angle: 0turn;
+        }
+
+        100% {
+            --border-gradient-angle: 1turn;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <div class="neu-display">Spinning Border</div>
+</div>
+<div class="page-tabs">
+    <div>&nbsp;</div>
+</div>
+<div class="page-content">
+    <div>
+        <template shadowrootmode="open">
+            <style>
+                .spin {
+                    box-sizing: border-box;
+                    --outer-radius: 10000px;
+                    --border-size: 58px;
+                    --inner-radius: calc(var(--outer-radius) - var(--border-size));
+                    --color1: var(--color-blue-500);
+                    --color2: var(--color-cranberry-500);
+                    --time: 1.5s;
+                    background-image: conic-gradient(from var(--gradient-angle) at 50% 50%, transparent, var(--color1) 16%, transparent 20%, transparent 25%, var(--color2) 41%, transparent 45%, transparent 50%, var(--color1) 66%, transparent 70%, transparent 75%, var(--color2) 91%, transparent 95%);
+                    border-radius: var(--outer-radius);
+                    background-size: contain;
+                    padding: var(--border-size);
+                    animation: borderSpin var(--time) infinite ease-in-out;
+                    max-width: 100%;
+                }
+
+                @@keyframes borderSpin {
+                    0% {
+                        --gradient-angle: 0turn;
+                    }
+
+                    100% {
+                        --gradient-angle: 1turn;
+                    }
+                }
+            </style>
+            <div class="spin" style="width:280px;height:280px;position:relative;display:inline-block;--color1:var(--color-forest-400);--time:1.25s">
+                <div style="width:100%;height:100%;background-color:var(--default-background-color);border-radius:var(--inner-radius);display:flex;align-content:center;align-items:center;justify-content:center;">
+                    <h1 class="title1" style="font-weight:var(--typography-font-weight-ultra-light)">Wheel 1</h1>
+                </div>
+            </div>
+            <div class="spin" style="width:280px;height:280px;position:relative;display:inline-block;--color2:var(--color-grape-600);--time:1.75s">
+                <div style="width:100%;height:100%;background-color:var(--default-background-color);border-radius:var(--inner-radius);display:flex;align-content:center;align-items:center;justify-content:center;">
+                    <h1 class="title1" style="font-weight:var(--typography-font-weight-ultra-light)">Wheel 2</h1>
+                </div>
+            </div>
+            <div class="spin" style="width:280px;height:280px;position:relative;display:inline-block;--color1:var(--color-orange-500);--color2:var(--color-teal-800);--time:1.05s">
+                <div style="width:100%;height:100%;background-color:var(--default-background-color);border-radius:var(--inner-radius);display:flex;align-content:center;align-items:center;justify-content:center;">
+                    <h1 class="title1" style="font-weight:var(--typography-font-weight-ultra-light)">Wheel 3</h1>
+                </div>
+            </div>
+        </template>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="aaa" style="width:420px;height:420px;position:relative;">
+        <div style="width:100%;height:100%;background-color:#333;border-radius:var(--outer-radius)"></div>
+    </div>
+</div>
+

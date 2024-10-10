@@ -6,8 +6,8 @@
 <style>
     .swatch {
         box-sizing: border-box;
-        width: 72px;
-        height: 72px;
+        width: 96px;
+        height: 96px;
         font-size: 11px;
         border: solid 1px black;
         display: inline-flex;
@@ -45,11 +45,10 @@
     {
         <br />
         <br />
-        <h3 class="neu-title3">
+        <h4 class="neu-subtitle1">
             @colorName
-        </h3>
+        </h4>
         ColorF baseColor = ColorF.Parse(Colors.GetColor(colorName));
-        //float[] amount = new float[] { 0.83f, 0.7f, 0.43f, 0.235f, 0.1f, 0, 0.13f, 0.24f, 0.4f, 0.6f, 0.8f, 0.9f };
         @for (int index = -5; index <= 5; index++)
     {
         ColorF result;
@@ -65,9 +64,9 @@
         {
             result = baseColor;
         }
-        var hexColor = result.ToString("hex"); // ColorConverter.ToRgbHexString(c);
-        var color = result.ToString("rgb"); // ColorConverter.ToRgbString(c);
-        ColorF backgroundColor = result; //c.ToRgb();
+        var hexColor = result.ToString("hex"); 
+        var color = result.ToString("rgb"); 
+        ColorF backgroundColor = result; 
         float whiteOnBackground = ContrastCalculator.GetContrast(ColorF.White, backgroundColor);
         float blackOnBackground = ContrastCalculator.GetContrast(ColorF.Black, backgroundColor);
         string foreColor;
@@ -93,10 +92,12 @@
     @{
         ColorF blueColor = ColorF.Parse(Colors.Blue);
         ColorF[] lightPalette = blueColor.Wheel(12); 
+        ColorF[] darkPalette = blueColor.GetPalette(20);
+        ColorF[] greyPalette = ColorF.FromRGB(0.5f, 0.5f, 0.5f).GetPalette(20);
     }
-    <h3 class="neu-title3">
-        Color Wheel - 12
-    </h3>
+    <h1 class="neu-title1">
+        Колесо цветов
+    </h1>
     @for (int i = 0; i < lightPalette.Length; ++i)
     {
         ColorF result = lightPalette[i];
@@ -118,6 +119,67 @@
                 @color.Substring(3)<br />@hexColor
             </div>
         </div>
+    }
+    <h1 class="neu-title1">
+        Основной
+    </h1>
+    @for (int i = 0; i < darkPalette.Length; ++i)
+    {
+        ColorF result = darkPalette[i];
+        float whiteOnBackground = ContrastCalculator.GetContrast(ColorF.White, result);
+        float blackOnBackground = ContrastCalculator.GetContrast(ColorF.Black, result);
+        var hexColor = result.ToString("hex");
+        var color = result.ToString("rgb");
+        string foreColor;
+        if (MathF.Abs(whiteOnBackground) > MathF.Abs(blackOnBackground))
+        {
+            foreColor = "white";
+        }
+        else
+        {
+            foreColor = "black";
+        }
+        <div class="swatch" style="background-color:@color;color:@foreColor;">
+            <div>
+                @color.Substring(3)<br />@hexColor
+            </div>
+        </div>
+        Console.WriteLine(hexColor);
+        if(i == darkPalette.Length / 2 - 1) {
+            <br />
+            <br />
+        }
+    }
+    <h1 class="neu-title1">
+        Нейтральные
+    </h1>
+    @for (int i = 0; i < greyPalette.Length; ++i)
+    {
+        ColorF result = greyPalette[i];
+        float whiteOnBackground = ContrastCalculator.GetContrast(ColorF.White, result);
+        float blackOnBackground = ContrastCalculator.GetContrast(ColorF.Black, result);
+        var hexColor = result.ToString("hex");
+        var color = result.ToString("rgb");
+        string foreColor;
+        if (MathF.Abs(whiteOnBackground) > MathF.Abs(blackOnBackground))
+        {
+            foreColor = "white";
+        }
+        else
+        {
+            foreColor = "black";
+        }
+        <div class="swatch" style="background-color:@color;color:@foreColor;">
+            <div>
+                @color.Substring(3)<br />@hexColor
+            </div>
+        </div>
+        Console.WriteLine(hexColor);
+        if (i == darkPalette.Length / 2 - 1)
+        {
+            <br />
+            <br />
+        }
     }
 </div>
 

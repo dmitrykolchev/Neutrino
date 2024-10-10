@@ -3,9 +3,6 @@
     --shadow-light-key-color: rgba(0,0,0,0.14);
     --shadow-dark-ambient-color: rgba(0,0,0,0.24);
     --shadow-dark-key-color: rgba(0,0,0,0.28);
-    --theme-foreground: black;
-    --theme-foreground10: var(--color-neutral-100);
-    --theme-background: white;
 }
 
 @media (prefers-color-scheme: light) {

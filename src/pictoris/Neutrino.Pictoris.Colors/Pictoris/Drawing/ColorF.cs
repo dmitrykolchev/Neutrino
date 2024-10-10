@@ -43,6 +43,16 @@ public struct ColorF : IEquatable<ColorF>
         _a = Clamp01(a);
     }
 
+    public static ColorF FromRGBA(float r, float g, float b, float a)
+    {
+        return new ColorF(r, g, b, a);
+    }
+
+    public static ColorF FromRGB(float r, float g, float b)
+    {
+        return new ColorF(r, g, b, 1f);
+    }
+
     /// <summary>
     /// Returns red channel value (0-1)
     /// </summary>
@@ -256,6 +266,22 @@ public struct ColorF : IEquatable<ColorF>
             a.G + (b.G - a.G) * amount,
             a.B + (b.B - a.B) * amount,
             a.A + (b.A - a.A) * amount);
+    }
+
+    public ColorF[] GetPalette(int count)
+    {
+        ColorF[] palette = new ColorF[count];
+        int middle = count / 2;
+        for (int i = 0; i < middle; ++i)
+        {
+            palette[i] = Mix(ColorF.Black, this, (float)i / (float)middle);
+        }
+        palette[middle] = this;
+        for (int i = middle + 1; i < count; ++i)
+        {
+            palette[i] = Mix(this, ColorF.White, (float)(i - middle) / (float)(count - middle));
+        }
+        return palette;
     }
 
     /// <summary>

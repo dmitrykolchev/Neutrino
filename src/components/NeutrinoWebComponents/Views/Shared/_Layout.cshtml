@@ -17,8 +17,8 @@
 
         .header-main {
             top: 0;
-            background-color: #161616;
-            border-bottom: 1px solid #393939;
+            background-color: var(--color-neutral-50);
+            border-bottom: 1px solid var(--color-neutral-200);
             position: fixed;
             height: 48px;
             left: 0;
@@ -33,7 +33,7 @@
             width: var(--sidebar-width);
             color: white;
             bottom: 28px;
-            border-right: 1px solid #393939;
+            border-right: 1px solid var(--color-neutral-200);
         }
 
         .status {
@@ -42,8 +42,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            border-top: 1px solid #393939;
-            background-color: #161616;
+            border-top: 1px solid var(--color-neutral-200);
+            background-color: var(--color-neutral-50);
         }
 
         .application-area {
@@ -52,7 +52,7 @@
             right: 0;
             top: 48px;
             bottom: 28px;
-            background-color: #303030;
+            background-color: var(--color-neutral-200);
             overflow: auto;
         }
     </style>
@@ -103,12 +103,6 @@
                     <neu-material-icon glyph="SideNavigation" size="s" slot="start"></neu-material-icon>
                     <neu-material-icon glyph="SideNavigation" size="s" slot="end"></neu-material-icon>
                 </neu-sidebar-item>
-                <neu-sidebar-item value="CSSGridLayoutBasics"
-                                  href=@Url.Action("GridLayout", "Home")
-                                  @GetSelected("GridLayout", "Home")>
-                    <span>Grid Layout</span>
-                    <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
-                </neu-sidebar-item>
             </neu-sidebar-header>
             <neu-sidebar-header>
                 <span>Icons</span>
@@ -138,6 +132,21 @@
                                   href=@Url.Action("Solid", "Architecture")>
                     <span>SOLID</span>
                     <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+            </neu-sidebar-header>
+            <neu-sidebar-header>
+                <span>CSS Tricks</span>
+                <neu-sidebar-item value="spinningBorder"
+                                  @GetSelected("SpinningBorder", "Tricks")
+                                  href=@Url.Action("SpinningBorder", "Tricks")>
+                    <span>Spinning Border</span>
+                    <neu-material-icon glyph="BorderOuter" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="CSSGridLayoutBasics"
+                                  href=@Url.Action("GridLayout", "Home")
+                                  @GetSelected("GridLayout", "Home")>
+                    <span>Grid Layout</span>
+                    <neu-material-icon glyph="ButtonsAlt" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
             </neu-sidebar-header>
         </neu-sidebar>
