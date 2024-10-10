@@ -10,6 +10,7 @@
 
 
 html {
+    color-scheme: var(--color-scheme);
 }
 
 neu-sidebar:not(:defined), 

@@ -17,11 +17,18 @@
         --border-size: 1px;
         --inner-radius: calc(var(--outer-radius) - var(--border-size));
         --runtime: #73ED73;
-        background-image: conic-gradient(from var(--border-gradient-angle) at 50% 50%, transparent, var(--runtime) 16%, transparent 20%, transparent 25%, #F1697F 41%, transparent 45%, transparent 50%, var(--runtime) 66%, transparent 70%, transparent 75%, #F1697F 91%, transparent 95%);
+        background-image: conic-gradient(from var(--border-gradient-angle) at 50% 50%, 
+            transparent, var(--runtime) 16%, 
+            transparent 20%, transparent 25%, 
+            transparent 50%, var(--runtime) 66%, 
+            transparent 70%, transparent 75%);
+        background-image: conic-gradient(from var(--border-gradient-angle) at 50% 50%, 
+            transparent, var(--runtime) 16%, 
+            var(--runtime) 19%, transparent 20%);
         border-radius: var(--outer-radius);
         background-size: contain;
         padding: var(--border-size);
-        animation: buttonBorderSpin 4s infinite linear;
+        animation: buttonBorderSpin 9s infinite linear;
         max-width: 100%;
     }
 
@@ -49,7 +56,7 @@
                 .spin {
                     box-sizing: border-box;
                     --outer-radius: 10000px;
-                    --border-size: 58px;
+                    --border-size: 64px;
                     --inner-radius: calc(var(--outer-radius) - var(--border-size));
                     --color1: var(--color-blue-500);
                     --color2: var(--color-cranberry-500);
@@ -67,8 +74,16 @@
                         --gradient-angle: 0turn;
                     }
 
+                    33% {
+                        --gradient-angle: 1.75turn;
+                    }
+
+                    66% {
+                        --gradient-angle: 1.5turn;
+                    }
+
                     100% {
-                        --gradient-angle: 1turn;
+                        --gradient-angle: 2turn;
                     }
                 }
             </style>
@@ -92,8 +107,15 @@
     <br />
     <br />
     <br />
-    <div class="aaa" style="width:420px;height:420px;position:relative;">
-        <div style="width:100%;height:100%;background-color:#333;border-radius:var(--outer-radius)"></div>
+    <div class="aaa" style="width:840px;height:240px;position:relative;">
+        <div style="width:100%;height:100%;background-color:var(--color-neutral-150);border-radius:var(--outer-radius);padding:var(--spacing-l);overflow-y:auto">
+        <p class="neu-body1" style="line-height:1.75em">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis est arcu. Phasellus luctus ligula et erat euismod finibus. Duis eu augue ut dolor sagittis ultrices. Nunc pretium ex lacus, ut efficitur metus tincidunt vel. Vivamus vel congue ex. In et dignissim nunc. Sed bibendum tempus quam. Vivamus est lacus, tempus eget elementum at, consectetur vitae neque. Mauris bibendum sapien nec risus mollis congue in nec justo. Nulla consequat semper metus, non blandit felis vulputate sit amet. Quisque hendrerit vitae tellus at gravida. Mauris venenatis justo ex, id viverra orci eleifend quis.
+            </p>
+            <p class="neu-body1" style="line-height:1.75em">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis est arcu. Phasellus luctus ligula et erat euismod finibus. Duis eu augue ut dolor sagittis ultrices. Nunc pretium ex lacus, ut efficitur metus tincidunt vel. Vivamus vel congue ex. In et dignissim nunc. Sed bibendum tempus quam. Vivamus est lacus, tempus eget elementum at, consectetur vitae neque. Mauris bibendum sapien nec risus mollis congue in nec justo. Nulla consequat semper metus, non blandit felis vulputate sit amet. Quisque hendrerit vitae tellus at gravida. Mauris venenatis justo ex, id viverra orci eleifend quis.
+            </p>
+        </div>
     </div>
 </div>
 
