@@ -186,6 +186,7 @@ h1,h2,h3,h4,h5,h6 {
 .neu-table {
     table-layout: fixed;
     border-collapse: collapse;
+    width: 90%;
 }
 
 .neu-table td {
