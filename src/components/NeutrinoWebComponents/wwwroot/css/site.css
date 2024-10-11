@@ -182,3 +182,18 @@ body {
 h1,h2,h3,h4,h5,h6 {
     margin-block: 0.6em;
 }
+
+.neu-table {
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.neu-table td {
+    vertical-align: top;
+    line-height: 1.5em;
+    padding-block: var(--spacing-vertical-s);
+    padding-inline: var(--spacing-horizontal-l);
+    border-top: solid 1px var(--color-neutral-350);
+    border-bottom: solid 1px var(--color-neutral-350);
+}
+

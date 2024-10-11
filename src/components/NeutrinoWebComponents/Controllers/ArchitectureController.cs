@@ -10,9 +10,14 @@ public class ArchitectureController : Controller
     public ArchitectureController(ILogger<ArchitectureController> logger)
     {
         _logger = logger;
-    }
+    } 
 
     public IActionResult Solid()
+    {
+        return View();
+    }
+
+    public IActionResult Components()
     {
         return View();
     }

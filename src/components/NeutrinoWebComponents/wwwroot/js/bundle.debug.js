@@ -543,6 +543,19 @@ const styles$6 = i$2`:host {
 :host([disabled]) {
     pointer-events: none;
 }
+
+a#anchor, a#anchor:visited {
+    font-family: var(--typography-body1-stronger-font-family);
+    font-weight: var(--typography-body1-stronger-font-weight);
+    font-size: var(--typography-body1-stronger-font-size);
+    line-height: var(--typography-body1-stronger-line-height);
+    color: var(--color-brand-800);
+    text-decoration: none;
+}
+
+a#anchor:hover {
+    color: var(--color-brand-600);
+}
 `;
 
 class Link extends AnchorLike(Focusable) {

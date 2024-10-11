@@ -7,7 +7,8 @@
 		<LangVersion>preview</LangVersion>
         <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
 	</PropertyGroup>
-  
+
+
 	<ItemGroup>
 	  <Compile Remove="wwwroot\src\**" />
 	  <Content Remove="wwwroot\src\**" />
@@ -101,7 +102,7 @@
       2. Run yarn run build before building the .NET project.
       MSBuild runs YarnInstall before this task because of the DependsOnTargets attribute.
    -->
-	<Target Name="NpmRunBuild" DependsOnTargets="NpmInstall" BeforeTargets="BeforeBuild">
+	<Target Name="NpmRunBuild" DependsOnTargets="NpmInstall" BeforeTargets="BeforeBuild" Inputs="">
 		<Exec Command="npm run build" />
 	</Target>
 

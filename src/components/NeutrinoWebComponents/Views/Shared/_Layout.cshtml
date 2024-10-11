@@ -133,6 +133,12 @@
                     <span>SOLID</span>
                     <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
+                <neu-sidebar-item value="arch:components"
+                                  @GetSelected("Components", "Architecture")
+                                  href=@Url.Action("Components", "Architecture")>
+                    <span>Components</span>
+                    <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
             </neu-sidebar-header>
             <neu-sidebar-header>
                 <span>CSS Tricks</span>
