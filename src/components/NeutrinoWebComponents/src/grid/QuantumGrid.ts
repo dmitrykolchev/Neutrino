@@ -23,15 +23,6 @@ export class QuantumGrid extends LitElement {
     @state() private multiGrouping: (keyof DataItem)[] = [];
     @state() private collapsedGroups: Set<string> = new Set();
     @state() private columns: ColumnDefinition[] = [];
-    //     { key: 'id', label: 'ID', visible: true, width: 80, aggType: 'count' },
-    //     { key: 'name', label: 'Entity Name', visible: true, width: 220 },
-    //     { key: 'email', label: 'Endpoint URL', visible: true, width: 280 },
-    //     { key: 'role', label: 'Node Role', visible: true, width: 140 },
-    //     { key: 'department', label: 'Cluster Unit', visible: true, width: 180 },
-    //     { key: 'status', label: 'Health State', visible: true, width: 140, align: 'center', dataType: 'status' },
-    //     { key: 'value', label: 'Throughput', visible: true, width: 140, aggType: 'sum', align: 'right', dataType: 'throughput' },
-    //     { key: 'lastLogin', label: 'Sync Time', visible: true, width: 200, align: 'right', dataType: 'date' },
-    // ];
     @queryAssignedElements({ flatten: true, selector: 'quantum-grid-column' })
     private _colElements!: QuantumGridColumn[];
 
