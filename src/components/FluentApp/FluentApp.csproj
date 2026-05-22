@@ -7,36 +7,33 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="src\index.ts" />
-    <None Remove="src\main.ts" />
+    <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\js\bundle.d.ts.map" />
+    <Content Remove="wwwroot\js\bundle.js" />
+    <Content Remove="wwwroot\js\bundle.js.map" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="src\index.ts" />
-    <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Remove="wwwroot\js\bundle.d.ts" />
   </ItemGroup>
 
-  <Target Name="YarnInstall" Inputs="package.json" Outputs="node_modules/.install-stamp">
-    <!--
-        Use npm install or npm ci depending on RestorePackagesWithLockFile value.
-        Uncomment the following lines if you want to use this feature:
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.8.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
-        <PropertyGroup>
-          <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-        </PropertyGroup>
-     -->
-    <Exec Command="yarn install" Condition="'$(RestorePackagesWithLockFile)' != 'true'" />
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\js\app.ts" />
+  </ItemGroup>
 
-    <!-- Write the stamp file, so incremental builds work -->
-    <Touch Files="node_modules/.install-stamp" AlwaysCreate="true" />
-  </Target>
-
-  <!--
-      2. Run yarn run build before building the .NET project.
-      MSBuild runs YarnInstall before this task because of the DependsOnTargets attribute.
-   -->
-  <Target Name="YarnRunBuild" DependsOnTargets="YarnInstall" BeforeTargets="BeforeBuild">
-    <Exec Command="yarn run build" />
-  </Target>
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\js\bundle.js" />
+    <None Include="wwwroot\js\bundle.js.map" />
+    <None Include="wwwroot\js\bundle.d.ts" />
+    <None Include="wwwroot\js\bundle.d.ts.map" />
+  </ItemGroup>
 
 </Project>

@@ -1,0 +1,1 @@
+{"version":3,"file":"bundle.d.ts","sources":["../src/dts/main.d.ts"],"sourcesContent":["export type Themes = \"dark\" | \"light\";\nexport interface IThemes {\n    [key: string]: any;\n}\nexport declare function setFluentTheme(theme: Themes): void;\n"],"names":[],"mappings":"AAAO;AAIA;;;"}

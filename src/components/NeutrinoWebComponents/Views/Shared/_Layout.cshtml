@@ -70,7 +70,7 @@
 <body>
     <header class="header-main" aria-label="Header"></header>
     <nav class="left-menu">
-        <neu-sidebar style="width:100%;">
+        <neu-sidebar style="width:100%;height:100%;">
             <neu-sidebar-header>
                 <span>General Info</span>
                 <neu-sidebar-item value="welcome"
@@ -102,6 +102,12 @@
                     <span>Sidebar</span>
                     <neu-material-icon glyph="SideNavigation" size="s" slot="start"></neu-material-icon>
                     <neu-material-icon glyph="SideNavigation" size="s" slot="end"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="datagrid"
+                                  @GetSelected("Datagrid", "Home")
+                                  href="@Url.Action("Datagrid", "Home")">
+                    <span>Data Grid</span>
+                    <neu-material-icon glyph="GridView" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
             </neu-sidebar-header>
             <neu-sidebar-header>
@@ -138,6 +144,18 @@
                                   href=@Url.Action("Components", "Architecture")>
                     <span>Components</span>
                     <neu-material-icon glyph="Image" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="arch:patterns:ambasabor"
+                                  @GetSelected("Patterns", "Architecture")
+                                  href=@Url.Action("Patterns", "Architecture", new { Path = @"D:\GitHub\microsoft\architecture-center\docs\patterns\ambassador.yml" })>
+                    <span>Patterns</span>
+                    <neu-material-icon glyph="Pattern" size="s" slot="start"></neu-material-icon>
+                </neu-sidebar-item>
+                <neu-sidebar-item value="references"
+                                  @GetSelected("References", "Home")
+                                  href=@Url.Action("References", "Home")>
+                    <span>References</span>
+                    <neu-material-icon glyph="Link" size="s" slot="start"></neu-material-icon>
                 </neu-sidebar-item>
             </neu-sidebar-header>
             <neu-sidebar-header>

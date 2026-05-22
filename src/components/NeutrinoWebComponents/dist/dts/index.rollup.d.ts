@@ -6,3 +6,5 @@ export * from "./sidebar/Sidebar.js";
 export * from "./icons/MaterialIcons.js";
 export * from "./icons/MaterialIcon.js";
 export * from "./icons/IconList.js";
+export * from "./grid/QuantumGrid.js";
+export * from "./grid/QuantumGridColumn.js";

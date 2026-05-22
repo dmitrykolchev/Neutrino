@@ -31,13 +31,13 @@ function __metadata(metadataKey, metadataValue) {
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const t$2=globalThis,e$4=t$2.ShadowRoot&&(void 0===t$2.ShadyCSS||t$2.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s=Symbol(),o$2=new WeakMap;let n$3 = class n{constructor(t,e,o){if(this._$cssResult$=!0,o!==s)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e;}get styleSheet(){let t=this.o;const s=this.t;if(e$4&&void 0===t){const e=void 0!==s&&1===s.length;e&&(t=o$2.get(s)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&o$2.set(s,t));}return t}toString(){return this.cssText}};const r$2=t=>new n$3("string"==typeof t?t:t+"",void 0,s),i$2=(t,...e)=>{const o=1===t.length?t[0]:e.reduce(((e,s,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(s)+t[o+1]),t[0]);return new n$3(o,t,s)},S$1=(s,o)=>{if(e$4)s.adoptedStyleSheets=o.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet));else for(const e of o){const o=document.createElement("style"),n=t$2.litNonce;void 0!==n&&o.setAttribute("nonce",n),o.textContent=e.cssText,s.appendChild(o);}},c$2=e$4?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const s of t.cssRules)e+=s.cssText;return r$2(e)})(t):t;
+const t$2=globalThis,e$4=t$2.ShadowRoot&&(void 0===t$2.ShadyCSS||t$2.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s=Symbol(),o$3=new WeakMap;let n$3 = class n{constructor(t,e,o){if(this._$cssResult$=!0,o!==s)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e;}get styleSheet(){let t=this.o;const s=this.t;if(e$4&&void 0===t){const e=void 0!==s&&1===s.length;e&&(t=o$3.get(s)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&o$3.set(s,t));}return t}toString(){return this.cssText}};const r$3=t=>new n$3("string"==typeof t?t:t+"",void 0,s),i$2=(t,...e)=>{const o=1===t.length?t[0]:e.reduce(((e,s,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(s)+t[o+1]),t[0]);return new n$3(o,t,s)},S$1=(s,o)=>{if(e$4)s.adoptedStyleSheets=o.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet));else for(const e of o){const o=document.createElement("style"),n=t$2.litNonce;void 0!==n&&o.setAttribute("nonce",n),o.textContent=e.cssText,s.appendChild(o);}},c$2=e$4?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const s of t.cssRules)e+=s.cssText;return r$3(e)})(t):t;
 
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const{is:i$1,defineProperty:e$3,getOwnPropertyDescriptor:r$1,getOwnPropertyNames:h$2,getOwnPropertySymbols:o$1,getPrototypeOf:n$2}=Object,a=globalThis,c$1=a.trustedTypes,l=c$1?c$1.emptyScript:"",p=a.reactiveElementPolyfillSupport,d=(t,s)=>t,u={toAttribute(t,s){switch(s){case Boolean:t=t?l:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t);}return t},fromAttribute(t,s){let i=t;switch(s){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t);}catch(t){i=null;}}return i}},f$2=(t,s)=>!i$1(t,s),y={attribute:!0,type:String,converter:u,reflect:!1,hasChanged:f$2};Symbol.metadata??=Symbol("metadata"),a.litPropertyMetadata??=new WeakMap;class b extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t);}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,s=y){if(s.state&&(s.attribute=!1),this._$Ei(),this.elementProperties.set(t,s),!s.noAccessor){const i=Symbol(),r=this.getPropertyDescriptor(t,i,s);void 0!==r&&e$3(this.prototype,t,r);}}static getPropertyDescriptor(t,s,i){const{get:e,set:h}=r$1(this.prototype,t)??{get(){return this[s]},set(t){this[s]=t;}};return {get(){return e?.call(this)},set(s){const r=e?.call(this);h.call(this,s),this.requestUpdate(t,r,i);},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??y}static _$Ei(){if(this.hasOwnProperty(d("elementProperties")))return;const t=n$2(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties);}static finalize(){if(this.hasOwnProperty(d("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(d("properties"))){const t=this.properties,s=[...h$2(t),...o$1(t)];for(const i of s)this.createProperty(i,t[i]);}const t=this[Symbol.metadata];if(null!==t){const s=litPropertyMetadata.get(t);if(void 0!==s)for(const[t,i]of s)this.elementProperties.set(t,i);}this._$Eh=new Map;for(const[t,s]of this.elementProperties){const i=this._$Eu(t,s);void 0!==i&&this._$Eh.set(i,t);}this.elementStyles=this.finalizeStyles(this.styles);}static finalizeStyles(s){const i=[];if(Array.isArray(s)){const e=new Set(s.flat(1/0).reverse());for(const s of e)i.unshift(c$2(s));}else void 0!==s&&i.push(c$2(s));return i}static _$Eu(t,s){const i=s.attribute;return !1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev();}_$Ev(){this._$ES=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach((t=>t(this)));}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.();}removeController(t){this._$EO?.delete(t);}_$E_(){const t=new Map,s=this.constructor.elementProperties;for(const i of s.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t);}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return S$1(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach((t=>t.hostConnected?.()));}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach((t=>t.hostDisconnected?.()));}attributeChangedCallback(t,s,i){this._$AK(t,i);}_$EC(t,s){const i=this.constructor.elementProperties.get(t),e=this.constructor._$Eu(t,i);if(void 0!==e&&!0===i.reflect){const r=(void 0!==i.converter?.toAttribute?i.converter:u).toAttribute(s,i.type);this._$Em=t,null==r?this.removeAttribute(e):this.setAttribute(e,r),this._$Em=null;}}_$AK(t,s){const i=this.constructor,e=i._$Eh.get(t);if(void 0!==e&&this._$Em!==e){const t=i.getPropertyOptions(e),r="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:u;this._$Em=e,this[e]=r.fromAttribute(s,t.type),this._$Em=null;}}requestUpdate(t,s,i){if(void 0!==t){if(i??=this.constructor.getPropertyOptions(t),!(i.hasChanged??f$2)(this[t],s))return;this.P(t,s,i);}!1===this.isUpdatePending&&(this._$ES=this._$ET());}P(t,s,i){this._$AL.has(t)||this._$AL.set(t,s),!0===i.reflect&&this._$Em!==t&&(this._$Ej??=new Set).add(t);}async _$ET(){this.isUpdatePending=!0;try{await this._$ES;}catch(t){Promise.reject(t);}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,s]of this._$Ep)this[t]=s;this._$Ep=void 0;}const t=this.constructor.elementProperties;if(t.size>0)for(const[s,i]of t)!0!==i.wrapped||this._$AL.has(s)||void 0===this[s]||this.P(s,this[s],i);}let t=!1;const s=this._$AL;try{t=this.shouldUpdate(s),t?(this.willUpdate(s),this._$EO?.forEach((t=>t.hostUpdate?.())),this.update(s)):this._$EU();}catch(s){throw t=!1,this._$EU(),s}t&&this._$AE(s);}willUpdate(t){}_$AE(t){this._$EO?.forEach((t=>t.hostUpdated?.())),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t);}_$EU(){this._$AL=new Map,this.isUpdatePending=!1;}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return !0}update(t){this._$Ej&&=this._$Ej.forEach((t=>this._$EC(t,this[t]))),this._$EU();}updated(t){}firstUpdated(t){}}b.elementStyles=[],b.shadowRootOptions={mode:"open"},b[d("elementProperties")]=new Map,b[d("finalized")]=new Map,p?.({ReactiveElement:b}),(a.reactiveElementVersions??=[]).push("2.0.4");
+ */const{is:i$1,defineProperty:e$3,getOwnPropertyDescriptor:r$2,getOwnPropertyNames:h$2,getOwnPropertySymbols:o$2,getPrototypeOf:n$2}=Object,a=globalThis,c$1=a.trustedTypes,l=c$1?c$1.emptyScript:"",p=a.reactiveElementPolyfillSupport,d=(t,s)=>t,u={toAttribute(t,s){switch(s){case Boolean:t=t?l:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t);}return t},fromAttribute(t,s){let i=t;switch(s){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t);}catch(t){i=null;}}return i}},f$2=(t,s)=>!i$1(t,s),y={attribute:!0,type:String,converter:u,reflect:!1,hasChanged:f$2};Symbol.metadata??=Symbol("metadata"),a.litPropertyMetadata??=new WeakMap;class b extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t);}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,s=y){if(s.state&&(s.attribute=!1),this._$Ei(),this.elementProperties.set(t,s),!s.noAccessor){const i=Symbol(),r=this.getPropertyDescriptor(t,i,s);void 0!==r&&e$3(this.prototype,t,r);}}static getPropertyDescriptor(t,s,i){const{get:e,set:h}=r$2(this.prototype,t)??{get(){return this[s]},set(t){this[s]=t;}};return {get(){return e?.call(this)},set(s){const r=e?.call(this);h.call(this,s),this.requestUpdate(t,r,i);},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??y}static _$Ei(){if(this.hasOwnProperty(d("elementProperties")))return;const t=n$2(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties);}static finalize(){if(this.hasOwnProperty(d("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(d("properties"))){const t=this.properties,s=[...h$2(t),...o$2(t)];for(const i of s)this.createProperty(i,t[i]);}const t=this[Symbol.metadata];if(null!==t){const s=litPropertyMetadata.get(t);if(void 0!==s)for(const[t,i]of s)this.elementProperties.set(t,i);}this._$Eh=new Map;for(const[t,s]of this.elementProperties){const i=this._$Eu(t,s);void 0!==i&&this._$Eh.set(i,t);}this.elementStyles=this.finalizeStyles(this.styles);}static finalizeStyles(s){const i=[];if(Array.isArray(s)){const e=new Set(s.flat(1/0).reverse());for(const s of e)i.unshift(c$2(s));}else void 0!==s&&i.push(c$2(s));return i}static _$Eu(t,s){const i=s.attribute;return !1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev();}_$Ev(){this._$ES=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach((t=>t(this)));}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.();}removeController(t){this._$EO?.delete(t);}_$E_(){const t=new Map,s=this.constructor.elementProperties;for(const i of s.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t);}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return S$1(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach((t=>t.hostConnected?.()));}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach((t=>t.hostDisconnected?.()));}attributeChangedCallback(t,s,i){this._$AK(t,i);}_$EC(t,s){const i=this.constructor.elementProperties.get(t),e=this.constructor._$Eu(t,i);if(void 0!==e&&!0===i.reflect){const r=(void 0!==i.converter?.toAttribute?i.converter:u).toAttribute(s,i.type);this._$Em=t,null==r?this.removeAttribute(e):this.setAttribute(e,r),this._$Em=null;}}_$AK(t,s){const i=this.constructor,e=i._$Eh.get(t);if(void 0!==e&&this._$Em!==e){const t=i.getPropertyOptions(e),r="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:u;this._$Em=e,this[e]=r.fromAttribute(s,t.type),this._$Em=null;}}requestUpdate(t,s,i){if(void 0!==t){if(i??=this.constructor.getPropertyOptions(t),!(i.hasChanged??f$2)(this[t],s))return;this.P(t,s,i);}!1===this.isUpdatePending&&(this._$ES=this._$ET());}P(t,s,i){this._$AL.has(t)||this._$AL.set(t,s),!0===i.reflect&&this._$Em!==t&&(this._$Ej??=new Set).add(t);}async _$ET(){this.isUpdatePending=!0;try{await this._$ES;}catch(t){Promise.reject(t);}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,s]of this._$Ep)this[t]=s;this._$Ep=void 0;}const t=this.constructor.elementProperties;if(t.size>0)for(const[s,i]of t)!0!==i.wrapped||this._$AL.has(s)||void 0===this[s]||this.P(s,this[s],i);}let t=!1;const s=this._$AL;try{t=this.shouldUpdate(s),t?(this.willUpdate(s),this._$EO?.forEach((t=>t.hostUpdate?.())),this.update(s)):this._$EU();}catch(s){throw t=!1,this._$EU(),s}t&&this._$AE(s);}willUpdate(t){}_$AE(t){this._$EO?.forEach((t=>t.hostUpdated?.())),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t);}_$EU(){this._$AL=new Map,this.isUpdatePending=!1;}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return !0}update(t){this._$Ej&&=this._$Ej.forEach((t=>this._$EC(t,this[t]))),this._$EU();}updated(t){}firstUpdated(t){}}b.elementStyles=[],b.shadowRootOptions={mode:"open"},b[d("elementProperties")]=new Map,b[d("finalized")]=new Map,p?.({ReactiveElement:b}),(a.reactiveElementVersions??=[]).push("2.0.4");
 
 /**
  * @license
@@ -63,7 +63,13 @@ const t$1=t=>(e,o)=>{void 0!==o?o.addInitializer((()=>{customElements.define(t,e
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const o={attribute:!0,type:String,converter:u,reflect:!1,hasChanged:f$2},r=(t=o,e,r)=>{const{kind:n,metadata:i}=r;let s=globalThis.litPropertyMetadata.get(i);if(void 0===s&&globalThis.litPropertyMetadata.set(i,s=new Map),s.set(r.name,t),"accessor"===n){const{name:o}=r;return {set(r){const n=e.get.call(this);e.set.call(this,r),this.requestUpdate(o,n,t);},init(e){return void 0!==e&&this.P(o,void 0,t),e}}}if("setter"===n){const{name:o}=r;return function(r){const n=this[o];e.call(this,r),this.requestUpdate(o,n,t);}}throw Error("Unsupported decorator location: "+n)};function n(t){return (e,o)=>"object"==typeof o?r(t,e,o):((t,e,o)=>{const r=e.hasOwnProperty(o);return e.constructor.createProperty(o,r?{...t,wrapped:!0}:t),r?Object.getOwnPropertyDescriptor(e,o):void 0})(t,e,o)}
+ */const o$1={attribute:!0,type:String,converter:u,reflect:!1,hasChanged:f$2},r$1=(t=o$1,e,r)=>{const{kind:n,metadata:i}=r;let s=globalThis.litPropertyMetadata.get(i);if(void 0===s&&globalThis.litPropertyMetadata.set(i,s=new Map),s.set(r.name,t),"accessor"===n){const{name:o}=r;return {set(r){const n=e.get.call(this);e.set.call(this,r),this.requestUpdate(o,n,t);},init(e){return void 0!==e&&this.P(o,void 0,t),e}}}if("setter"===n){const{name:o}=r;return function(r){const n=this[o];e.call(this,r),this.requestUpdate(o,n,t);}}throw Error("Unsupported decorator location: "+n)};function n(t){return (e,o)=>"object"==typeof o?r$1(t,e,o):((t,e,o)=>{const r=e.hasOwnProperty(o);return e.constructor.createProperty(o,r?{...t,wrapped:!0}:t),r?Object.getOwnPropertyDescriptor(e,o):void 0})(t,e,o)}
+
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */function r(r){return n({...r,state:!0,attribute:!1})}
 
 /**
  * @license
@@ -77,6 +83,12 @@ const e$2=(e,t,c)=>(c.configurable=!0,c.enumerable=!0,Reflect.decorate&&"object"
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */function e$1(e,r){return (n,s,i)=>{const o=t=>t.renderRoot?.querySelector(e)??null;return e$2(n,s,{get(){return o(this)}})}}
+
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */function o(o){return (e,n)=>{const{slot:r,selector:s}=o??{},c="slot"+(r?`[name=${r}]`:":not([name])");return e$2(e,n,{get(){const t=this.renderRoot?.querySelector(c),e=t?.assignedElements(o)??[];return void 0===s?e:e.filter((t=>t.matches(s)))}})}}
 
 let SimpleGreeting = class SimpleGreeting extends h {
     constructor() {
@@ -113,7 +125,7 @@ NeutrinoElement.VERSION = version;
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const rt=o=>void 0===o.strings;
+ */const rt=o=>void 0===o.strings,ht={},dt=(o,t=ht)=>o._$AH=t;
 
 /**
  * @license
@@ -421,7 +433,7 @@ function AnchorLike(constructor) {
     return AnchorLikeElement;
 }
 
-const styles$7 = i$2`:root {
+const styles$8 = i$2`:root {
     --icon-spacing: 8px;
 }
 
@@ -491,7 +503,7 @@ class Button extends AnchorLike(FormElement(Focusable)) {
         };
     }
     static get styles() {
-        return [styles$7];
+        return [styles$8];
     }
     get focusElement() {
         return this;
@@ -532,7 +544,7 @@ __decorate([
 ], Button.prototype, "anchorElement", void 0);
 defineElement("neu-button", Button);
 
-const styles$6 = i$2`:host {
+const styles$7 = i$2`:host {
     display: inline;
 }
 
@@ -560,7 +572,7 @@ a#anchor:hover {
 
 class Link extends AnchorLike(Focusable) {
     static get styles() {
-        return [styles$6];
+        return [styles$7];
     }
     get focusElement() {
         return this.anchorElement;
@@ -575,7 +587,7 @@ __decorate([
 ], Link.prototype, "anchorElement", void 0);
 defineElement("neu-link", Link);
 
-const styles$5 = i$2`:host {
+const styles$6 = i$2`:host {
     display: block;
 }
 
@@ -635,7 +647,7 @@ class SidebarItem extends AnchorLike(Focusable) {
         this.expanded = false;
     }
     static get styles() {
-        return [styles$5];
+        return [styles$6];
     }
     get parentSidebar() {
         return this._parentSidebar ?? (this._parentSidebar = this.closest("neu-sidebar"));
@@ -735,7 +747,7 @@ __decorate([
     __metadata("design:type", Object)
 ], SidebarItem.prototype, "expanded", void 0);
 
-const styles$4 = i$2`:host {
+const styles$5 = i$2`:host {
     display: block;
 }
 
@@ -764,7 +776,7 @@ const styles$4 = i$2`:host {
 
 class SidebarHeading extends NeutrinoElement {
     static get styles() {
-        return [styles$4];
+        return [styles$5];
     }
     get parentSidebar() {
         return this._parentSidebar ?? (this._parentSidebar = this.closest("neu-sidebar"));
@@ -797,7 +809,7 @@ __decorate([
     __metadata("design:type", String)
 ], SidebarHeading.prototype, "label", void 0);
 
-const styles$3 = i$2`:host {
+const styles$4 = i$2`:host {
     display: block;
     background-color: var(--color-neutral-100);
     padding: var(--spacing-xs);
@@ -818,7 +830,7 @@ class Sidebar extends Focusable {
         this.label = undefined;
     }
     static get styles() {
-        return [styles$3];
+        return [styles$4];
     }
     get focusElement() {
         return this;
@@ -4201,7 +4213,7 @@ const materialIcons = {
 };
 const Icons = Object.freeze(materialIcons);
 
-const styles$2 = i$2`:host {
+const styles$3 = i$2`:host {
     display: inline-flex;
     --material-icon-size-xxs: 12px;
     --material-icon-font-size-xxs: 12px;
@@ -4307,7 +4319,7 @@ const styles$2 = i$2`:host {
 
 class MaterialIcon extends h {
     constructor() {
-        super();
+        super(...arguments);
         this.size = "n";
         this.outlined = false;
         this.rounded = false;
@@ -4315,7 +4327,7 @@ class MaterialIcon extends h {
         this.fill = false;
     }
     static get styles() {
-        return [styles$2];
+        return [styles$3];
     }
     render() {
         return ke `<span>${this._glyph}</span>`;
@@ -4377,7 +4389,7 @@ __decorate([
 ], MaterialIcon.prototype, "fill", void 0);
 defineElement(`${prefix}-material-icon`, MaterialIcon);
 
-const styles$1 = i$2`:host {
+const styles$2 = i$2`:host {
     position: relative;
     display: block;
     overflow-y: auto;
@@ -4396,7 +4408,7 @@ div[role='list'] {
 }
 `;
 
-const styles = i$2`:host {
+const styles$1 = i$2`:host {
     display: flex;
     flex-direction: column;
     border: 1px solid darkgray;
@@ -4459,7 +4471,7 @@ class IconListItem extends NeutrinoElement {
         this.selected = false;
     }
     static get styles() {
-        return [styles];
+        return [styles$1];
     }
     get parentSet() {
         if (!this._parentSet) {
@@ -4524,7 +4536,7 @@ class IconList extends NeutrinoElement {
         this.size = "n";
     }
     static get styles() {
-        return [styles$1];
+        return [styles$2];
     }
     render() {
         return ke `<div role="list"><slot name="items"></slot></div>`;
@@ -4622,5 +4634,1599 @@ __decorate([
 defineElement(`${prefix}-iconlist`, IconList);
 defineElement(`${prefix}-iconlist-item`, IconListItem);
 
-export { Button, ButtonType, IconList, IconType, Icons, Link, MaterialIcon, NeutrinoElement, Sidebar, SimpleGreeting };
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */const Bt=e(class extends i{constructor(){super(...arguments),this.key=D;}render(r,t){return this.key=r,t}update(r,[t,e]){return t!==this.key&&(dt(r),this.key=t),e}});
+
+const styles = i$2`:host {
+    --grid-bg: #0F1115;
+    --grid-surface: #1A1D23;
+    --grid-border: #2D3748;
+    --grid-text: #E2E8F0;
+    --grid-muted: #64748B;
+    --grid-accent: #3B82F6;
+    --grid-emerald: #10B981;
+    --grid-amber: #F59E0B;
+    --grid-red: #EF4444;
+    --row-height: 48px;
+    --header-height: 48px;
+    --cell-padding: 0 24px;
+    --header-padding: 12px 24px;
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: var(--grid-bg);
+    color: var(--grid-text);
+    font-family: var(--font-sans);
+    overflow: hidden;
+    box-sizing: border-box;
+    outline: none;
+}
+
+:host([density="compact"]) {
+    --row-height: 32px;
+    --header-height: 36px;
+    --cell-padding: 0 12px;
+    --header-padding: 8px 12px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--grid-surface);
+    border-bottom: 1px solid var(--grid-border);
+    gap: 16px;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-input {
+    width: 100%;
+    background: var(--grid-bg);
+    border: 1px solid var(--grid-border);
+    border-radius: 4px;
+    padding: 8px 12px 8px 36px;
+    color: var(--grid-text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+    .search-input:focus {
+        border-color: var(--grid-accent);
+    }
+
+.icon-search {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--grid-muted);
+    pointer-events: none;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+}
+
+.grid-container {
+    flex: 1;
+    position: relative;
+    background: var(--grid-surface);
+    border: 1px solid var(--grid-border);
+    margin: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.group-panel {
+    padding: 12px 24px;
+    background: var(--grid-surface);
+    border-bottom: 1px solid var(--grid-border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    color: var(--grid-muted);
+    font-size: 11px;
+    transition: background 0.2s;
+}
+
+    .group-panel.drag-over {
+        background: rgba(59, 130, 246, 0.1);
+        border-bottom-color: var(--grid-accent);
+    }
+
+.group-tag {
+    background: var(--grid-bg);
+    border: 1px solid var(--grid-border);
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--grid-text);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.group-idx {
+    background: var(--grid-amber);
+    color: black;
+    font-size: 8px;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+}
+
+.grid-header {
+    display: flex;
+    background: #14171D;
+    border-bottom: 1px solid var(--grid-border);
+    z-index: 10;
+    width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    height: var(--header-height);
+}
+
+.header-cell {
+    padding: var(--header-padding);
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--grid-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+    .header-cell.dragging {
+        opacity: 0.4;
+    }
+
+    .header-cell.drop-target {
+        border-left: 2px solid var(--grid-accent);
+    }
+
+    .header-cell:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+.resize-handle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    cursor: col-resize;
+    background: transparent;
+    transition: background 0.1s;
+    z-index: 20;
+}
+
+    .resize-handle:hover, .resize-handle.active {
+        background: var(--grid-accent);
+    }
+
+.grid-body {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+.virtual-spacer {
+    width: 100%;
+    pointer-events: none;
+}
+
+.rows-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.grid-row {
+    display: flex;
+    height: var(--row-height);
+    border-bottom: 1px solid rgba(45, 55, 72, 0.2);
+    align-items: center;
+    transition: background 0.1s;
+    cursor: pointer;
+    user-select: none;
+}
+
+    .grid-row:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .grid-row.selected {
+        background: rgba(59, 130, 246, 0.15) !important;
+    }
+
+    .grid-row.focused {
+        outline: 1px inset var(--grid-accent);
+        z-index: 2;
+    }
+
+.grid-cell {
+    padding: var(--cell-padding);
+    font-size: 13px;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.selection-cell, .selection-header {
+    width: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.selection-cell {
+    border-right: 1px solid rgba(45, 55, 72, 0.1);
+}
+
+.selection-header {
+    border-right: 1px solid var(--grid-border);
+}
+
+.checkbox, .radio {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--grid-border);
+    background: var(--grid-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.radio {
+    border-radius: 50%;
+}
+
+.checkbox {
+    border-radius: 4px;
+}
+
+    .checkbox.checked, .radio.checked {
+        background: var(--grid-accent);
+        border-color: var(--grid-accent);
+        box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+    }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .radio.checked::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+        }
+
+.group-header {
+    display: flex;
+    align-items: center;
+    height: var(--row-height);
+    padding: var(--cell-padding);
+    background: #0A0C10;
+    border-bottom: 1px solid var(--grid-border);
+    cursor: pointer;
+    z-index: 5;
+    position: sticky;
+    left: 0;
+}
+
+.group-label {
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--grid-amber);
+}
+
+.badge {
+    margin-left: 12px;
+    padding: 2px 6px;
+    background: rgba(45, 55, 72, 0.4);
+    border-radius: 4px;
+    font-size: 9px;
+    color: var(--grid-muted);
+}
+
+.collapse-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 10px;
+    height: 10px;
+    margin-right: 8px;
+    transition: transform 0.2s;
+    font-size: 8px;
+    color: var(--grid-amber);
+}
+
+.footer {
+    padding: 12px 24px;
+    background: var(--grid-surface);
+    border-top: 1px solid var(--grid-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+}
+
+.pagination {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn {
+    background: var(--grid-bg);
+    border: 1px solid var(--grid-border);
+    color: var(--grid-muted);
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+    .btn:hover {
+        border-color: var(--grid-accent);
+        color: var(--grid-text);
+    }
+
+    .btn.active {
+        background: var(--grid-accent);
+        color: white;
+        border-color: var(--grid-accent);
+    }
+
+    .btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-flex;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.status-active {
+    background: var(--grid-emerald);
+    box-shadow: 0 0 8px var(--grid-emerald);
+}
+
+.status-inactive {
+    background: var(--grid-muted);
+}
+
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 17, 21, 0.6);
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--grid-accent);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.selection-header {
+    width: 48px;
+    min-width: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid var(--grid-border);
+    flex-shrink: 0;
+}
+
+.group-btn {
+    margin-left: 8px;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+    background: none;
+    border: none;
+    font-size: 10px;
+    cursor: pointer;
+    color: inherit;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+    .group-btn:hover {
+        opacity: 1;
+    }
+
+    .group-btn.active {
+        opacity: 1;
+        color: var(--grid-amber);
+    }
+
+.sticky-footer-container {
+    overflow: hidden;
+    background: #0A0C10;
+    border-top: 1px solid var(--grid-border);
+    flex-shrink: 0;
+}
+
+.grid-sticky-footer {
+    background: #0A0C10;
+    width: max-content;
+}
+
+.grid-footer-row {
+    display: flex;
+    height: var(--row-height);
+    align-items: center;
+}
+
+.footer-cell {
+    padding: var(--cell-padding);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--grid-emerald);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--grid-bg);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--grid-border);
+    border-radius: 4px;
+}
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--grid-muted);
+    }
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+    background: var(--grid-bg);
+}
+`;
+
+let QuantumGrid = class QuantumGrid extends h {
+    constructor() {
+        super(...arguments);
+        this.data = [];
+        this.total = 0;
+        this.page = 1;
+        this.pageSize = 100;
+        this.loading = false;
+        this.currentScrollTop = 0;
+        this.searchTerm = '';
+        this.density = 'standard';
+        this.paginationEnabled = true;
+        this.aggregatesEnabled = true;
+        this.showGroupPanel = true;
+        this.multiSort = [];
+        this.multiGrouping = [];
+        this.collapsedGroups = new Set();
+        this.columns = [];
+        this.draggingColumn = null;
+        this.selectedIds = new Set();
+        this.focusedId = null;
+        this.selectionMode = 'multiple';
+        this.showSelection = true;
+        this._collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+        this._resizeObserver = null;
+        this.resizer = null;
+        this._resizeFrame = null;
+        this._cachedProcessedData = [];
+        this._cachedDisplayRows = [];
+        this._cachedGlobalAggs = null;
+        this._lastFilterKey = '';
+        this._lastGroupKey = '';
+        this._activeCols = [];
+        this._totalWidth = 0;
+        this._displayRows = [];
+        this._globalAggs = null;
+        this._idToDataIndexMap = new Map();
+        this._searchRegExp = null;
+        this._resizeTimeout = null;
+        this.onMouseMove = (e) => {
+            if (!this.resizer)
+                return;
+            if (this._resizeFrame)
+                return;
+            this._resizeFrame = requestAnimationFrame(() => {
+                if (!this.resizer)
+                    return;
+                const delta = e.pageX - this.resizer.startX;
+                const newWidth = Math.max(50, this.resizer.startWidth + delta);
+                this.columns = this.columns.map(c => c.key === this.resizer?.key ? { ...c, width: newWidth } : c);
+                this._resizeFrame = null;
+            });
+        };
+        this.onMouseUp = () => {
+            if (!this.resizer)
+                return;
+            this.resizer = null;
+            document.body.style.cursor = '';
+            if (this._resizeFrame) {
+                cancelAnimationFrame(this._resizeFrame);
+                this._resizeFrame = null;
+            }
+        };
+    }
+    _syncColumnsFromTags() {
+        if (this._colElements && this._colElements.length > 0) {
+            this.columns = this._colElements.map(el => {
+                const columnKey = (el.key || el.columnKey || el.name || el.getAttribute('column-key') || el.getAttribute('key') || el.getAttribute('name') || '');
+                return {
+                    key: columnKey,
+                    label: el.label || el.title || el.getAttribute('label') || el.getAttribute('title') || String(columnKey).toUpperCase(),
+                    visible: !el.hidden && !el.hasAttribute('hidden'),
+                    width: Number(el.width) || 150,
+                    align: (el.align || el.getAttribute('align') || 'left'),
+                    aggType: (el.aggType || el.getAttribute('agg-type')),
+                    dataType: el.dataType || el.getAttribute('data-type') || undefined
+                };
+            });
+        }
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.fetchData();
+        window.addEventListener('mousemove', this.onMouseMove);
+        window.addEventListener('mouseup', this.onMouseUp);
+        this.tabIndex = 0;
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        window.removeEventListener('mousemove', this.onMouseMove);
+        window.removeEventListener('mouseup', this.onMouseUp);
+        if (this._resizeObserver)
+            this._resizeObserver.disconnect();
+        if (this._resizeFrame)
+            cancelAnimationFrame(this._resizeFrame);
+    }
+    willUpdate(changedProperties) {
+        if (changedProperties.has('data')) {
+            this._lastFilterKey = '';
+            this._lastGroupKey = '';
+        }
+        if (changedProperties.has('data') ||
+            changedProperties.has('searchTerm') ||
+            changedProperties.has('multiGrouping') ||
+            changedProperties.has('multiSort') ||
+            changedProperties.has('collapsedGroups') ||
+            changedProperties.has('columns') ||
+            changedProperties.has('showSelection') ||
+            changedProperties.has('aggregatesEnabled') ||
+            changedProperties.has('paginationEnabled')) {
+            this._activeCols = this.columns.filter(c => c.visible);
+            this._totalWidth = this._activeCols.reduce((sum, c) => sum + (c.width || 150), 0) + (this.showSelection ? 48 : 0);
+            if (this.searchTerm) {
+                this._searchRegExp = new RegExp(`(${this.searchTerm.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+            }
+            else {
+                this._searchRegExp = null;
+            }
+            const { rows, globalAggs } = this.getDisplayRows();
+            this._displayRows = rows;
+            this._globalAggs = globalAggs;
+            this._idToDataIndexMap.clear();
+            for (let i = 0; i < this._displayRows.length; i++) {
+                const row = this._displayRows[i];
+                const id = row.type ? (row.type === 'row' ? row.data.id : null) : row.id;
+                if (id !== null) {
+                    this._idToDataIndexMap.set(id, i);
+                }
+            }
+        }
+    }
+    firstUpdated() {
+        if (this.bodyElement) {
+            this._resizeObserver = new ResizeObserver(() => {
+                if (this._resizeTimeout)
+                    cancelAnimationFrame(this._resizeTimeout);
+                this._resizeTimeout = requestAnimationFrame(() => this.requestUpdate());
+            });
+            this._resizeObserver.observe(this.bodyElement);
+        }
+    }
+    async fetchData() {
+        this.loading = true;
+        try {
+            const url = this.paginationEnabled
+                ? `/api/data?page=${this.page}&pageSize=${this.pageSize}`
+                : `/api/data?all=true`;
+            const response = await fetch(url);
+            const result = await response.json();
+            this.data = result.data;
+            this.total = result.total;
+        }
+        catch (error) {
+            console.error('Fetch error:', error);
+        }
+        finally {
+            this.loading = false;
+        }
+    }
+    highlightText(text, search) {
+        if (!search || !this._searchRegExp)
+            return text;
+        const str = String(text);
+        if (!str.toLowerCase().includes(search.toLowerCase()))
+            return text;
+        const parts = str.split(this._searchRegExp);
+        return ke `${parts.map(p => p.toLowerCase() === search.toLowerCase()
+            ? ke `<mark style="background: rgba(245, 158, 11, 0.3); color: inherit; border-radius: 2px; padding: 0 1px;">${p}</mark>`
+            : p)}`;
+    }
+    onSearch(e) {
+        this.searchTerm = e.target.value;
+        this.page = 1;
+    }
+    toggleDensity() {
+        this.density = this.density === 'standard' ? 'compact' : 'standard';
+        if (this.density === 'compact') {
+            this.setAttribute('density', 'compact');
+        }
+        else {
+            this.removeAttribute('density');
+        }
+    }
+    toggleMode() {
+        this.paginationEnabled = !this.paginationEnabled;
+        this.page = 1;
+        this.currentScrollTop = 0;
+        if (this.bodyElement)
+            this.bodyElement.scrollTop = 0;
+        this.fetchData();
+    }
+    toggleAggregates() {
+        this.aggregatesEnabled = !this.aggregatesEnabled;
+    }
+    handleColumnToggle(e) {
+        const key = e.target.value;
+        if (!key)
+            return;
+        this.columns = this.columns.map(c => c.key === key ? { ...c, visible: !c.visible } : c);
+        e.target.value = '';
+    }
+    handleSort(key, isMulti) {
+        const existingIndex = this.multiSort.findIndex(s => s.key === key);
+        const isGroup = this.multiGrouping.includes(key);
+        if (isMulti) {
+            if (existingIndex === -1) {
+                this.multiSort = [...this.multiSort, { key, order: 'asc' }];
+            }
+            else if (this.multiSort[existingIndex].order === 'asc') {
+                const newSort = [...this.multiSort];
+                newSort[existingIndex] = { ...newSort[existingIndex], order: 'desc' };
+                this.multiSort = newSort;
+            }
+            else {
+                if (isGroup) {
+                    const newSort = [...this.multiSort];
+                    newSort[existingIndex] = { ...newSort[existingIndex], order: 'asc' };
+                    this.multiSort = newSort;
+                }
+                else {
+                    this.multiSort = this.multiSort.filter((_, i) => i !== existingIndex);
+                }
+            }
+        }
+        else {
+            const groupSorts = this.multiSort.filter(s => this.multiGrouping.includes(s.key));
+            const currentSort = this.multiSort[existingIndex];
+            const otherGroupSorts = groupSorts.filter(s => s.key !== key);
+            if (!currentSort) {
+                this.multiSort = [...otherGroupSorts, { key, order: 'asc' }];
+            }
+            else if (currentSort.order === 'asc') {
+                this.multiSort = [...otherGroupSorts, { key, order: 'desc' }];
+            }
+            else {
+                if (isGroup) {
+                    this.multiSort = [...otherGroupSorts, { key, order: 'asc' }];
+                }
+                else {
+                    this.multiSort = [...otherGroupSorts];
+                }
+            }
+        }
+        this.reorderSort();
+    }
+    reorderSort() {
+        const groupSorts = this.multiGrouping.map(key => {
+            const existing = this.multiSort.find(s => s.key === key);
+            return { key, order: existing ? existing.order : 'asc' };
+        });
+        const otherSorts = this.multiSort.filter(s => !this.multiGrouping.includes(s.key));
+        this.multiSort = [...groupSorts, ...otherSorts];
+    }
+    toggleGroup(key) {
+        if (this.multiGrouping.includes(key)) {
+            this.multiGrouping = this.multiGrouping.filter(k => k !== key);
+            this.multiSort = this.multiSort.filter(s => s.key !== key);
+        }
+        else {
+            this.multiGrouping = [...this.multiGrouping, key];
+            if (!this.multiSort.find(s => s.key === key)) {
+                this.multiSort = [...this.multiSort, { key, order: 'asc' }];
+            }
+        }
+        this.reorderSort();
+    }
+    toggleGroupCollapse(path) {
+        const newCollapsed = new Set(this.collapsedGroups);
+        if (newCollapsed.has(path)) {
+            newCollapsed.delete(path);
+        }
+        else {
+            newCollapsed.add(path);
+        }
+        this.collapsedGroups = newCollapsed;
+    }
+    handleRowClick(e, item) {
+        const isMulti = e.ctrlKey || e.metaKey || this.selectionMode === 'multiple';
+        const isRange = e.shiftKey;
+        this.toggleSelection(item.id, isMulti, isRange);
+        this.focusedId = item.id;
+    }
+    toggleSelection(id, isMulti, isRange) {
+        const newSelected = new Set(this.selectedIds);
+        if (this.selectionMode === 'single') {
+            newSelected.clear();
+            newSelected.add(id);
+        }
+        else {
+            if (isRange && this.focusedId !== null) {
+                const startIdx = this._idToDataIndexMap.get(this.focusedId) ?? -1;
+                const endIdx = this._idToDataIndexMap.get(id) ?? -1;
+                if (startIdx > -1 && endIdx > -1) {
+                    const min = Math.min(startIdx, endIdx);
+                    const max = Math.max(startIdx, endIdx);
+                    if (!isMulti)
+                        newSelected.clear();
+                    for (let i = min; i <= max; i++) {
+                        const row = this._displayRows[i];
+                        const rowId = row.type ? (row.type === 'row' ? row.data.id : null) : row.id;
+                        if (rowId !== null)
+                            newSelected.add(rowId);
+                    }
+                }
+            }
+            else if (isMulti) {
+                if (newSelected.has(id)) {
+                    newSelected.delete(id);
+                }
+                else {
+                    newSelected.add(id);
+                }
+            }
+            else {
+                newSelected.clear();
+                newSelected.add(id);
+            }
+        }
+        this.selectedIds = new Set(newSelected);
+    }
+    selectAll() {
+        const processed = this.getProcessedData();
+        if (this.selectedIds.size === processed.length && processed.length > 0) {
+            this.selectedIds = new Set();
+        }
+        else {
+            this.selectedIds = new Set(processed.map(d => d.id));
+        }
+    }
+    onKeyDown(e) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            const displayRows = this._displayRows;
+            if (displayRows.length === 0)
+                return;
+            let nextIdx = -1;
+            if (this.focusedId !== null) {
+                const currentIdx = this._idToDataIndexMap.get(this.focusedId) ?? -1;
+                if (currentIdx !== -1) {
+                    let searchIdx = e.key === 'ArrowDown' ? currentIdx + 1 : currentIdx - 1;
+                    while (searchIdx >= 0 && searchIdx < displayRows.length) {
+                        const row = displayRows[searchIdx];
+                        const id = row.type ? (row.type === 'row' ? row.data.id : null) : row.id;
+                        if (id !== null) {
+                            nextIdx = searchIdx;
+                            break;
+                        }
+                        searchIdx = e.key === 'ArrowDown' ? searchIdx + 1 : searchIdx - 1;
+                    }
+                }
+            }
+            else if (e.key === 'ArrowDown') {
+                for (let i = 0; i < displayRows.length; i++) {
+                    const row = displayRows[i];
+                    const id = row.type ? (row.type === 'row' ? row.data.id : null) : row.id;
+                    if (id !== null) {
+                        nextIdx = i;
+                        break;
+                    }
+                }
+            }
+            if (nextIdx !== -1) {
+                const nextRow = displayRows[nextIdx];
+                const id = nextRow.type ? nextRow.data.id : nextRow.id;
+                this.focusedId = id;
+                this.toggleSelection(id, e.shiftKey, e.shiftKey);
+                const rowHeight = this.density === 'compact' ? 32 : 48;
+                const targetTop = nextIdx * rowHeight;
+                if (this.bodyElement) {
+                    if (targetTop < this.bodyElement.scrollTop) {
+                        this.bodyElement.scrollTop = targetTop;
+                    }
+                    else if (targetTop + rowHeight > this.bodyElement.scrollTop + this.bodyElement.clientHeight) {
+                        this.bodyElement.scrollTop = targetTop - this.bodyElement.clientHeight + rowHeight;
+                    }
+                }
+            }
+        }
+    }
+    startResizing(e, key, width) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.resizer = { key, startX: e.pageX, startWidth: width };
+        document.body.style.cursor = 'col-resize';
+    }
+    onDragStart(e, key) {
+        this.draggingColumn = key;
+        e.dataTransfer?.setData('text/plain', String(key));
+        if (e.dataTransfer)
+            e.dataTransfer.effectAllowed = 'move';
+    }
+    onDragOver(e, type) {
+        e.preventDefault();
+        if (e.dataTransfer)
+            e.dataTransfer.dropEffect = 'move';
+        if (type === 'panel') {
+            e.currentTarget.classList.add('drag-over');
+        }
+        else {
+            e.currentTarget.classList.add('drop-target');
+        }
+    }
+    onDragLeave(e) {
+        e.currentTarget.classList.remove('drag-over', 'drop-target');
+    }
+    onDrop(e, targetKey) {
+        e.preventDefault();
+        const sourceKey = e.dataTransfer?.getData('text/plain');
+        const panel = this.shadowRoot?.querySelector('.group-panel');
+        panel?.classList.remove('drag-over');
+        this.shadowRoot?.querySelectorAll('.header-cell').forEach(h => h.classList.remove('drop-target'));
+        if (!sourceKey)
+            return;
+        if (!targetKey) {
+            if (!this.multiGrouping.includes(sourceKey)) {
+                this.toggleGroup(sourceKey);
+            }
+            return;
+        }
+        if (sourceKey === targetKey)
+            return;
+        const newCols = [...this.columns];
+        const srcIdx = newCols.findIndex(c => c.key === sourceKey);
+        const destIdx = newCols.findIndex(c => c.key === targetKey);
+        if (srcIdx > -1 && destIdx > -1) {
+            const [removed] = newCols.splice(srcIdx, 1);
+            newCols.splice(destIdx, 0, removed);
+            this.columns = newCols;
+        }
+        this.draggingColumn = null;
+    }
+    onDragEnd() {
+        this.draggingColumn = null;
+        this.shadowRoot?.querySelectorAll('.header-cell').forEach(h => h.classList.remove('drop-target', 'dragging'));
+        this.shadowRoot?.querySelector('.group-panel')?.classList.remove('drag-over');
+    }
+    onBodyScroll() {
+        if (this.bodyElement) {
+            this.currentScrollTop = this.bodyElement.scrollTop;
+            const sl = this.bodyElement.scrollLeft;
+            if (this.headerElement)
+                this.headerElement.scrollLeft = sl;
+            if (this.footerElement)
+                this.footerElement.scrollLeft = sl;
+            this.requestUpdate();
+        }
+    }
+    getProcessedData() {
+        const filterKey = `${this.searchTerm}|${this.multiSort.map(s => `${String(s.key)}:${s.order}`).join(',')}`;
+        if (this._lastFilterKey === filterKey && this._cachedProcessedData.length > 0) {
+            return this._cachedProcessedData;
+        }
+        let result = [...this.data];
+        if (this.searchTerm) {
+            const lower = this.searchTerm.toLowerCase();
+            result = result.filter(item => {
+                for (const col of this.columns) {
+                    const val = item[col.key];
+                    if (val != null && String(val).toLowerCase().includes(lower)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+        if (this.multiSort.length > 0) {
+            const collator = this._collator;
+            result.sort((a, b) => {
+                for (const sort of this.multiSort) {
+                    const aVal = a[sort.key];
+                    const bVal = b[sort.key];
+                    if (aVal !== bVal) {
+                        const modifier = sort.order === 'asc' ? 1 : -1;
+                        if (typeof aVal === 'number' && typeof bVal === 'number') {
+                            return (aVal - bVal) * modifier;
+                        }
+                        return collator.compare(String(aVal), String(bVal)) * modifier;
+                    }
+                }
+                return 0;
+            });
+        }
+        this._cachedProcessedData = result;
+        this._lastFilterKey = filterKey;
+        return result;
+    }
+    calculateAggregates(items) {
+        if (!this.aggregatesEnabled)
+            return null;
+        const aggs = {};
+        this.columns.forEach(col => {
+            if (!col.aggType)
+                return;
+            const values = items.map(d => Number(d[col.key]) || 0);
+            if (col.aggType === 'sum') {
+                aggs[col.key] = values.reduce((a, b) => a + b, 0);
+            }
+            else if (col.aggType === 'avg') {
+                aggs[col.key] = values.reduce((a, b) => a + b, 0) / (values.length || 1);
+            }
+            else if (col.aggType === 'count') {
+                aggs[col.key] = items.length;
+            }
+        });
+        return aggs;
+    }
+    getDisplayRows() {
+        const processed = this.getProcessedData();
+        const groupKey = `${this.multiGrouping.join(',')}|${this.collapsedGroups.size}|${this.aggregatesEnabled}|${this._lastFilterKey}`;
+        if (this._lastGroupKey === groupKey && this._cachedDisplayRows.length > 0) {
+            return { rows: this._cachedDisplayRows, globalAggs: this._cachedGlobalAggs };
+        }
+        let rows = [];
+        let globalAggs = null;
+        if (this.multiGrouping.length === 0) {
+            rows = processed;
+            globalAggs = this.calculateAggregates(processed);
+        }
+        else {
+            const groupRecursive = (items, level, path) => {
+                if (level >= this.multiGrouping.length) {
+                    return { type: 'data', items };
+                }
+                const key = this.multiGrouping[level];
+                const groups = {};
+                items.forEach(item => {
+                    const val = String(item[key]);
+                    if (!groups[val])
+                        groups[val] = [];
+                    groups[val].push(item);
+                });
+                const sort = this.multiSort.find(s => s.key === key);
+                const order = sort ? sort.order : 'asc';
+                const sortedKeys = Object.keys(groups).sort((a, b) => {
+                    const modifier = order === 'asc' ? 1 : -1;
+                    return this._collator.compare(a, b) * modifier;
+                });
+                return {
+                    type: 'node',
+                    key,
+                    level,
+                    children: sortedKeys.map(name => {
+                        const subItems = groups[name];
+                        const currentPath = path ? `${path}|${name}` : name;
+                        return {
+                            name,
+                            path: currentPath,
+                            aggs: this.calculateAggregates(subItems),
+                            subtree: groupRecursive(subItems, level + 1, currentPath),
+                            count: subItems.length
+                        };
+                    })
+                };
+            };
+            const tree = groupRecursive(processed, 0, '');
+            const flat = [];
+            const flatten = (node) => {
+                if (node.type === 'data') {
+                    node.items.forEach((d) => flat.push({ type: 'row', data: d, level: this.multiGrouping.length }));
+                    return;
+                }
+                node.children.forEach((child) => {
+                    const isCollapsed = this.collapsedGroups.has(child.path);
+                    flat.push({
+                        type: 'header',
+                        label: child.name,
+                        count: child.count,
+                        level: node.level,
+                        path: child.path,
+                        collapsed: isCollapsed,
+                        aggregates: child.aggs
+                    });
+                    if (!isCollapsed) {
+                        flatten(child.subtree);
+                        if (child.aggs) {
+                            flat.push({
+                                type: 'footer',
+                                data: child.aggs,
+                                level: node.level,
+                                label: `Total ${child.name}`
+                            });
+                        }
+                    }
+                });
+            };
+            flatten(tree);
+            rows = flat;
+            globalAggs = this.calculateAggregates(processed);
+        }
+        this._cachedDisplayRows = rows;
+        this._cachedGlobalAggs = globalAggs;
+        this._lastGroupKey = groupKey;
+        return { rows, globalAggs };
+    }
+    exportCSV() {
+        const processed = this.getProcessedData();
+        const headers = this.columns.filter(c => c.visible).map(c => c.label).join(',');
+        const rows = processed.map(d => this.columns.filter(c => c.visible).map(c => `"${String(d[c.key]).replace(/"/g, '""')}"`).join(','));
+        const csv = [headers, ...rows].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `quantum_export_${new Date().getTime()}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    renderHeader() {
+        const activeCols = this.columns.filter(c => c.visible);
+        const isAllSelected = this.selectedIds.size > 0 && this.selectedIds.size === this._cachedProcessedData.length;
+        return ke `
+      <div class="grid-header">
+        ${this.showSelection ? ke `
+          <div class="selection-header">
+             ${this.selectionMode === 'multiple'
+            ? ke `<div class="checkbox ${isAllSelected ? 'checked' : ''}" @click=${this.selectAll}></div>`
+            : D}
+          </div>
+        ` : D}
+        ${activeCols.map((col) => {
+            const sortIdx = this.multiSort.findIndex(s => s.key === col.key);
+            const sort = this.multiSort[sortIdx];
+            const isGrouped = this.multiGrouping.includes(col.key);
+            const colWidth = col.width || 150;
+            const justify = col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'space-between';
+            return ke `
+            <div 
+              class="header-cell ${this.draggingColumn === col.key ? 'dragging' : ''}" 
+              draggable="true"
+              style="width: ${colWidth}px; min-width: ${colWidth}px; justify-content: ${justify};"
+              @click=${(e) => this.handleSort(col.key, e.shiftKey)}
+              @dragstart=${(e) => this.onDragStart(e, col.key)}
+              @dragover=${(e) => this.onDragOver(e, 'header')}
+              @dragleave=${this.onDragLeave}
+              @drop=${(e) => this.onDrop(e, col.key)}
+              @dragend=${this.onDragEnd}
+            >
+              <div style="display: flex; align-items: center; overflow: hidden; pointer-events: none;">
+                <span style="overflow: hidden; text-overflow: ellipsis;">${col.label}</span>
+                ${sort ? ke `
+                  <span class="sort-indicator">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 4px;"><path d="${sort.order === 'asc' ? 'M12 4l-8 8h16l-8-8z' : 'M12 20l8-8H4l8 8z'}"/></svg>
+                    ${this.multiSort.length > 1 ? ke `<small style="font-size: 8px; margin-left: 2px; color: var(--grid-emerald); font-weight: bold;">[${sortIdx + 1}]</small>` : D}
+                  </span>
+                ` : D}
+              </div>
+              <button 
+                class="group-btn ${isGrouped ? 'active' : ''}" 
+                title="Toggle Grouping"
+                @click=${(e) => { e.stopPropagation(); this.toggleGroup(col.key); }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>
+              </button>
+              <div class="resize-handle" @mousedown=${(e) => this.startResizing(e, col.key, colWidth)}></div>
+            </div>
+          `;
+        })}
+      </div>
+    `;
+    }
+    renderRow(row, activeCols) {
+        const isRawRow = row && !row.type;
+        const rowType = isRawRow ? 'row' : row.type;
+        const rowData = isRawRow ? row : row.data;
+        if (rowType === 'header') {
+            const basePadding = this.density === 'compact' ? 12 : 24;
+            const style = `padding-left: ${basePadding + (row.level * basePadding)}px`;
+            const iconStyle = `transform: ${row.collapsed ? 'rotate(-90deg)' : 'rotate(0deg)'};`;
+            return ke `
+        <div class="group-header" style="${style}" @click=${() => this.toggleGroupCollapse(row.path)}>
+          <span class="collapse-icon" style="${iconStyle}">▶</span>
+          <span class="group-label">${row.label}</span>
+          <span class="badge">${row.count} Nodes</span>
+        </div>
+      `;
+        }
+        if (rowType === 'footer') {
+            const basePadding = this.density === 'compact' ? 12 : 24;
+            return ke `
+        <div class="grid-row" style="background: rgba(16, 185, 129, 0.02);">
+          ${this.showSelection ? ke `<div class="selection-cell"></div>` : D}
+          ${activeCols.map((col, idx) => {
+                const val = row.data[col.key];
+                let content = '';
+                if (val !== undefined) {
+                    if (col.aggType === 'sum')
+                        content = `∑ ${Number(val).toLocaleString()}`;
+                    else if (col.aggType === 'avg')
+                        content = `μ ${Number(val).toFixed(2)}`;
+                    else if (col.aggType === 'count')
+                        content = `# ${Number(val).toLocaleString()}`;
+                }
+                if (idx === 0)
+                    content = row.label;
+                const colWidth = col.width || 150;
+                const cellStyle = `width: ${colWidth}px; min-width: ${colWidth}px; color: ${idx === 0 ? 'var(--grid-muted)' : 'var(--grid-emerald)'}; font-size: 10px; font-weight: bold; padding-left: ${idx === 0 ? `${basePadding + (row.level * basePadding) + 20}px` : ''}`;
+                return ke `
+              <div class="grid-cell" style="${cellStyle}">
+                ${content}
+              </div>
+            `;
+            })}
+        </div>
+      `;
+        }
+        const isSelected = this.selectedIds.has(rowData.id);
+        const isFocused = this.focusedId === rowData.id;
+        const rowClass = `grid-row ${isSelected ? 'selected' : ''} ${isFocused ? 'focused' : ''}`;
+        return ke `
+      <div class="${rowClass}" @click=${(e) => this.handleRowClick(e, rowData)}>
+        ${this.showSelection ? ke `
+          <div class="selection-cell">
+             <div class="${this.selectionMode === 'multiple' ? 'checkbox' : 'radio'} ${isSelected ? 'checked' : ''}"></div>
+          </div>
+        ` : D}
+        ${activeCols.map((col) => {
+            const val = rowData[col.key];
+            let formatted = col.formatter ? col.formatter(val) : this.highlightText(val, this.searchTerm);
+            if (!col.formatter) {
+                if (col.dataType === 'status') {
+                    const isActive = val === 'Active';
+                    formatted = ke `
+                <span class="status-dot ${isActive ? 'status-active' : 'status-inactive'}"></span>
+                ${this.highlightText(val != null ? String(val).toUpperCase() : '', this.searchTerm)}
+              `;
+                }
+                else if (col.dataType === 'throughput') {
+                    formatted = ke `<span style="color: #10B981; font-weight: bold;">${val != null ? Number(val).toLocaleString() : '0'} MB/s</span>`;
+                }
+                else if (col.dataType === 'date') {
+                    formatted = ke `<span style="color: #64748B;">${this.highlightText(val != null ? String(val) : '', this.searchTerm)}</span>`;
+                }
+            }
+            const colWidth = col.width || 150;
+            const justify = col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'flex-start';
+            return ke `
+            <div class="grid-cell" style="width: ${colWidth}px; min-width: ${colWidth}px; justify-content: ${justify};">
+              ${formatted}
+            </div>
+          `;
+        })}
+      </div>
+    `;
+    }
+    renderStickyFooter(activeCols, globalAggs) {
+        if (!this.aggregatesEnabled || !globalAggs)
+            return D;
+        return ke `
+      <div class="sticky-footer-container">
+        <div class="grid-sticky-footer">
+          <div class="grid-footer-row">
+            ${this.showSelection ? ke `<div class="selection-cell"></div>` : D}
+            ${activeCols.map((col) => {
+            const val = globalAggs[col.key];
+            let content = '';
+            if (val !== undefined) {
+                if (col.aggType === 'sum')
+                    content = `∑ ${Number(val).toLocaleString()}`;
+                else if (col.aggType === 'avg')
+                    content = `μ ${Number(val).toFixed(2)}`;
+                else if (col.aggType === 'count')
+                    content = `# ${Number(val).toLocaleString()}`;
+            }
+            const colWidth = col.width || 150;
+            const justify = col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'flex-start';
+            return ke `
+                <div class="footer-cell" style="width: ${colWidth}px; min-width: ${colWidth}px; justify-content: ${justify};">
+                  ${content}
+                </div>
+              `;
+        })}
+          </div>
+        </div>
+      </div>
+    `;
+    }
+    render() {
+        const displayRows = this._displayRows;
+        const globalAggs = this._globalAggs;
+        const activeCols = this._activeCols;
+        const rowHeight = this.density === 'compact' ? 32 : 48;
+        const gridHeight = this.bodyElement?.clientHeight || 500;
+        const buffer = 10;
+        const totalHeight = displayRows.length * rowHeight;
+        const startIndex = Math.max(0, Math.floor(this.currentScrollTop / rowHeight) - buffer);
+        const endIndex = Math.min(displayRows.length - 1, Math.floor((this.currentScrollTop + gridHeight) / rowHeight) + buffer);
+        const visibleRows = displayRows.slice(startIndex, endIndex + 1);
+        const offsetY = startIndex * rowHeight;
+        const totalWidth = this._totalWidth;
+        return ke `
+      <slot style="display: none;" @slotchange=${this._syncColumnsFromTags}></slot>
+      <div class="toolbar">
+        <div class="search-container">
+          <svg class="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" class="search-input" placeholder="Search dataset..." .value=${this.searchTerm} @input=${this.onSearch} />
+        </div>
+        <div class="controls">
+          <button class="btn" style="font-size: 10px;" @click=${() => {
+            this.selectionMode = this.selectionMode === 'multiple' ? 'single' : 'multiple';
+            this.selectedIds = new Set();
+        }}>
+            MODE: ${this.selectionMode.toUpperCase()}
+          </button>
+          <button class="btn" style="font-size: 10px;" @click=${() => this.showSelection = !this.showSelection}>
+            SELECTION COL: ${this.showSelection ? 'HIDE' : 'SHOW'}
+          </button>
+          <button class="btn" style="font-size: 10px;" @click=${this.toggleDensity}>
+            DENSITY: ${this.density.toUpperCase()}
+          </button>
+          <button class="btn" style="font-size: 10px;" @click=${() => this.showGroupPanel = !this.showGroupPanel}>
+            GROUP PANEL: ${this.showGroupPanel ? 'HIDE' : 'SHOW'}
+          </button>
+          <button class="btn" style="font-size: 10px;" @click=${this.toggleMode}>
+            ${this.paginationEnabled ? 'PAGINATION: ON' : 'VIRTUAL MODE: ON'}
+          </button>
+          <button class="btn" style="font-size: 10px; ${this.aggregatesEnabled ? 'color: var(--grid-emerald); border-color: var(--grid-emerald);' : ''}" @click=${this.toggleAggregates}>
+            AGGREGATES: ${this.aggregatesEnabled ? 'ON' : 'OFF'}
+          </button>
+          <select class="btn" style="background: var(--grid-surface); font-size: 10px;" @change=${this.handleColumnToggle}>
+            <option value="">MANAGE COLUMNS</option>
+            ${this.columns.map(c => ke `<option value="${c.key}">${c.visible ? 'HIDE' : 'SHOW'} ${c.label}</option>`)}
+          </select>
+          <button class="btn" @click=${this.exportCSV}>CSV EXPORT</button>
+        </div>
+      </div>
+      
+      <div class="grid-container">
+        ${this.showGroupPanel ? ke `
+          <div 
+            class="group-panel"
+            @dragover=${(e) => this.onDragOver(e, 'panel')}
+            @dragleave=${this.onDragLeave}
+            @drop=${(e) => this.onDrop(e)}
+          >
+            ${this.multiGrouping.length === 0 ? 'Drag columns here to group data' : D}
+            ${this.multiGrouping.map((key, idx) => {
+            const col = this.columns.find(c => c.key === key);
+            return ke `
+                <div class="group-tag" @click=${() => this.toggleGroup(key)}>
+                  <div class="group-idx">${idx + 1}</div>
+                  <span>${col?.label}</span>
+                  <span style="margin-left: 8px;">✕</span>
+                </div>
+              `;
+        })}
+          </div>
+        ` : D}
+        
+        ${this.renderHeader()}
+        
+        <div id="body" class="grid-body custom-scrollbar" @scroll=${this.onBodyScroll} @keydown=${this.onKeyDown} tabindex="0">
+          <div class="virtual-spacer" style="height: ${totalHeight}px; width: ${totalWidth}px;"></div>
+          <div class="rows-container" style="transform: translateY(${offsetY}px); width: ${totalWidth}px;">
+            ${visibleRows.map((row, idx) => {
+            const rowKey = row.type ? (row.type === 'row' ? row.data.id : `${row.type}-${row.path || idx}`) : row.id;
+            return Bt(rowKey, this.renderRow(row, activeCols));
+        })}
+          </div>
+          ${this.loading ? ke `
+            <div class="loading-overlay">
+              <div class="spinner"></div>
+            </div>
+          ` : D}
+        </div>
+        
+        ${this.renderStickyFooter(activeCols, globalAggs)}
+      </div>
+
+      <div class="footer">
+        <div>Total Found: <strong>${(this.total ?? 0).toLocaleString()}</strong> Records | <strong>${this.selectedIds.size}</strong> Selected</div>
+        ${this.paginationEnabled ? ke `
+          <div class="pagination">
+            <button class="btn" ?disabled=${this.page === 1} @click=${() => { this.page--; this.fetchData(); }}>PREV</button>
+            <span style="color: var(--grid-muted)">Page ${this.page} of ${Math.ceil((this.total ?? 0) / this.pageSize)}</span>
+            <button class="btn" ?disabled=${this.page >= Math.ceil((this.total ?? 0) / this.pageSize)} @click=${() => { this.page++; this.fetchData(); }}>NEXT</button>
+          </div>
+        ` : D}
+      </div>
+    `;
+    }
+};
+QuantumGrid.styles = styles;
+__decorate([
+    r(),
+    __metadata("design:type", Array)
+], QuantumGrid.prototype, "data", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "total", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "page", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "pageSize", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "loading", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "searchTerm", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", String)
+], QuantumGrid.prototype, "density", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "paginationEnabled", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "aggregatesEnabled", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "showGroupPanel", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Array)
+], QuantumGrid.prototype, "multiSort", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Array)
+], QuantumGrid.prototype, "multiGrouping", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Set)
+], QuantumGrid.prototype, "collapsedGroups", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Array)
+], QuantumGrid.prototype, "columns", void 0);
+__decorate([
+    o({ flatten: true, selector: 'quantum-grid-column' }),
+    __metadata("design:type", Array)
+], QuantumGrid.prototype, "_colElements", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "draggingColumn", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Set)
+], QuantumGrid.prototype, "selectedIds", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Object)
+], QuantumGrid.prototype, "focusedId", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", String)
+], QuantumGrid.prototype, "selectionMode", void 0);
+__decorate([
+    r(),
+    __metadata("design:type", Boolean)
+], QuantumGrid.prototype, "showSelection", void 0);
+__decorate([
+    e$1('#body'),
+    __metadata("design:type", HTMLDivElement)
+], QuantumGrid.prototype, "bodyElement", void 0);
+__decorate([
+    e$1('.grid-header'),
+    __metadata("design:type", HTMLDivElement)
+], QuantumGrid.prototype, "headerElement", void 0);
+__decorate([
+    e$1('.sticky-footer-container'),
+    __metadata("design:type", HTMLDivElement)
+], QuantumGrid.prototype, "footerElement", void 0);
+QuantumGrid = __decorate([
+    t$1('quantum-grid')
+], QuantumGrid);
+
+let QuantumGridColumn = class QuantumGridColumn extends h {
+    constructor() {
+        super(...arguments);
+        this.key = '';
+        this.label = '';
+        this.title = '';
+        this.hidden = false;
+        this.width = 150;
+        this.align = 'left';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this._notifyParent();
+    }
+    updated(changedProperties) {
+        super.updated(changedProperties);
+        this._notifyParent();
+    }
+    disconnectedCallback() {
+        this._notifyParent();
+        super.disconnectedCallback();
+    }
+    _notifyParent() {
+        const parent = this.closest('quantum-grid');
+        if (parent && typeof parent._syncColumnsFromTags === 'function') {
+            parent._syncColumnsFromTags();
+        }
+    }
+    createRenderRoot() {
+        return this;
+    }
+    render() {
+        return null;
+    }
+};
+__decorate([
+    n({ type: String }),
+    __metadata("design:type", Object)
+], QuantumGridColumn.prototype, "key", void 0);
+__decorate([
+    n({ type: String, attribute: 'column-key' }),
+    __metadata("design:type", String)
+], QuantumGridColumn.prototype, "columnKey", void 0);
+__decorate([
+    n({ type: String }),
+    __metadata("design:type", String)
+], QuantumGridColumn.prototype, "name", void 0);
+__decorate([
+    n({ type: String }),
+    __metadata("design:type", Object)
+], QuantumGridColumn.prototype, "label", void 0);
+__decorate([
+    n({ type: String }),
+    __metadata("design:type", Object)
+], QuantumGridColumn.prototype, "title", void 0);
+__decorate([
+    n({ type: Boolean }),
+    __metadata("design:type", Object)
+], QuantumGridColumn.prototype, "hidden", void 0);
+__decorate([
+    n({ type: Number }),
+    __metadata("design:type", Object)
+], QuantumGridColumn.prototype, "width", void 0);
+__decorate([
+    n({ type: String }),
+    __metadata("design:type", String)
+], QuantumGridColumn.prototype, "align", void 0);
+__decorate([
+    n({ type: String, attribute: 'agg-type' }),
+    __metadata("design:type", String)
+], QuantumGridColumn.prototype, "aggType", void 0);
+__decorate([
+    n({ type: String, attribute: 'data-type' }),
+    __metadata("design:type", String)
+], QuantumGridColumn.prototype, "dataType", void 0);
+QuantumGridColumn = __decorate([
+    t$1('quantum-grid-column')
+], QuantumGridColumn);
+
+export { Button, ButtonType, IconList, IconType, Icons, Link, MaterialIcon, NeutrinoElement, QuantumGrid, QuantumGridColumn, Sidebar, SimpleGreeting };
 //# sourceMappingURL=bundle.debug.js.map

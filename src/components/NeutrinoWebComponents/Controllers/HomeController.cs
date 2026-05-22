@@ -13,7 +13,16 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    public IActionResult References()
+    {
+        return View();
+    }
+
     public IActionResult Sidebar()
+    {
+        return View();
+    }
+    public IActionResult Datagrid()
     {
         return View();
     }

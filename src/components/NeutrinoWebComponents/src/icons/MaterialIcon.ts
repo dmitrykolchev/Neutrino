@@ -8,9 +8,7 @@ import style from "./MaterialIcon.css";
 export class MaterialIcon extends LitElement {
 
     private _glyph?: string;
-    constructor() {
-        super();
-    }
+
     public static override get styles(): CSSResultArray {
         return [style];
     }

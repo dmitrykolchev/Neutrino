@@ -1,0 +1,19 @@
+﻿<div class="page-content" style="position:absolute;left:0;right:0;top:0;bottom:0;">
+    <div style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;">
+        <div style="position: absolute; inset: 0; background: var(--grid-bg); display: flex; flex-direction: column; color: var(--grid-text)">
+            <main style="flex: 1; min-height: 0; overflow: hidden">
+                <quantum-grid>
+                    <quantum-grid-column key="id" column-key="id" label="ID" width="80" agg-type="count"></quantum-grid-column>
+                    <quantum-grid-column key="name" column-key="name" label="Entity Name" width="220"></quantum-grid-column>
+                    <quantum-grid-column key="email" column-key="email" label="Endpoint URL" width="280"></quantum-grid-column>
+                    <quantum-grid-column key="role" column-key="role" label="Node Role" width="140"></quantum-grid-column>
+                    <quantum-grid-column key="department" column-key="department" label="Cluster Unit" width="180"></quantum-grid-column>
+                    <quantum-grid-column key="status" column-key="status" label="Health State" width="140" align="center" data-type="status"></quantum-grid-column>
+                    <quantum-grid-column key="value" column-key="value" label="Throughput" width="140" agg-type="sum" align="right" data-type="throughput"></quantum-grid-column>
+                    <quantum-grid-column key="lastLogin" column-key="lastLogin" label="Sync Time" width="200" align="right" data-type="date"></quantum-grid-column>
+                </quantum-grid>
+            </main>
+        </div>
+    </div>
+</div>
+

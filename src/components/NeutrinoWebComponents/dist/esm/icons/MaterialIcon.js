@@ -14,7 +14,7 @@ import { Icons } from "./MaterialIcons.js";
 import style from "./MaterialIcon.css";
 export class MaterialIcon extends LitElement {
     constructor() {
-        super();
+        super(...arguments);
         this.size = "n";
         this.outlined = false;
         this.rounded = false;

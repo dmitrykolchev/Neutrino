@@ -36,6 +36,7 @@
 		<None Remove="src\index.rollup.ts" />
 		<None Remove="src\index.ts" />
 		<None Remove="src\link\Link.ts" />
+		<None Remove="src\rstview\RstView.ts" />
 		<None Remove="src\sidebar\sidebar.ts" />
 		<None Remove="src\sidebar\SidebarHeading.ts" />
 		<None Remove="src\sidebar\SidebarItem.ts" />
@@ -50,6 +51,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.10" />
+		<PackageReference Include="YamlDotNet" Version="16.1.3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -68,6 +70,7 @@
 		<TypeScriptCompile Include="src\icons\MaterialIcon.ts" />
 		<TypeScriptCompile Include="src\icons\MaterialIcons.ts" />
 		<TypeScriptCompile Include="src\link\Link.ts" />
+		<TypeScriptCompile Include="src\rstview\RstView.ts" />
 		<TypeScriptCompile Include="src\sidebar\Sidebar.ts" />
 		<TypeScriptCompile Include="src\sidebar\SidebarHeading.ts" />
 		<TypeScriptCompile Include="src\sidebar\SidebarItem.ts" />

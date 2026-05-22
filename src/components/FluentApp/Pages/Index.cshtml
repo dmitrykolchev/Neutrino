@@ -6,9 +6,243 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
     <fluent-button appearance="accent">Hello, World</fluent-button>
+
+    <h4>Multi-expand</h4>
+    <fluent-accordion style="max-width: 350px;">
+        <fluent-accordion-item>
+            <span slot="heading">Item 1</span>
+            <div class="panel">
+                Panel one content
+            </div>
+        </fluent-accordion-item>
+        <fluent-accordion-item>
+            <span slot="heading">Item 2</span>
+            <div class="panel">
+                Panel 2 content
+            </div>
+        </fluent-accordion-item>
+        <fluent-accordion-item>
+            <span slot="heading">Item 3</span>
+            <div class="panel">
+                Panel 3 content
+            </div>
+        </fluent-accordion-item>
+    </fluent-accordion>
+    <h4>Single-expand</h4>
+    <fluent-accordion expand-mode="single">
+        <fluent-accordion-item>
+            <span slot="heading">Item 1</span>
+            <div class="panel">
+                Panel one content
+            </div>
+        </fluent-accordion-item>
+        <fluent-accordion-item>
+            <span slot="heading">Item 2</span>
+            <div class="panel">
+                Panel 2 content
+            </div>
+        </fluent-accordion-item>
+        <fluent-accordion-item>
+            <span slot="heading">Item 3</span>
+            <div class="panel">
+                Panel 3 content
+            </div>
+        </fluent-accordion-item>
+        <fluent-accordion-item>
+            <span slot="heading">Item 4</span>
+            <div class="panel">
+                Panel 4 content
+            </div>
+        </fluent-accordion-item>
+    </fluent-accordion>
 </div>
 
+<div class="toolbar">
+    <label>
+        Global theme
+        <select>
+            <option value="unset">unset</option>
 
-<script type="module" src="~/js/bundle.js"></script>
+            <option selected value="web-light">web-light</option>
+
+            <option value="web-dark">web-dark</option>
+
+            <option value="team-light">team-light</option>
+
+            <option value="team-dark">team-dark</option>
+        </select>
+    </label>
+
+    <label>
+        Local theme (element without shadow root)
+        <select>
+            <option value="unset">unset</option>
+
+            <option value="web-light">web-light</option>
+
+            <option value="web-dark">web-dark</option>
+
+            <option value="team-light">team-light</option>
+
+            <option value="team-dark">team-dark</option>
+        </select>
+    </label>
+
+    <label>
+        Local theme (element with shadow root)
+        <select>
+            <option value="unset">unset</option>
+
+            <option value="web-light">web-light</option>
+
+            <option value="web-dark">web-dark</option>
+
+            <option value="team-light">team-light</option>
+
+            <option value="team-dark">team-dark</option>
+        </select>
+    </label>
+</div>
+
+<div class="global">
+    <p style="color: var(--colorNeutralForeground2)">
+        These elements follow the global theme
+    </p>
+
+    <p>
+        <fluent-button>A button</fluent-button>
+        <fluent-spinner></fluent-spinner>
+        <fluent-slider min="0" max="100"></fluent-slider>
+        <fluent-menu>
+            <fluent-menu-button appearance="primary" slot="trigger">
+                Toggle Menu
+            </fluent-menu-button>
+            <fluent-menu-list>
+                <fluent-menu-item>Menu item 1</fluent-menu-item>
+                <fluent-menu-item>Menu item 2</fluent-menu-item>
+                <fluent-menu-item>Menu item 3</fluent-menu-item>
+                <fluent-menu-item>Menu item 4</fluent-menu-item>
+            </fluent-menu-list>
+        </fluent-menu>
+    </p>
+    <p>
+        <fluent-text-input>
+            <fluent-label>Text input</fluent-label>
+        </fluent-text-input>
+    </p>
+    <p>
+        <fluent-field>
+            <label slot="label" for="radiogroup">Radio group</label>
+            <fluent-radio-group slot="input" id="radiogroup">
+                <fluent-field label-position="after">
+                    <fluent-radio slot="input" id="radiogroup-radio-1"></fluent-radio>
+                    <label slot="label" for="radiogroup-radio-1">Option 1</label>
+                </fluent-field>
+                <fluent-field label-position="after">
+                    <fluent-radio slot="input" id="radiogroup-radio-2"></fluent-radio>
+                    <label slot="label" for="radiogroup-radio-2">Option 2</label>
+                </fluent-field>
+                <fluent-field label-position="after">
+                    <fluent-radio slot="input" id="radiogroup-radio-3"></fluent-radio>
+                    <label slot="label" for="radiogroup-radio-3">Option 3</label>
+                </fluent-field>
+            </fluent-radio-group>
+        </fluent-field>
+    </p>
+    <p>
+        <fluent-field label-position="after">
+            <label slot="label" for="checkbox">I would like this option</label>
+            <fluent-checkbox slot="input" id="checkbox"></fluent-checkbox>
+        </fluent-field>
+    </p>
+    <p></p>
+</div>
+
+<div class="local">
+    <p style="color: var(--colorNeutralForeground2)">
+        These elements follow the container element’s theme
+    </p>
+
+    <p>
+        <fluent-button>A button</fluent-button>
+        <fluent-spinner></fluent-spinner>
+        <fluent-slider step="10" min="0" max="100"></fluent-slider>
+        <fluent-menu>
+            <fluent-menu-button appearance="primary" slot="trigger">
+                Toggle Menu
+            </fluent-menu-button>
+            <fluent-menu-list>
+                <fluent-menu-item>Menu item 1</fluent-menu-item>
+                <fluent-menu-item>Menu item 2</fluent-menu-item>
+                <fluent-menu-item>Menu item 3</fluent-menu-item>
+                <fluent-menu-item>Menu item 4</fluent-menu-item>
+            </fluent-menu-list>
+        </fluent-menu>
+    </p>
+    <p>
+        <fluent-text-input>
+            <fluent-label>Text input</fluent-label>
+        </fluent-text-input>
+    </p>
+    <p>
+        <fluent-field>
+            <label slot="label" for="radiogroup">Radio group</label>
+            <fluent-radio-group slot="input" id="radiogroup">
+                <fluent-field label-position="after">
+                    <fluent-radio slot="input" id="radiogroup-radio-1"></fluent-radio>
+                    <label slot="label" for="radiogroup-radio-1">Option 1</label>
+                </fluent-field>
+                <fluent-field label-position="after">
+                    <fluent-radio slot="input" id="radiogroup-radio-2"></fluent-radio>
+                    <label slot="label" for="radiogroup-radio-2">Option 2</label>
+                </fluent-field>
+                <fluent-field label-position="after">
+                    <fluent-radio slot="input" id="radiogroup-radio-3"></fluent-radio>
+                    <label slot="label" for="radiogroup-radio-3">Option 3</label>
+                </fluent-field>
+            </fluent-radio-group>
+        </fluent-field>
+    </p>
+    <p>
+        <fluent-field label-position="after">
+            <label slot="label" for="checkbox">I would like this option</label>
+            <fluent-checkbox slot="input" id="checkbox"></fluent-checkbox>
+        </fluent-field>
+    </p>
+    <p></p>
+
+    <div class="shadow-container">
+        <p style="color: var(--colorNeutralForeground2)">
+            These elements (which have shadow roots) follow their own themes when set
+        </p>
+        <p>
+            <fluent-text-input class="shadow">
+                <fluent-label>Text input</fluent-label>
+            </fluent-text-input>
+        </p>
+        <p>
+            <fluent-menu class="shadow">
+                <fluent-menu-button appearance="primary" slot="trigger">
+                    Toggle Menu
+                </fluent-menu-button>
+                <fluent-menu-list>
+                    <fluent-menu-item>Menu item 1</fluent-menu-item>
+                    <fluent-menu-item>Menu item 2</fluent-menu-item>
+                    <fluent-menu-item>Menu item 3</fluent-menu-item>
+                    <fluent-menu-item>Menu item 4</fluent-menu-item>
+                </fluent-menu-list>
+            </fluent-menu>
+        </p>
+    </div>
+</div>
+
+<script type="module" src="~/js/fluent/bundle.js"></script>
+<script type="module" src="~/js/app.js"></script>
+<script type="module">
+    import { setFluentTheme } from "./js/bundle.js";
+    setFluentTheme("dark");
+</script>

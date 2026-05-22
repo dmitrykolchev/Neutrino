@@ -1,8 +1,15 @@
+// <copyright file="ArchitectureController.cs" company="Division By Zero">
+// Copyright (c) 2024 Dmitry Kolchev. All rights reserved.
+// See LICENSE in the project root for license information
+// </copyright>
+
+using System.Diagnostics;
+using System.Dynamic;
 using LitSample.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace LitSample.Controllers;
+
 public class ArchitectureController : Controller
 {
     private readonly ILogger _logger;
@@ -10,7 +17,7 @@ public class ArchitectureController : Controller
     public ArchitectureController(ILogger<ArchitectureController> logger)
     {
         _logger = logger;
-    } 
+    }
 
     public IActionResult Solid()
     {
@@ -20,6 +27,13 @@ public class ArchitectureController : Controller
     public IActionResult Components()
     {
         return View();
+    }
+
+    public IActionResult Patterns(string path)
+    {
+        dynamic d = new ExpandoObject();
+        d.Path = path;
+        return View(d);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

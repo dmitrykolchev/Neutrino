@@ -3,7 +3,6 @@ import { IconName } from "./MaterialIcons.js";
 import { IconSize } from "./Icons.js";
 export declare class MaterialIcon extends LitElement {
     private _glyph?;
-    constructor();
     static get styles(): CSSResultArray;
     glyph?: IconName;
     size: IconSize;
