@@ -17,7 +17,7 @@ public class DataController : ControllerBase
         {
 
         }
-        else
+        else if(page.HasValue && pageSize.HasValue)
         {
             start = (page.Value - 1) * pageSize.Value;
             end = start + pageSize.Value;
