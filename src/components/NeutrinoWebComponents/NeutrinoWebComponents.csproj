@@ -1,93 +1,93 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<LangVersion>preview</LangVersion>
-        <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
 
 
-	<ItemGroup>
-	  <Compile Remove="wwwroot\src\**" />
-	  <Content Remove="wwwroot\src\**" />
-	  <EmbeddedResource Remove="wwwroot\src\**" />
-	  <None Remove="wwwroot\src\**" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="wwwroot\src\**" />
+    <Content Remove="wwwroot\src\**" />
+    <EmbeddedResource Remove="wwwroot\src\**" />
+    <None Remove="wwwroot\src\**" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Remove="src\base\AnchorLike.ts" />
-		<None Remove="src\base\DefineElement.ts" />
-		<None Remove="src\base\Focusable.ts" />
-		<None Remove="src\base\FormElement.ts" />
-		<None Remove="src\base\NeutrinoElement.ts" />
-		<None Remove="src\base\Typings.ts" />
-		<None Remove="src\base\Version.ts" />
-		<None Remove="src\button\button.ts" />
-		<None Remove="src\button\index.d.ts" />
-		<None Remove="src\icons\FabricIcons.ts" />
-		<None Remove="src\icons\FluentIcons.ts" />
-		<None Remove="src\icons\IconList.ts" />
-		<None Remove="src\icons\Icons.ts" />
-		<None Remove="src\icons\MaterialIcon.ts" />
-		<None Remove="src\icons\MaterialIcons.ts" />
-		<None Remove="src\index.rollup.debug.ts" />
-		<None Remove="src\index.rollup.ts" />
-		<None Remove="src\index.ts" />
-		<None Remove="src\link\Link.ts" />
-		<None Remove="src\rstview\RstView.ts" />
-		<None Remove="src\sidebar\sidebar.ts" />
-		<None Remove="src\sidebar\SidebarHeading.ts" />
-		<None Remove="src\sidebar\SidebarItem.ts" />
-		<None Remove="src\theme\colors.ts" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Remove="src\base\AnchorLike.ts" />
+    <None Remove="src\base\DefineElement.ts" />
+    <None Remove="src\base\Focusable.ts" />
+    <None Remove="src\base\FormElement.ts" />
+    <None Remove="src\base\NeutrinoElement.ts" />
+    <None Remove="src\base\Typings.ts" />
+    <None Remove="src\base\Version.ts" />
+    <None Remove="src\button\button.ts" />
+    <None Remove="src\button\index.d.ts" />
+    <None Remove="src\icons\FabricIcons.ts" />
+    <None Remove="src\icons\FluentIcons.ts" />
+    <None Remove="src\icons\IconList.ts" />
+    <None Remove="src\icons\Icons.ts" />
+    <None Remove="src\icons\MaterialIcon.ts" />
+    <None Remove="src\icons\MaterialIcons.ts" />
+    <None Remove="src\index.rollup.debug.ts" />
+    <None Remove="src\index.rollup.ts" />
+    <None Remove="src\index.ts" />
+    <None Remove="src\link\Link.ts" />
+    <None Remove="src\rstview\RstView.ts" />
+    <None Remove="src\sidebar\sidebar.ts" />
+    <None Remove="src\sidebar\SidebarHeading.ts" />
+    <None Remove="src\sidebar\SidebarItem.ts" />
+    <None Remove="src\theme\colors.ts" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Content Include="src\index.rollup.debug.ts" />
-		<Content Include="src\index.rollup.ts" />
-		<Content Include="src\index.ts" />
-	</ItemGroup>
+  <ItemGroup>
+    <Content Include="src\index.rollup.debug.ts" />
+    <Content Include="src\index.rollup.ts" />
+    <Content Include="src\index.ts" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.8" />
-		<PackageReference Include="YamlDotNet" Version="18.0.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.9" />
+    <PackageReference Include="Serilog.Enrichers.ClientInfo" Version="2.9.0" />
+    <PackageReference Include="YamlDotNet" Version="18.1.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <ProjectReference Include="..\..\pictoris\Neutrino.Pictoris.Colors\Neutrino.Pictoris.Colors.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<TypeScriptCompile Include="src\base\AnchorLike.ts" />
-		<TypeScriptCompile Include="src\base\DefineElement.ts" />
-		<TypeScriptCompile Include="src\base\Focusable.ts" />
-		<TypeScriptCompile Include="src\base\FormElement.ts" />
-		<TypeScriptCompile Include="src\base\NeutrinoElement.ts" />
-		<TypeScriptCompile Include="src\base\Typings.ts" />
-		<TypeScriptCompile Include="src\base\Version.ts" />
-		<TypeScriptCompile Include="src\button\Button.ts" />
-		<TypeScriptCompile Include="src\icons\FabricIcons.ts" />
-		<TypeScriptCompile Include="src\icons\FluentIcons.ts" />
-		<TypeScriptCompile Include="src\icons\Icons.ts" />
-		<TypeScriptCompile Include="src\icons\IconList.ts" />
-		<TypeScriptCompile Include="src\icons\MaterialIcon.ts" />
-		<TypeScriptCompile Include="src\icons\MaterialIcons.ts" />
-		<TypeScriptCompile Include="src\link\Link.ts" />
-		<TypeScriptCompile Include="src\rstview\RstView.ts" />
-		<TypeScriptCompile Include="src\sidebar\Sidebar.ts" />
-		<TypeScriptCompile Include="src\sidebar\SidebarHeading.ts" />
-		<TypeScriptCompile Include="src\sidebar\SidebarItem.ts" />
-		<TypeScriptCompile Include="src\styles.d.ts" />
-		<TypeScriptCompile Include="src\theme\colors.ts" />
-	</ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\base\AnchorLike.ts" />
+    <TypeScriptCompile Include="src\base\DefineElement.ts" />
+    <TypeScriptCompile Include="src\base\Focusable.ts" />
+    <TypeScriptCompile Include="src\base\FormElement.ts" />
+    <TypeScriptCompile Include="src\base\NeutrinoElement.ts" />
+    <TypeScriptCompile Include="src\base\Typings.ts" />
+    <TypeScriptCompile Include="src\base\Version.ts" />
+    <TypeScriptCompile Include="src\button\Button.ts" />
+    <TypeScriptCompile Include="src\icons\FabricIcons.ts" />
+    <TypeScriptCompile Include="src\icons\FluentIcons.ts" />
+    <TypeScriptCompile Include="src\icons\Icons.ts" />
+    <TypeScriptCompile Include="src\icons\IconList.ts" />
+    <TypeScriptCompile Include="src\icons\MaterialIcon.ts" />
+    <TypeScriptCompile Include="src\icons\MaterialIcons.ts" />
+    <TypeScriptCompile Include="src\link\Link.ts" />
+    <TypeScriptCompile Include="src\rstview\RstView.ts" />
+    <TypeScriptCompile Include="src\sidebar\Sidebar.ts" />
+    <TypeScriptCompile Include="src\sidebar\SidebarHeading.ts" />
+    <TypeScriptCompile Include="src\sidebar\SidebarItem.ts" />
+    <TypeScriptCompile Include="src\styles.d.ts" />
+    <TypeScriptCompile Include="src\theme\colors.ts" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="wwwroot\lib\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\pictoris\Neutrino.Pictoris.Colors\Neutrino.Pictoris.Colors.csproj" />
-	</ItemGroup>
-
-	<Target Name="NpmInstall" Inputs="package.json" Outputs="node_modules/.install-stamp">
-		<!--
+  <Target Name="NpmInstall" Inputs="package.json" Outputs="node_modules/.install-stamp">
+    <!--
         Use npm install or npm ci depending on RestorePackagesWithLockFile value.
         Uncomment the following lines if you want to use this feature:
 
@@ -95,18 +95,18 @@
           <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         </PropertyGroup>
      -->
-		<Exec Command="npm install" Condition="'$(RestorePackagesWithLockFile)' != 'true'" />
+    <Exec Command="npm install" Condition="'$(RestorePackagesWithLockFile)' != 'true'" />
 
-		<!-- Write the stamp file, so incremental builds work -->
-		<Touch Files="node_modules/.install-stamp" AlwaysCreate="true" />
-	</Target>
+    <!-- Write the stamp file, so incremental builds work -->
+    <Touch Files="node_modules/.install-stamp" AlwaysCreate="true" />
+  </Target>
 
-	<!--
+  <!--
       2. Run yarn run build before building the .NET project.
       MSBuild runs YarnInstall before this task because of the DependsOnTargets attribute.
    -->
-	<Target Name="NpmRunBuild" DependsOnTargets="NpmInstall" BeforeTargets="BeforeBuild" Inputs="">
-		<Exec Command="npm run build" />
-	</Target>
+  <Target Name="NpmRunBuild" DependsOnTargets="NpmInstall" BeforeTargets="BeforeBuild" Inputs="">
+    <Exec Command="npm run build" />
+  </Target>
 
 </Project>
